@@ -4,17 +4,25 @@
              xmlns:local="clr-namespace:TimeTracker.UI" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              StartupUri="MainWindow.xaml">
-   <Application.Resources>
-      <!-- MahApps.Metro resources -->
-      <ResourceDictionary>
-         <ResourceDictionary.MergedDictionaries>
-            <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-            <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-            <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Orange.xaml" />
+    <Application.Resources>
+        <!-- MahApps.Metro resources -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Orange.xaml" />
 
-            <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Lime" />
-            <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
-         </ResourceDictionary.MergedDictionaries>
-      </ResourceDictionary>
-   </Application.Resources>
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Lime" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Color x:Key="TextColor">#FFF7F1</Color>
+
+            <SolidColorBrush x:Key="TextColorBrush" Color="{DynamicResource TextColor}" />
+
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="Foreground" Value="{DynamicResource TextColorBrush}" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

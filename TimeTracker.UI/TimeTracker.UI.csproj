@@ -201,6 +201,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\ucTimeRowEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -214,6 +218,9 @@
     </Compile>
     <Compile Include="Components\ucTimeRow.xaml.cs">
       <DependentUpon>ucTimeRow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\ucTimeRowEditor.xaml.cs">
+      <DependentUpon>ucTimeRowEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

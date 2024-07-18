@@ -13,17 +13,16 @@
                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                   <LinearGradientBrush.GradientStops>
                      <GradientStop Offset="0.1" Color="#cf5a07" />
-                     <GradientStop Offset="0.8" Color="#CC3C4F" />
-                     <GradientStop Offset="1" Color="#A83F78" />
+                     <GradientStop Offset="1" Color="#CC3C4F" />
+                     <!--<GradientStop Offset="1" Color="#A83F78" />-->
                   </LinearGradientBrush.GradientStops>
                </LinearGradientBrush>
             </Border.Background>
-            <Label Content="{Binding description}" FontSize="22" Foreground="#FFF7F1"></Label>
+            <Label Content="{Binding description}" FontSize="22" Margin="10,0,10,0"></Label>
          </Border>
          <ListView ItemsSource="{Binding tasks}">
             <ListView.ItemContainerStyle>
                <Style TargetType="{x:Type ListViewItem}">
-                  <Setter Property="Margin" Value="0,0,0,10"/>
                   <Setter Property="Background" Value="Transparent" />
                   <Setter Property="Template">
                      <Setter.Value>
