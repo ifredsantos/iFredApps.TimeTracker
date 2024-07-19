@@ -24,5 +24,13 @@ namespace TimeTracker.UI.Components
       {
          InitializeComponent();
       }
+
+      private void lstView_PreviewMouseWheel(object sender, MouseWheelEventArgs e) //Disable scroll on list view
+      {
+         e.Handled = true;
+         MouseWheelEventArgs e2 = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+         e2.RoutedEvent = UIElement.MouseWheelEvent;
+         lstView.RaiseEvent(e2);
+      }
    }
 }

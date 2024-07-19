@@ -18,9 +18,22 @@
                   </LinearGradientBrush.GradientStops>
                </LinearGradientBrush>
             </Border.Background>
-            <Label Content="{Binding description}" FontSize="22" Margin="10,0,10,0"></Label>
+
+            <Grid>
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+               </Grid.ColumnDefinitions>
+
+               <Label Grid.Column="0" Content="{Binding description, FallbackValue=description}" FontSize="22" Margin="10,0,10,0"></Label>
+
+               <StackPanel Grid.Column="1" Orientation="Horizontal">
+                  <TextBlock Text="{Binding tasks_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
+               </StackPanel>
+            </Grid>
          </Border>
-         <ListView ItemsSource="{Binding tasks}">
+
+         <ListView Name="lstView" ItemsSource="{Binding tasks}" PreviewMouseWheel="lstView_PreviewMouseWheel"  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemContainerStyle>
                <Style TargetType="{x:Type ListViewItem}">
                   <Setter Property="Background" Value="Transparent" />
@@ -31,6 +44,11 @@
                         </ControlTemplate>
                      </Setter.Value>
                   </Setter>
+                  <Style.Triggers>
+                     <DataTrigger Binding="{Binding tasks.Count}" Value="0">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                     </DataTrigger>
+                  </Style.Triggers>
                </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
@@ -39,6 +57,19 @@
                </DataTemplate>
             </ListView.ItemTemplate>
          </ListView>
+
+         <Label Content="No records today..." Margin="10">
+            <Label.Style>
+               <Style TargetType="Label">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                  <Style.Triggers>
+                     <DataTrigger Binding="{Binding tasks.Count}" Value="0">
+                        <Setter Property="Visibility" Value="Visible"/>
+                     </DataTrigger>
+                  </Style.Triggers>
+               </Style>
+            </Label.Style>
+         </Label>
       </StackPanel>
    </Border>
 </UserControl>

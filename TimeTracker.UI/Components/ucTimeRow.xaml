@@ -6,9 +6,22 @@
              xmlns:local="clr-namespace:TimeTracker.UI.Components"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-   <Grid>
-      <Border BorderBrush="#cf5a07" BorderThickness="0,1,0,0" Padding="10">
-         <Label Content="{Binding description}" VerticalAlignment="Center" />
-      </Border>
-   </Grid>
+   <Border BorderBrush="#cf5a07" BorderThickness="0,1,0,0" Padding="10">
+      <Grid>
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+         </Grid.ColumnDefinitions>
+
+         <Grid Grid.Column="0">
+            <TextBox Text="{Binding description, FallbackValue=description}" VerticalAlignment="Center" FontSize="16" BorderThickness="0" />
+         </Grid>
+
+         <Grid Grid.Column="1">
+            <StackPanel Orientation="Horizontal">
+               <TextBlock Text="{Binding session_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
+            </StackPanel>
+         </Grid>
+      </Grid>
+   </Border>
 </UserControl>
