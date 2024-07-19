@@ -8,55 +8,55 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="80" d:DesignWidth="800">
-   <Grid>
-      <Border BorderBrush="#cf5a07" BorderThickness="1" Padding="10" Margin="15">
-         <Grid>
-            <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="*" />
-               <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-               <TextBox Text="{Binding description}" 
+    <Grid>
+        <Border BorderBrush="#cf5a07" BorderThickness="1" Padding="10" Margin="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <TextBox Text="{Binding description}" 
                              materialDesign:HintAssist.Hint="What are you working on?" 
                              VerticalAlignment="Center" FontSize="16" />
 
-               <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Visibility="Collapsed">
-                  <Button.Style>
-                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="BorderThickness" Value="0" />
-                     </Style>
-                  </Button.Style>
-                  <iconPacks:BootstrapIcons Width="8" Height="8" Kind="X" />
-               </Button>
-            </Grid>
-            <Grid Grid.Column="1">
-               <StackPanel Orientation="Horizontal">
-                  <Label Content="00:00:00" VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
-                  <Button Foreground="{DynamicResource TextColorBrush}" Click="OnStartStopButton_Click">
-                     <Button.Style>
-                        <Style TargetType="{x:Type Button}">
-                           <Setter Property="Content">
-                              <Setter.Value>
-                                 <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Play" />
-                              </Setter.Value>
-                           </Setter>
+                    <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Visibility="Collapsed">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                            </Style>
+                        </Button.Style>
+                        <iconPacks:BootstrapIcons Width="8" Height="8" Kind="X" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
+                        <Button Foreground="{DynamicResource TextColorBrush}" Click="OnStartStopButton_Click">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Play" />
+                                        </Setter.Value>
+                                    </Setter>
 
-                           <Style.Triggers>
-                              <DataTrigger Binding="{Binding isWorking}" Value="True">
-                                 <Setter Property="Content">
-                                    <Setter.Value>
-                                       <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Pause" />
-                                    </Setter.Value>
-                                 </Setter>
-                              </DataTrigger>
-                           </Style.Triggers>
-                        </Style>
-                     </Button.Style>
-                  </Button>
-               </StackPanel>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isWorking, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                            <Setter Property="Content">
+                                                <Setter.Value>
+                                                    <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Pause" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Grid>
             </Grid>
-         </Grid>
-      </Border>
-   </Grid>
+        </Border>
+    </Grid>
 </UserControl>
