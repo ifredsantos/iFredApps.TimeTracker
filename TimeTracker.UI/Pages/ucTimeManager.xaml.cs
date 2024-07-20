@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TimeTracker.UI.Models;
 using TimeTracker.UI.Utils;
 
@@ -23,11 +14,9 @@ namespace TimeTracker.UI.Pages
     /// </summary>
     public partial class ucTimeManager : UserControl
     {
-        #region Variables
+        public event EventHandler<NotificationEventArgs> OnNotificationShow;
 
         private TimeManager m_timeManager = new TimeManager();
-
-        #endregion
 
         public ucTimeManager()
         {
@@ -179,7 +168,7 @@ namespace TimeTracker.UI.Pages
             })
             .ContinueWith(t =>
             {
-                //TODO: Show save data icon
+                OnNotificationShow?.Invoke(this, new NotificationEventArgs("Data synchronized successfully!", 3));
             }, TaskScheduler.FromCurrentSynchronizationContext());
 
         }

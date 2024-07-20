@@ -10,37 +10,40 @@
                  mc:Ignorable="d"
         mah:MetroWindow.GlowBrush="{DynamicResource AccentColorBrush}" 
         Title="Time Tracker" Height="600" Width="1100">
-   <mah:MetroWindow.LeftWindowCommands>
-      <mah:WindowCommands>
-         <Button Click="LaunchGitHubSite" ToolTip="Open up the GitHub site" Cursor="Hand">
-            <iconPacks:PackIconModern Width="22"
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Button Click="LaunchGitHubSite" ToolTip="Open up the GitHub site" Cursor="Hand">
+                <iconPacks:PackIconModern Width="22"
                                   Height="22"
                                   Kind="SocialGithubOctocat" />
-         </Button>
-      </mah:WindowCommands>
-   </mah:MetroWindow.LeftWindowCommands>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
 
-   <mah:MetroWindow.RightWindowCommands>
-      <mah:WindowCommands>
-         <Button Click="Donation" Content="Buy me a coffee">
-            <Button.ContentTemplate>
-               <DataTemplate>
-                  <StackPanel Orientation="Horizontal" Cursor="Hand">
-                     <iconPacks:PackIconMaterialDesign Width="22"
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button Click="Donation" Content="Buy me a coffee">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Cursor="Hand">
+                            <iconPacks:PackIconMaterialDesign Width="22"
                                         Height="22"
                                         VerticalAlignment="Center"
                                         Kind="Coffee" />
-                     <TextBlock Margin="4 0 0 0"
+                            <TextBlock Margin="4 0 0 0"
                          VerticalAlignment="Center"
                          Text="{Binding}" />
-                  </StackPanel>
-               </DataTemplate>
-            </Button.ContentTemplate>
-         </Button>
-      </mah:WindowCommands>
-   </mah:MetroWindow.RightWindowCommands>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
 
-   <Grid>
-      <pages:ucTimeManager />
-   </Grid>
+    <Grid>
+        <pages:ucTimeManager OnNotificationShow="OnNotificationShow" />
+        <materialDesign:Snackbar Name="snackBar" MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Panel.ZIndex="999999" Margin="15"
+                                 Foreground="{StaticResource TextColorBrush}" Background="{StaticResource MahApps.Brushes.Gray}">
+        </materialDesign:Snackbar>
+    </Grid>
 </mah:MetroWindow>
