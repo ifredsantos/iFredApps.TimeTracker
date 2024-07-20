@@ -77,7 +77,7 @@ namespace TimeTracker.UI.Pages
                     long maxTaskID = 0;
 
                     if (m_timeManager.tasks != null && m_timeManager.tasks.Count > 0)
-                        m_timeManager.tasks.Max(x => x.id_task);
+                        maxTaskID = m_timeManager.tasks.Max(x => x.id_task);
 
                     long newTaskID = maxTaskID + 1;
 
@@ -132,9 +132,32 @@ namespace TimeTracker.UI.Pages
             if (e.TaskData != null)
             {
                 m_timeManager.tasks.Remove(e.TaskData);
-                SaveTasks();
 
                 m_timeManager.RefreshTasks();
+                SaveTasks();
+            }
+        }
+
+        private void OnTaskChange(object sender, TimeTaskRemoveEventArgs e)
+        {
+            if (e.TaskData != null)
+            {
+                var originalTask = m_timeManager.tasks.FirstOrDefault(x => x.id_task == e.TaskData.id_task);
+                if(originalTask != null)
+                {
+                    originalTask.description = e.TaskData.description;
+
+                    if(originalTask.sessions != null)
+                    {
+                        foreach (var session in originalTask.sessions)
+                        {
+                            session.description = e.TaskData.description;
+                        }
+                    }
+                }
+
+                m_timeManager.RefreshTasks();
+                SaveTasks();
             }
         }
 

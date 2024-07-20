@@ -68,7 +68,7 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <local:ucTimeRow OnTaskContinue="OnTaskContinueClick" OnTaskRemove="OnTaskRemoveClick" />
+                        <local:ucTimeRow OnTaskContinue="OnTaskContinueClick" OnTaskRemove="OnTaskRemoveClick" OnTaskChanged="OnTaskChange" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

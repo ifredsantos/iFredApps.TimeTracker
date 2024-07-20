@@ -16,7 +16,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <TextBox Text="{Binding description, FallbackValue=description}" VerticalAlignment="Center" FontSize="16" BorderThickness="0" />
+                <TextBox Text="{Binding description, FallbackValue=description}" LostFocus="OnDescriptionLostFocus" VerticalAlignment="Center" FontSize="16" BorderThickness="0" />
             </Grid>
 
             <Grid Grid.Column="1">

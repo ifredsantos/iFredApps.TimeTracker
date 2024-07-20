@@ -40,7 +40,7 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <components:ucTimeGroup OnTaskContinue="OnTaskContinueClick" OnTaskRemove="OnTaskRemoveClick" />
+                    <components:ucTimeGroup OnTaskContinue="OnTaskContinueClick" OnTaskRemove="OnTaskRemoveClick" OnTaskChanged="OnTaskChange" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
