@@ -23,14 +23,6 @@ namespace TimeTracker.UI.Components
     /// </summary>
     public partial class ucTimeRowEditor : UserControl
     {
-        public bool isWorking
-        {
-            get { return (bool)GetValue(isWorkingProperty); }
-            set { SetValue(isWorkingProperty, value); }
-        }
-        public static readonly DependencyProperty isWorkingProperty = DependencyProperty.Register("isWorking", typeof(bool), typeof(ucTimeRowEditor), new PropertyMetadata(false));
-
-
         public event EventHandler<TimeRowChangedEventArgs> OnSessionChanged;
 
         private DispatcherTimer timer;
@@ -46,7 +38,7 @@ namespace TimeTracker.UI.Components
 
         private void OnTimer_Tick(object sender, EventArgs e)
         {
-            if(DataContext is TimeManagerTaskSession session)
+            if (DataContext is TimeManagerTaskCurrentSession session)
             {
                 session.total_time = DateTime.Now - session.start_date;
             }
@@ -54,25 +46,21 @@ namespace TimeTracker.UI.Components
 
         private void OnStartStopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (isWorking)
+            if (DataContext is TimeManagerTaskCurrentSession currentSession)
+            //End session
             {
-                //End session
-                if (DataContext is TimeManagerTaskSession session)
+                if (currentSession.is_working)
                 {
-                    session.end_date = DateTime.Now;
-                    isWorking = false;
+                    currentSession.end_date = DateTime.Now;
+                    currentSession.is_working = false;
                     timer.Stop();
 
-                    OnSessionChanged?.Invoke(this, new TimeRowChangedEventArgs { SessionData = session });
+                    OnSessionChanged?.Invoke(this, new TimeRowChangedEventArgs { SessionData = currentSession });
                 }
-            }
-            else
-            {
-                //Start Session
-                if (DataContext is TimeManagerTaskSession session)
+                else
                 {
-                    session.start_date = DateTime.Now;
-                    isWorking = true;
+                    currentSession.start_date = DateTime.Now;
+                    currentSession.is_working = true;
                     timer.Start();
                 }
             }

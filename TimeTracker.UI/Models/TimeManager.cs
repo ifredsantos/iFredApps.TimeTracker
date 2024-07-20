@@ -15,8 +15,8 @@ namespace TimeTracker.UI.Models
         internal string databaseFileDir = "database.json";
         internal bool inicializeDummyData = false;
 
-        private TimeManagerTaskSession _current_session;
-        public TimeManagerTaskSession current_session
+        private TimeManagerTaskCurrentSession _current_session;
+        public TimeManagerTaskCurrentSession current_session
         {
             get => _current_session;
             set
@@ -30,18 +30,15 @@ namespace TimeTracker.UI.Models
         public ObservableCollection<TimeManagerGroup> task_groups { get; set; }
         public TimeManager()
         {
-            current_session = new TimeManagerTaskSession();
+            current_session = new TimeManagerTaskCurrentSession();
             tasks = new ObservableCollection<TimeManagerTask>();
             task_groups = new ObservableCollection<TimeManagerGroup>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void LoadTasks()
@@ -252,15 +249,25 @@ namespace TimeTracker.UI.Models
         public string description { get; set; }
         public string observation { get; set; }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (PropertyChanged != null)
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class TimeManagerTaskCurrentSession : TimeManagerTaskSession, INotifyPropertyChanged
+    {
+        private bool _is_working;
+        public bool is_working
+        {
+            get => _is_working;
+            set
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                if (value == _is_working) return;
+                _is_working = value;
+                NotifyPropertyChanged();
             }
         }
-
     }
 }

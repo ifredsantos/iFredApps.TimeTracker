@@ -241,7 +241,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\TimeManager.cs" />
-    <Compile Include="Models\TimeRowChangedEventArgs.cs" />
+    <Compile Include="Models\TimeEventArgs.cs" />
     <Compile Include="Pages\ucTests.xaml.cs">
       <DependentUpon>ucTests.xaml</DependentUpon>
     </Compile>

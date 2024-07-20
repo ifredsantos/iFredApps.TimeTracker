@@ -4,24 +4,54 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TimeTracker.UI.Components"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-   <Border BorderBrush="#cf5a07" BorderThickness="0,1,0,0" Padding="10">
-      <Grid>
-         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-         </Grid.ColumnDefinitions>
+             d:DesignHeight="80" d:DesignWidth="800">
+    <Border BorderBrush="#cf5a07" BorderThickness="0,1,0,0" Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-         <Grid Grid.Column="0">
-            <TextBox Text="{Binding description, FallbackValue=description}" VerticalAlignment="Center" FontSize="16" BorderThickness="0" />
-         </Grid>
+            <Grid Grid.Column="0">
+                <TextBox Text="{Binding description, FallbackValue=description}" VerticalAlignment="Center" FontSize="16" BorderThickness="0" />
+            </Grid>
 
-         <Grid Grid.Column="1">
-            <StackPanel Orientation="Horizontal">
-               <TextBlock Text="{Binding session_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
-            </StackPanel>
-         </Grid>
-      </Grid>
-   </Border>
+            <Grid Grid.Column="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding session_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" 
+                               VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
+                    <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" StaysOpen="false"
+                                     VerticalAlignment="Center" Margin="0,0,-10,0" Padding="0">
+                        <StackPanel Width="150">
+                            <ListView>
+                                <ListViewItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0">
+                                    <Button Name="btnStartStop" Click="OnTaskContinueClick" Cursor="Hand">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Play" />
+                                                <TextBlock Text="Continue" Margin="10,0,0,0" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </ListViewItem>
+                                <ListViewItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0">
+                                    <Button Name="btnRemove" Click="OnTaskRemoveClick" Cursor="Hand">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Trash3" />
+                                                <TextBlock Text="Remove" Margin="10,0,0,0" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </ListViewItem>
+                            </ListView>
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
 </UserControl>

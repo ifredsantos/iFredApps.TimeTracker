@@ -18,100 +18,135 @@ using TimeTracker.UI.Utils;
 
 namespace TimeTracker.UI.Pages
 {
-   /// <summary>
-   /// Interaction logic for ucTimeManager.xaml
-   /// </summary>
-   public partial class ucTimeManager : UserControl
-   {
-      #region Variables
+    /// <summary>
+    /// Interaction logic for ucTimeManager.xaml
+    /// </summary>
+    public partial class ucTimeManager : UserControl
+    {
+        #region Variables
 
-      private TimeManager m_timeManager = new TimeManager();
+        private TimeManager m_timeManager = new TimeManager();
 
-      #endregion
+        #endregion
 
-      public ucTimeManager()
-      {
-         InitializeComponent();
+        public ucTimeManager()
+        {
+            InitializeComponent();
 
-         LoadStartInfo();
+            LoadStartInfo();
 
-         DataContext = m_timeManager;
+            DataContext = m_timeManager;
 
-         lstView.ItemsSource = m_timeManager.task_groups;
-      }
+            lstView.ItemsSource = m_timeManager.task_groups;
+        }
 
-      #region Private Methods
+        #region Private Methods
 
-      private void LoadStartInfo()
-      {
-         try
-         {
-            m_timeManager.LoadTasks();
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-      }
-
-      #endregion
-
-      private void OnSessionRowChanged(object sender, TimeRowChangedEventArgs e)
-      {
-         try
-         {
-            TimeManagerTask existingTask = m_timeManager.tasks.ToList().Find(x => x.description == e.SessionData.description);
-            if (existingTask != null)
+        private void LoadStartInfo()
+        {
+            try
             {
-               long maxSessionID = existingTask.sessions.Max(x => x.id_session);
-
-               e.SessionData.id_task = existingTask.id_task;
-               e.SessionData.id_session = maxSessionID + 1;
-
-               existingTask.sessions.Add(e.SessionData);
+                m_timeManager.LoadTasks();
             }
-            else
+            catch (Exception ex)
             {
-               long maxTaskID = 0;
-               
-               if (m_timeManager.tasks != null && m_timeManager.tasks.Count > 0)
-                  m_timeManager.tasks.Max(x => x.id_task);
-
-               long newTaskID = maxTaskID + 1;
-
-               e.SessionData.id_task = newTaskID;
-
-               TimeManagerTask newTask = new TimeManagerTask
-               {
-                  id_task = newTaskID,
-                  description = e.SessionData.description,
-                  sessions = new ObservableCollection<TimeManagerTaskSession>
-               {
-                  e.SessionData
-               }
-               };
-
-               m_timeManager.tasks.Add(newTask);
+                ex.ShowException();
             }
+        }
 
-            m_timeManager.current_session = new TimeManagerTaskSession();
-            m_timeManager.RefreshTasks();
+        #endregion
 
-            SaveTasks();
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-      }
+        #region Events
 
-      private void SaveTasks()
-      {
-         Task.Run(() =>
-         {
-            m_timeManager.SaveTasks();
-         });
-         
-      }
-   }
+        private void OnSessionRowChanged(object sender, TimeRowChangedEventArgs e)
+        {
+            try
+            {
+                TimeManagerTask existingTask = m_timeManager.tasks.ToList().Find(x => x.description == e.SessionData.description);
+                if (existingTask != null)
+                {
+                    long maxSessionID = existingTask.sessions.Max(x => x.id_session);
+
+                    e.SessionData.id_task = existingTask.id_task;
+                    e.SessionData.id_session = maxSessionID + 1;
+
+                    existingTask.sessions.Add(e.SessionData);
+                }
+                else
+                {
+                    long maxTaskID = 0;
+
+                    if (m_timeManager.tasks != null && m_timeManager.tasks.Count > 0)
+                        m_timeManager.tasks.Max(x => x.id_task);
+
+                    long newTaskID = maxTaskID + 1;
+
+                    e.SessionData.id_task = newTaskID;
+
+                    TimeManagerTask newTask = new TimeManagerTask
+                    {
+                        id_task = newTaskID,
+                        description = e.SessionData.description,
+                        sessions = new ObservableCollection<TimeManagerTaskSession>
+                        {
+                           e.SessionData
+                        }
+                    };
+
+                    m_timeManager.tasks.Add(newTask);
+                }
+
+                m_timeManager.current_session = new TimeManagerTaskCurrentSession();
+                m_timeManager.RefreshTasks();
+
+                SaveTasks();
+            }
+            catch (Exception ex)
+            {
+                ex.ShowException();
+            }
+        }
+
+        private void OnTaskContinueClick(object sender, TimeTaskContinueEventArgs e)
+        {
+            if (e.TaskData != null)
+            {
+                if (m_timeManager.current_session != null && m_timeManager.current_session.is_working)
+                {
+                    MessageBox.Show("There is already a session in progress. Please stop the current session and try again.", "Calm down!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                else
+                {
+                    m_timeManager.current_session = new TimeManagerTaskCurrentSession
+                    {
+                        description = e.TaskData.description,
+                        id_task = e.TaskData.id_task,
+                    };
+                }
+            }
+        }
+
+        private void OnTaskRemoveClick(object sender, TimeTaskRemoveEventArgs e)
+        {
+            if (e.TaskData != null)
+            {
+                m_timeManager.tasks.Remove(e.TaskData);
+                SaveTasks();
+
+                m_timeManager.RefreshTasks();
+            }
+        }
+
+        #endregion
+
+        private void SaveTasks()
+        {
+            Task.Run(() =>
+            {
+                m_timeManager.SaveTasks();
+            });
+
+        }
+    }
 }

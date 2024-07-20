@@ -12,25 +12,39 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TimeTracker.UI.Models;
 
 namespace TimeTracker.UI.Components
 {
-   /// <summary>
-   /// Interaction logic for ucTimeGroup.xaml
-   /// </summary>
-   public partial class ucTimeGroup : UserControl
-   {
-      public ucTimeGroup()
-      {
-         InitializeComponent();
-      }
+    /// <summary>
+    /// Interaction logic for ucTimeGroup.xaml
+    /// </summary>
+    public partial class ucTimeGroup : UserControl
+    {
+        public event EventHandler<TimeTaskContinueEventArgs> OnTaskContinue;
+        public event EventHandler<TimeTaskRemoveEventArgs> OnTaskRemove;
 
-      private void lstView_PreviewMouseWheel(object sender, MouseWheelEventArgs e) //Disable scroll on list view
-      {
-         e.Handled = true;
-         MouseWheelEventArgs e2 = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
-         e2.RoutedEvent = UIElement.MouseWheelEvent;
-         lstView.RaiseEvent(e2);
-      }
-   }
+        public ucTimeGroup()
+        {
+            InitializeComponent();
+        }
+
+        private void lstView_PreviewMouseWheel(object sender, MouseWheelEventArgs e) //Disable scroll on list view
+        {
+            e.Handled = true;
+            MouseWheelEventArgs e2 = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+            e2.RoutedEvent = UIElement.MouseWheelEvent;
+            lstView.RaiseEvent(e2);
+        }
+
+        private void OnTaskContinueClick(object sender, TimeTaskContinueEventArgs e)
+        {
+            OnTaskContinue?.Invoke(this, e);
+        }
+
+        private void OnTaskRemoveClick(object sender, TimeTaskRemoveEventArgs e)
+        {
+            OnTaskRemove?.Invoke(this, e);
+        }
+    }
 }
