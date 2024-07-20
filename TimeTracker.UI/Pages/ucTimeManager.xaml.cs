@@ -58,12 +58,13 @@ namespace TimeTracker.UI.Pages
 
         #region Events
 
-        private void OnSessionRowChanged(object sender, TimeRowChangedEventArgs e)
+        private void OnCurrentSessionChanged(object sender, TimeRowChangedEventArgs e)
         {
             try
             {
                 TimeManagerTask existingTask = m_timeManager.tasks.ToList().Find(x => x.description == e.SessionData.description);
-                if (existingTask != null)
+
+                if (existingTask != null) //If a task exists, it must be updated
                 {
                     long maxSessionID = existingTask.sessions.Max(x => x.id_session);
 
@@ -72,7 +73,7 @@ namespace TimeTracker.UI.Pages
 
                     existingTask.sessions.Add(e.SessionData);
                 }
-                else
+                else //If a task does not exist, it must be created
                 {
                     long maxTaskID = 0;
 
@@ -131,6 +132,13 @@ namespace TimeTracker.UI.Pages
         {
             if (e.TaskData != null)
             {
+                if (MessageBox.Show(string.Format("Are you sure you want to remove the \"{0}\" task?", e.TaskData.description), "Calm down!",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes
+                    ) != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
                 m_timeManager.tasks.Remove(e.TaskData);
 
                 m_timeManager.RefreshTasks();
@@ -143,11 +151,11 @@ namespace TimeTracker.UI.Pages
             if (e.TaskData != null)
             {
                 var originalTask = m_timeManager.tasks.FirstOrDefault(x => x.id_task == e.TaskData.id_task);
-                if(originalTask != null)
+                if (originalTask != null)
                 {
                     originalTask.description = e.TaskData.description;
 
-                    if(originalTask.sessions != null)
+                    if (originalTask.sessions != null)
                     {
                         foreach (var session in originalTask.sessions)
                         {

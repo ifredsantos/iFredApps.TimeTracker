@@ -46,11 +46,16 @@ namespace TimeTracker.UI.Components
 
         private void OnStartStopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is TimeManagerTaskCurrentSession currentSession)
-            //End session
+            if (DataContext is TimeManagerTaskCurrentSession currentSession) //End session
             {
                 if (currentSession.is_working)
                 {
+                    if (string.IsNullOrEmpty(currentSession.description))
+                    {
+                        MessageBox.Show("Cannot save a task without a description.", "Calm down!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
                     currentSession.end_date = DateTime.Now;
                     currentSession.is_working = false;
                     timer.Stop();
