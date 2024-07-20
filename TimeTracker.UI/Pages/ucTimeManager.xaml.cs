@@ -142,10 +142,14 @@ namespace TimeTracker.UI.Pages
 
         private void SaveTasks()
         {
-            Task.Run(() =>
+            Task.Factory.StartNew(() =>
             {
                 m_timeManager.SaveTasks();
-            });
+            })
+            .ContinueWith(t =>
+            {
+                //TODO: Show save data icon
+            }, TaskScheduler.FromCurrentSynchronizationContext());
 
         }
     }
