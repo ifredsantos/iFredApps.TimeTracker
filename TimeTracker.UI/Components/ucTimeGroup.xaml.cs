@@ -45,6 +45,11 @@ namespace TimeTracker.UI.Components
             OnTaskChanged?.Invoke(this, e);
         }
 
+        private void OnResumoButtonClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         #endregion
     }
 }
