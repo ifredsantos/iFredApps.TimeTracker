@@ -52,7 +52,6 @@
                                             <Setter TargetName="line" Property="Background" Value="#1F000000" />
                                         </Trigger>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="FontWeight" Value="SemiBold" />
                                             <Setter TargetName="line" Property="Background" Value="#1Fcf5a07" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>

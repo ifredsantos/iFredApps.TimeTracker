@@ -43,5 +43,24 @@ namespace TimeTracker.UI.Components
                 OnTaskChanged?.Invoke(this, new TimeTaskRemoveEventArgs { TaskData = taskData });
             }
         }
+
+        private void OnDetailButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is TimeManagerTask taskData)
+            {
+                if (taskData.is_detail_session_open) //Close
+                {
+                    detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronDown;
+                    sessionDetail.Visibility = Visibility.Collapsed;
+                }
+                else //Open
+                {
+                    detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronUp;
+                    sessionDetail.Visibility = Visibility.Visible;
+                }
+
+                taskData.is_detail_session_open = !taskData.is_detail_session_open;
+            }
+        }
     }
 }

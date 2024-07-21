@@ -15,11 +15,28 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <TextBox Text="{Binding description, FallbackValue=description}" LostFocus="OnDescriptionLostFocus" VerticalAlignment="Center" FontSize="16" BorderThickness="0" />
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Column="0" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                    <Button Click="OnDetailButtonClick" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand"
+                            Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Transparent" Foreground="{StaticResource TextColorBrush}" 
+                            Padding="10,0,10,0" Grid.Column="0">
+                        <iconPacks:PackIconBootstrapIcons Name="detailButtonIcon" Kind="ChevronDown" Width="14" Height="14" VerticalAlignment="Center" />
+                    </Button>
+
+                    <TextBox Text="{Binding description, FallbackValue=description}" LostFocus="OnDescriptionLostFocus" 
+                             VerticalAlignment="Center" FontSize="16" BorderThickness="0" Margin="5,0,0,0" Grid.Column="1" />
             </Grid>
 
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Grid.Row="0">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding session_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" 
                                VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
@@ -50,6 +67,24 @@
                             </ListView>
                         </StackPanel>
                     </materialDesign:PopupBox>
+                </StackPanel>
+            </Grid>
+
+            <Grid Name="sessionDetail" Grid.ColumnSpan="2" Grid.Row="1" Margin="40,10,0,0" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock Text="Session history" FontSize="17" />
+                    <ItemsControl ItemsSource="{Binding sessions}" BorderBrush="#cf5a07" BorderThickness="0,2,0,0" Margin="0,2,0,0" Padding="0,5,0,5">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding start_date, StringFormat='dd/MM/yyyy HH:mm:ss', FallbackValue='[Start date]'}"/>
+                                    <TextBlock Text=" - "/>
+                                    <TextBlock Text="{Binding end_date, StringFormat='dd/MM/yyyy HH:mm:ss', FallbackValue='[End date]'}"/>
+                                    <TextBlock Margin="10,0,0,0" FontWeight="Bold" Text="{Binding total_time, StringFormat=(\{0:hh\\:mm\\:ss\}), FallbackValue='([Total time])'}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </Grid>
         </Grid>

@@ -197,6 +197,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\NotificationEventArgs.cs" />
+    <Compile Include="Models\TimeManagerBase.cs" />
     <Compile Include="Utils\ExHandler.cs" />
     <Page Include="Components\ucTimeGroup.xaml">
       <SubType>Designer</SubType>

@@ -196,10 +196,8 @@ namespace TimeTracker.UI.Models
         }
     }
 
-    public class TimeManagerTask
+    public class TimeManagerTask : TimeManagerTaskBase, INotifyPropertyChanged
     {
-        public long id_task { get; set; }
-        public string description { get; set; }
         public TimeSpan session_total_time
         {
             get
@@ -220,20 +218,27 @@ namespace TimeTracker.UI.Models
                 return result;
             }
         }
-        public ObservableCollection<TimeManagerTaskSession> sessions { get; set; }
-
-        public TimeManagerTask()
+        private bool _is_detail_session_open;
+        public bool is_detail_session_open
         {
-            sessions = new ObservableCollection<TimeManagerTaskSession>();
+            get => _is_detail_session_open;
+            set
+            {
+                if (value == _is_detail_session_open) return;
+                _is_detail_session_open = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
-    public class TimeManagerTaskSession : INotifyPropertyChanged
+    public class TimeManagerTaskSession : TimeManagerTaskSessionBase, INotifyPropertyChanged
     {
-        public long id_task { get; set; }
-        public long id_session { get; set; }
-        public DateTime start_date { get; set; }
-        public DateTime? end_date { get; set; }
         private TimeSpan _total_time;
         public TimeSpan total_time
         {
@@ -245,8 +250,6 @@ namespace TimeTracker.UI.Models
                 NotifyPropertyChanged();
             }
         }
-        public string description { get; set; }
-        public string observation { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
