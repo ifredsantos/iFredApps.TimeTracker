@@ -47,7 +47,12 @@ namespace TimeTracker.UI.Components
 
         private void OnResumoButtonClick(object sender, RoutedEventArgs e)
         {
+            wDaySummary winSummary = new wDaySummary();
+            winSummary.Owner = Window.GetWindow(this);
+            winSummary.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            winSummary.DataContext = DataContext;
 
+            winSummary.ShowDialog();
         }
 
         #endregion

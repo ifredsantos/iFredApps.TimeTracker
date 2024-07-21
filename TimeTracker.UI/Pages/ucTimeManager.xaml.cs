@@ -114,13 +114,8 @@ namespace TimeTracker.UI.Pages
                     ObservableCollection<TimeManagerTask> taskList = new ObservableCollection<TimeManagerTask>();
                     dicRow.Value.ForEach(x => taskList.Add(x));
 
-                    TimeSpan totalTime = TimeSpan.Zero;
-                    if (taskList != null)
-                    {
-                        //TODO: Calc total time
-                        //totalTime = taskList.SelectMany(x => x.sessions.Where(l => l.end_date.HasValue)).Sum(x => x.end_date - x.start_date);
-                    }
-                    m_timeManager.task_groups.Add(new TimeManagerGroup { description = dicRow.Key, tasks = taskList, total_time = TimeSpan.Zero });
+                    DateTime date_reference = (taskList.SelectMany(x => x.sessions)?.FirstOrDefault(x => x.end_date.HasValue)?.end_date).Value;
+                    m_timeManager.task_groups.Add(new TimeManagerGroup { description = dicRow.Key, tasks = taskList, date_group_reference = date_reference });
                 }
             }
         }
