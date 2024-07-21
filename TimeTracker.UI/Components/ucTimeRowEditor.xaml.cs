@@ -24,6 +24,8 @@ namespace TimeTracker.UI.Components
             timer.Tick += OnTimer_Tick;
         }
 
+        #region Events
+
         private void OnTimer_Tick(object sender, EventArgs e)
         {
             if (DataContext is TimeManagerTaskCurrentSession session)
@@ -38,6 +40,8 @@ namespace TimeTracker.UI.Components
             {
                 if (currentSession.is_working)
                 {
+                    currentSession.description = currentSession.description.TrimEnd(); //Remove empty spaces at the end
+
                     if (string.IsNullOrEmpty(currentSession.description))
                     {
                         MessageBox.Show("Cannot save a task without a description.", "Calm down!", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -58,5 +62,7 @@ namespace TimeTracker.UI.Components
                 }
             }
         }
+
+        #endregion
     }
 }

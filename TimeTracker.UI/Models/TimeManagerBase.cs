@@ -1,11 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace TimeTracker.UI.Models
 {
@@ -13,11 +7,11 @@ namespace TimeTracker.UI.Models
     {
         public long id_task { get; set; }
         public string description { get; set; }
-        public ObservableCollection<TimeManagerTaskSession> sessions { get; set; }
+        public ObservableCollection<TimeManagerTaskSessionBase> sessions { get; set; }
 
         public TimeManagerTaskBase()
         {
-            sessions = new ObservableCollection<TimeManagerTaskSession>();
+            sessions = new ObservableCollection<TimeManagerTaskSessionBase>();
         }
     }
 

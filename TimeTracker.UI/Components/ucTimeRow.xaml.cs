@@ -19,6 +19,8 @@ namespace TimeTracker.UI.Components
             InitializeComponent();
         }
 
+        #region Events
+
         private void OnTaskContinueClick(object sender, RoutedEventArgs e)
         {
             if (DataContext is TimeManagerTask taskData)
@@ -62,5 +64,7 @@ namespace TimeTracker.UI.Components
                 taskData.is_detail_session_open = !taskData.is_detail_session_open;
             }
         }
+
+        #endregion
     }
 }

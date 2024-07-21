@@ -20,6 +20,8 @@ namespace TimeTracker.UI.Components
             InitializeComponent();
         }
 
+        #region Events
+
         private void lstView_PreviewMouseWheel(object sender, MouseWheelEventArgs e) //Disable scroll on list view
         {
             e.Handled = true;
@@ -42,5 +44,7 @@ namespace TimeTracker.UI.Components
         {
             OnTaskChanged?.Invoke(this, e);
         }
+
+        #endregion
     }
 }

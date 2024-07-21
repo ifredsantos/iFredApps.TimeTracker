@@ -10,11 +10,12 @@ namespace TimeTracker.UI
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        #region Buttons
 
         private void LaunchGitHubSite(object sender, RoutedEventArgs e)
         {
@@ -25,6 +26,10 @@ namespace TimeTracker.UI
         {
             ShowNotification("Available soon!");
         }
+
+        #endregion
+
+        #region Notification
 
         public void ShowNotification(string message, TimeSpan? duration = null)
         {
@@ -38,5 +43,7 @@ namespace TimeTracker.UI
 
             ShowNotification(e.Message, e.Duration);
         }
+
+        #endregion
     }
 }

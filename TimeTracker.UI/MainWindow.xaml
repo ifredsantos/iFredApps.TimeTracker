@@ -45,5 +45,10 @@
         <materialDesign:Snackbar Name="snackBar" MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Panel.ZIndex="999999" Margin="15"
                                  Foreground="{StaticResource TextColorBrush}" Background="{StaticResource MahApps.Brushes.Gray}">
         </materialDesign:Snackbar>
+
+        <Border Background="#3F000000" VerticalAlignment="Bottom" Opacity="1" Visibility="Collapsed">
+            <TextBlock Text="Developed by Frederico Santos" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,2,15,2" 
+                       FontStyle="Oblique" Opacity="0.3" FontSize="12" />
+        </Border>
     </Grid>
 </mah:MetroWindow>
