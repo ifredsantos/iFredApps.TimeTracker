@@ -5,11 +5,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TimeTracker.UI")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Time Tracker")]
+[assembly: AssemblyDescription("Never lose track of your times!")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TimeTracker.UI")]
+[assembly: AssemblyCompany("iFredApps")]
+[assembly: AssemblyProduct("Time Tracker")]
 [assembly: AssemblyCopyright("Copyright ©  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

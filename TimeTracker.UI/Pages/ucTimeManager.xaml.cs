@@ -38,9 +38,9 @@ namespace TimeTracker.UI.Pages
             {
                 m_timeManager.tasks.Clear();
 
-                AppConfig appConfig = ((App)Application.Current).Config;
+                AppConfig appConfig = ((App)Application.Current)?.Config;
 
-                if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
+                if (appConfig != null && appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
                 {
                     string directory = appConfig.json_database_config.directory;
                     string filename = appConfig.json_database_config.filename;

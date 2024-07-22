@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using TimeTracker.UI.Models;
@@ -29,7 +30,7 @@ namespace TimeTracker.UI
                 json_database_config = new JSONDataBaseConfig
                 {
                     directory = Path.Combine(
-                                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                                    Debugger.IsAttached ? "./bin" : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                                     "iFredApps",
                                     "Database",
                                     "TimeTracker"
