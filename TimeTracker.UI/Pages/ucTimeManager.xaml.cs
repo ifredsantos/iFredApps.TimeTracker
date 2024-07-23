@@ -71,51 +71,53 @@ namespace TimeTracker.UI.Pages
 
             if (m_timeManager.tasks != null)
             {
-                Dictionary<string, List<TimeManagerTask>> dicTasksByGroupName = new Dictionary<string, List<TimeManagerTask>>();
+                Dictionary<DateTime, List<TimeManagerTask>> dicTasksByDate = new Dictionary<DateTime, List<TimeManagerTask>>();
 
                 //Default Group
-                dicTasksByGroupName.Add("Today", new List<TimeManagerTask>());
+                dicTasksByDate.Add(DateTime.Now.Date, new List<TimeManagerTask>());
 
                 foreach (var task in m_timeManager.tasks)
                 {
-                    TimeManagerTaskSession lastSession = task.sessions?.OrderByDescending(x => x.end_date)?.FirstOrDefault();
-                    if (lastSession != null)
+                    if (task.sessions != null && task.sessions.Count > 0)
                     {
-                        string groupKey = "";
-                        if (lastSession.end_date.HasValue)
+                        foreach (var session in task.sessions)
                         {
-                            if (lastSession.end_date.Value.Date == DateTime.Now.Date)
-                                groupKey = "Today";
-                            else
-                                groupKey = lastSession.end_date.Value.ToString("dd/MM/yyyy");
-                        }
-                        else
-                        {
-                            groupKey = "Unrecorded data";
-                        }
-
-                        if (dicTasksByGroupName.ContainsKey(groupKey))
-                        {
-                            List<TimeManagerTask> taskList = null;
-                            if (dicTasksByGroupName.TryGetValue(groupKey, out taskList))
+                            if (session.end_date.HasValue)
                             {
-                                taskList.Add(task);
+                                DateTime dateReference = session.end_date.Value;
+
+                                if (!dicTasksByDate.ContainsKey(dateReference))
+                                {
+                                    dicTasksByDate.Add(dateReference, new List<TimeManagerTask>() { task });
+                                }
+                                else
+                                {
+                                    if (dicTasksByDate.TryGetValue(dateReference, out List<TimeManagerTask> tasks))
+                                    {
+                                        tasks.Add(task);
+                                    }
+                                }
                             }
-                        }
-                        else
-                        {
-                            dicTasksByGroupName.Add(groupKey, new List<TimeManagerTask> { task });
+                            else
+                            {
+                                //TODO: Group for unsaved data
+                            }
                         }
                     }
                 }
 
-                foreach (var dicRow in dicTasksByGroupName.OrderByDescending(x => x.Key))
+                foreach (var dicRow in dicTasksByDate.OrderByDescending(x => x.Key))
                 {
-                    ObservableCollection<TimeManagerTask> taskList = new ObservableCollection<TimeManagerTask>();
-                    dicRow.Value.ForEach(x => taskList.Add(x));
-
-                    DateTime? date_reference = (taskList.SelectMany(x => x.sessions)?.FirstOrDefault(x => x.end_date.HasValue)?.end_date);
-                    m_timeManager.task_groups.Add(new TimeManagerGroup { description = dicRow.Key, tasks = taskList});
+                    TimeManagerGroup group = new TimeManagerGroup
+                    {
+                        date_group_reference = dicRow.Key,
+                        tasks = new ObservableCollection<TimeManagerTask>(),
+                    };
+                    foreach (var task in dicRow.Value)
+                    {
+                        group.tasks.Add(task);
+                    }
+                    m_timeManager.task_groups.Add(group);
                 }
             }
         }

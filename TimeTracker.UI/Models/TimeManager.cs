@@ -39,7 +39,25 @@ namespace TimeTracker.UI.Models
 
     public class TimeManagerGroup
     {
-        public string description { get; set; }
+        public string description
+        {
+            get
+            {
+                if(date_group_reference != DateTime.MinValue)
+                {
+                    if(date_group_reference.Date == DateTime.Now.Date)
+                    {
+                        return "Today";
+                    }
+                    else
+                    {
+                        return date_group_reference.ToString("dd/MM/yyyy");
+                    }
+                }
+
+                return null;
+            }
+        }
         public TimeSpan total_time { get; set; }
         public ObservableCollection<TimeManagerTask> tasks { get; set; }
         public DateTime date_group_reference { get; set; }
