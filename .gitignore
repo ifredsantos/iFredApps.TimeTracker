@@ -4,3 +4,6 @@
 /TimeTracker.UI/bin
 /TimeTracker.UI/obj
 TimeTracker.UI/.vs/TimeTracker.UI.csproj.dtbcache.json
+/TimeTracker.UI/publish
+TimeTracker.UI/TimeTracker.UI.csproj.user
+TimeTracker.UI/TimeTracker.UI_TemporaryKey.pfx

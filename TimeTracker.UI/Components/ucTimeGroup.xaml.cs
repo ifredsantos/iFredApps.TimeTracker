@@ -47,9 +47,12 @@ namespace TimeTracker.UI.Components
 
         private void OnResumoButtonClick(object sender, RoutedEventArgs e)
         {
+            Window mainWindow = Application.Current.MainWindow;
+
             wDaySummary winSummary = new wDaySummary();
             winSummary.Owner = Window.GetWindow(this);
             winSummary.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            winSummary.Height = mainWindow.Height - 90;
 
             if(DataContext is TimeManagerGroup timeGroup)
             {
