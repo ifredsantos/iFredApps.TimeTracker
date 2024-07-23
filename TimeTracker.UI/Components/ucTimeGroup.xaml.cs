@@ -60,6 +60,8 @@ namespace TimeTracker.UI.Components
                     winSummary.Title = "Today's summary";
                 else
                     winSummary.Title = string.Format("Summary of {0}", timeGroup.description);
+
+                timeGroup.date_group_reference = DateTime.Now;
             }
 
             winSummary.DataContext = DataContext;

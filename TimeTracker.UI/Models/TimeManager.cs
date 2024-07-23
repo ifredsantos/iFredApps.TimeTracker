@@ -70,12 +70,12 @@ namespace TimeTracker.UI.Models
                 {
                     foreach (var task in tasks)
                     {
-                        if(task.sessions != null && task.sessions.Count > 0)
+                        if (task.sessions != null && task.sessions.Count > 0)
                         {
                             foreach (var session in task.sessions)
                             {
-                                if(session.end_date.HasValue && session.end_date.Value.Date == date_group_reference.Date)
-                                    result += task.session_total_time;
+                                if (session.end_date.HasValue && session.end_date.Value.Date == date_group_reference.Date)
+                                    result += session.total_time;
                             }
                         }
                     }
@@ -137,7 +137,12 @@ namespace TimeTracker.UI.Models
         [JsonIgnore]
         public TimeSpan total_time
         {
-            get => _total_time;
+            get
+            {
+                if (_total_time == TimeSpan.Zero && end_date.HasValue)
+                    _total_time = end_date.Value - start_date;
+                return _total_time;
+            }
             set
             {
                 if (value == _total_time) return;

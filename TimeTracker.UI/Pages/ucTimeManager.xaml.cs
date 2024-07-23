@@ -115,7 +115,7 @@ namespace TimeTracker.UI.Pages
                     dicRow.Value.ForEach(x => taskList.Add(x));
 
                     DateTime? date_reference = (taskList.SelectMany(x => x.sessions)?.FirstOrDefault(x => x.end_date.HasValue)?.end_date);
-                    m_timeManager.task_groups.Add(new TimeManagerGroup { description = dicRow.Key, tasks = taskList, date_group_reference = date_reference ?? DateTime.Now });
+                    m_timeManager.task_groups.Add(new TimeManagerGroup { description = dicRow.Key, tasks = taskList});
                 }
             }
         }
