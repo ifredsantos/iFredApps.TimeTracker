@@ -45,28 +45,27 @@ namespace TimeTracker.UI.Components
             OnTaskChanged?.Invoke(this, e);
         }
 
-        private void OnResumoButtonClick(object sender, RoutedEventArgs e)
+        private void OnSummaryButtonClick(object sender, RoutedEventArgs e)
         {
             Window mainWindow = Application.Current.MainWindow;
 
-            wDaySummary winSummary = new wDaySummary();
-            winSummary.Owner = Window.GetWindow(this);
-            winSummary.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            winSummary.Height = mainWindow.Height - 90;
-
-            if(DataContext is TimeManagerGroup timeGroup)
+            if (DataContext is TimeManagerGroup timeGroup)
             {
+                wDaySummary winSummary = new wDaySummary();
+                winSummary.Owner = Window.GetWindow(this);
+                winSummary.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                winSummary.Height = mainWindow.Height - 90;
+
                 if (timeGroup.description == "Today")
                     winSummary.Title = "Today's summary";
                 else
                     winSummary.Title = string.Format("Summary of {0}", timeGroup.description);
 
                 timeGroup.date_group_reference = DateTime.Now;
+
+                winSummary.DataContext = timeGroup;
+                winSummary.ShowDialog();
             }
-
-            winSummary.DataContext = DataContext;
-
-            winSummary.ShowDialog();
         }
 
         #endregion

@@ -28,7 +28,7 @@
                     <Label Grid.Column="0" Content="{Binding description, FallbackValue=description}" FontSize="22" Margin="10,0,10,0"></Label>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Click="OnResumoButtonClick" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand" 
+                        <Button Click="OnSummaryButtonClick" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand" 
                                 Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Transparent" Foreground="{StaticResource TextColorBrush}" 
                                 Padding="10,0,10,0" Grid.Column="0">
                             <StackPanel Orientation="Horizontal">
