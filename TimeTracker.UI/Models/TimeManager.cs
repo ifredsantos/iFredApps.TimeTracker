@@ -74,7 +74,7 @@ namespace TimeTracker.UI.Models
                         {
                             foreach (var session in task.sessions)
                             {
-                                if(session.end_date.HasValue && session.end_date.Value.Date == date_group_reference)
+                                if(session.end_date.HasValue && session.end_date.Value.Date == date_group_reference.Date)
                                     result += task.session_total_time;
                             }
                         }

@@ -50,6 +50,15 @@ namespace TimeTracker.UI.Components
             wDaySummary winSummary = new wDaySummary();
             winSummary.Owner = Window.GetWindow(this);
             winSummary.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+            if(DataContext is TimeManagerGroup timeGroup)
+            {
+                if (timeGroup.description == "Today")
+                    winSummary.Title = "Today's summary";
+                else
+                    winSummary.Title = string.Format("Summary of {0}", timeGroup.description);
+            }
+
             winSummary.DataContext = DataContext;
 
             winSummary.ShowDialog();

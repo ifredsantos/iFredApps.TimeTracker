@@ -8,21 +8,40 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Width="400">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <ItemsControl ItemsSource="{Binding tasks}" Margin="15">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="0,5,0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                    <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
+                        <Grid Margin="0,5,0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{Binding description}" FontSize="16" />
-                        <TextBlock Text="{Binding session_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" Grid.Column="1"
+                            <TextBlock Text="{Binding description}" FontSize="16" />
+                            <TextBlock Text="{Binding session_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" Grid.Column="1"
                                VerticalAlignment="Center" FontSize="16" />
-                    </Grid>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
+        <Border Grid.Row="1" Margin="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Total" FontSize="16" />
+                <TextBlock Text="{Binding tasks_total_time_by_reference, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" Grid.Column="1"
+       VerticalAlignment="Center" FontSize="16" />
+            </Grid>
+        </Border>
     </Grid>
 </mah:MetroWindow>
