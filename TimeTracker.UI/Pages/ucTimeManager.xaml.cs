@@ -157,7 +157,7 @@ namespace TimeTracker.UI.Pages
         {
             try
             {
-                TimeManagerTask existingTask = m_timeManager.tasks.ToList().Find(x => x.description == e.SessionData.description);
+                /*TimeManagerTask existingTask = m_timeManager.tasks.ToList().Find(x => x.description == e.SessionData.description);
 
                 if (existingTask != null) //If a task exists, it must be updated
                 {
@@ -195,7 +195,7 @@ namespace TimeTracker.UI.Pages
                 m_timeManager.current_session = new TimeManagerTaskCurrentSession();
                 RefreshTasks();
 
-                SaveTasks();
+                SaveTasks();*/
             }
             catch (Exception ex)
             {
@@ -209,7 +209,7 @@ namespace TimeTracker.UI.Pages
             {
                 if (e.TaskData != null)
                 {
-                    if (m_timeManager.current_session != null && m_timeManager.current_session.is_working)
+                    /*if (m_timeManager.current_session != null && m_timeManager.current_session.is_working)
                     {
                         MessageBox.Show("There is already a session in progress. Please stop the current session and try again.", "Calm down!", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
@@ -221,7 +221,7 @@ namespace TimeTracker.UI.Pages
                             description = e.TaskData.description,
                             id_task = e.TaskData.id_task,
                         };
-                    }
+                    }*/
                 }
             }
             catch (Exception ex)
@@ -236,7 +236,7 @@ namespace TimeTracker.UI.Pages
             {
                 if (e.TaskData != null)
                 {
-                    if (MessageBox.Show(string.Format("Are you sure you want to remove the \"{0}\" task?", e.TaskData.description), "Calm down!",
+                    /*if (MessageBox.Show(string.Format("Are you sure you want to remove the \"{0}\" task?", e.TaskData.description), "Calm down!",
                             MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes
                         ) != MessageBoxResult.Yes)
                     {
@@ -246,7 +246,7 @@ namespace TimeTracker.UI.Pages
                     m_timeManager.tasks.Remove(e.TaskData);
 
                     RefreshTasks();
-                    SaveTasks();
+                    SaveTasks();*/
                 }
             }
             catch (Exception ex)
@@ -261,7 +261,7 @@ namespace TimeTracker.UI.Pages
             {
                 if (e.TaskData != null)
                 {
-                    var originalTask = m_timeManager.tasks.FirstOrDefault(x => x.id_task == e.TaskData.id_task);
+                    /*var originalTask = m_timeManager.tasks.FirstOrDefault(x => x.id_task == e.TaskData.id_task);
                     if (originalTask != null)
                     {
                         originalTask.description = e.TaskData.description;
@@ -276,7 +276,7 @@ namespace TimeTracker.UI.Pages
                     }
 
                     RefreshTasks();
-                    SaveTasks();
+                    SaveTasks(); */
                 }
             }
             catch (Exception ex)

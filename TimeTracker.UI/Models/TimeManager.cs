@@ -104,11 +104,10 @@ namespace TimeTracker.UI.Models
         }
     }
 
-    public class TimeManagerTask : TimeManagerTaskBase, INotifyPropertyChanged
+    public class TimeManagerTask : INotifyPropertyChanged
     {
         public new ObservableCollection<TimeManagerTaskSession> sessions { get; set; }
 
-        [JsonIgnore]
         public TimeSpan session_total_time
         {
             get
@@ -130,7 +129,6 @@ namespace TimeTracker.UI.Models
             }
         }
         private bool _is_detail_session_open;
-        [JsonIgnore]
         public bool is_detail_session_open
         {
             get => _is_detail_session_open;
