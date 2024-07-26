@@ -10,10 +10,16 @@ namespace TimeTracker.UI.Models
     public class TimeTaskContinueEventArgs : EventArgs
     {
         public TimeManagerTask TaskData { get; set; }
-    }
+   }
 
-    public class TimeTaskRemoveEventArgs : EventArgs
-    {
+   public class TimeTaskRemoveEventArgs : EventArgs
+   {
+      public TimeManagerTask TaskData { get; set; }
+   }
+
+   public class TimeTaskEditEventArgs : EventArgs
+   {
+        public string oldDescription { get; set; }
         public TimeManagerTask TaskData { get; set; }
-    }
+   }
 }

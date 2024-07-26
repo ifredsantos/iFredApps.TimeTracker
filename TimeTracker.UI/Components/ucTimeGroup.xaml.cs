@@ -13,7 +13,7 @@ namespace TimeTracker.UI.Components
     {
         public event EventHandler<TimeTaskContinueEventArgs> OnTaskContinue;
         public event EventHandler<TimeTaskRemoveEventArgs> OnTaskRemove;
-        public event EventHandler<TimeTaskRemoveEventArgs> OnTaskChanged;
+        public event EventHandler<TimeTaskEditEventArgs> OnTaskChanged;
 
         public ucTimeGroup()
         {
@@ -40,7 +40,7 @@ namespace TimeTracker.UI.Components
             OnTaskRemove?.Invoke(this, e);
         }
 
-        private void OnTaskChange(object sender, TimeTaskRemoveEventArgs e)
+        private void OnTaskChange(object sender, TimeTaskEditEventArgs e)
         {
             OnTaskChanged?.Invoke(this, e);
         }

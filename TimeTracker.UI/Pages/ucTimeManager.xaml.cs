@@ -25,38 +25,14 @@ namespace TimeTracker.UI.Pages
       {
          InitializeComponent();
 
-         LoadTasks();
+         var data = DatabaseManager.LoadData();
+         m_timeManager.sessions = data ?? new List<TimeManagerTaskSession>();
+
+         GroupingSessionIntoTasks();
 
          DataContext = m_timeManager;
 
          lstView.ItemsSource = m_timeManager.task_groups;
-      }
-
-      private void LoadTasks()
-      {
-         try
-         {
-            AppConfig appConfig = ((App)Application.Current)?.Config;
-
-            if (appConfig != null && appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
-            {
-               string directory = appConfig.json_database_config.directory;
-               string filename = appConfig.json_database_config.filename;
-               string databaseFileDir = Path.Combine(directory, filename);
-
-               if (File.Exists(databaseFileDir))
-               {
-                  string tasksJSON = File.ReadAllText(databaseFileDir);
-                  m_timeManager.sessions = JsonConvert.DeserializeObject<List<TimeManagerTaskSession>>(tasksJSON);
-               }
-            }
-
-            GroupingSessionIntoTasks();
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
       }
 
       private void GroupingSessionIntoTasks()
@@ -136,35 +112,6 @@ namespace TimeTracker.UI.Pages
          }
       }
 
-      private void SaveTasks()
-      {
-         Task.Factory.StartNew(() =>
-         {
-            try
-            {
-               AppConfig appConfig = ((App)Application.Current).Config;
-
-               string directory = appConfig.json_database_config.directory;
-               string filename = appConfig.json_database_config.filename;
-               string databaseFileDir = Path.Combine(directory, filename);
-
-               if (!Directory.Exists(directory))
-                  Directory.CreateDirectory(directory);
-
-               string tasksJSON = JsonConvert.SerializeObject(m_timeManager.sessions);
-               File.WriteAllText(databaseFileDir, tasksJSON);
-            }
-            catch (Exception ex)
-            {
-               ex.ShowException();
-            }
-         })
-         .ContinueWith(t =>
-         {
-            OnNotificationShow?.Invoke(this, new NotificationEventArgs("Data synchronized successfully!", 3));
-         }, TaskScheduler.FromCurrentSynchronizationContext());
-      }
-
       #region Events
 
       private void OnCurrentSessionChanged(object sender, TimeRowChangedEventArgs e)
@@ -184,7 +131,7 @@ namespace TimeTracker.UI.Pages
 
             GroupingSessionIntoTasks();
 
-            SaveTasks();
+            DatabaseManager.SaveTasks(m_timeManager.sessions, OnNotificationShow);
          }
          catch (Exception ex)
          {
@@ -240,7 +187,7 @@ namespace TimeTracker.UI.Pages
                }
 
                GroupingSessionIntoTasks();
-               SaveTasks();
+               DatabaseManager.SaveTasks(m_timeManager.sessions, OnNotificationShow);
             }
          }
          catch (Exception ex)
@@ -249,28 +196,23 @@ namespace TimeTracker.UI.Pages
          }
       }
 
-      private void OnTaskChange(object sender, TimeTaskRemoveEventArgs e)
+      private void OnTaskChange(object sender, TimeTaskEditEventArgs e)
       {
          try
          {
             if (e.TaskData != null)
             {
-               /*var originalTask = m_timeManager.tasks.FirstOrDefault(x => x.id_task == e.TaskData.id_task);
-               if (originalTask != null)
+               var sessionsToChange = m_timeManager.sessions.FindAll(x => x.description == e.oldDescription);
+               if (sessionsToChange != null)
                {
-                   originalTask.description = e.TaskData.description;
-
-                   if (originalTask.sessions != null)
-                   {
-                       foreach (var session in originalTask.sessions)
-                       {
-                           session.description = e.TaskData.description;
-                       }
-                   }
+                  foreach (var session in sessionsToChange)
+                  {
+                     session.description = e.TaskData.description;
+                  }
                }
 
-               RefreshTasks();
-               SaveTasks(); */
+               GroupingSessionIntoTasks();
+               DatabaseManager.SaveTasks(m_timeManager.sessions, OnNotificationShow);
             }
          }
          catch (Exception ex)

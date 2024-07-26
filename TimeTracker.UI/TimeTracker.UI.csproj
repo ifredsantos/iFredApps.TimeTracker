@@ -228,6 +228,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\AppConfig.cs" />
+    <Compile Include="Models\DatabaseManager.cs" />
     <Compile Include="Models\NotificationEventArgs.cs" />
     <Compile Include="Models\TimeManagerBase.cs" />
     <Compile Include="Utils\ExHandler.cs" />
