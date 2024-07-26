@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -20,13 +21,13 @@ namespace TimeTracker.UI.Models
                 NotifyPropertyChanged();
             }
         }
-        public ObservableCollection<TimeManagerTask> tasks { get; set; }
+        public List<TimeManagerTaskSession> sessions { get; set; }
         [JsonIgnore]
         public ObservableCollection<TimeManagerGroup> task_groups { get; set; }
         public TimeManager()
         {
             current_session = new TimeManagerTaskCurrentSession();
-            tasks = new ObservableCollection<TimeManagerTask>();
+            sessions = new List<TimeManagerTaskSession>();
             task_groups = new ObservableCollection<TimeManagerGroup>();
         }
 
@@ -106,7 +107,8 @@ namespace TimeTracker.UI.Models
 
     public class TimeManagerTask : INotifyPropertyChanged
     {
-        public new ObservableCollection<TimeManagerTaskSession> sessions { get; set; }
+        public string description { get; set; }
+        public ObservableCollection<TimeManagerTaskSession> sessions { get; set; }
 
         public TimeSpan session_total_time
         {
