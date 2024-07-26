@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -20,13 +21,13 @@ namespace TimeTracker.UI.Models
                 NotifyPropertyChanged();
             }
         }
-        public ObservableCollection<TimeManagerTask> tasks { get; set; }
+        public List<TimeManagerTaskSession> sessions { get; set; }
         [JsonIgnore]
         public ObservableCollection<TimeManagerGroup> task_groups { get; set; }
         public TimeManager()
         {
             current_session = new TimeManagerTaskCurrentSession();
-            tasks = new ObservableCollection<TimeManagerTask>();
+            sessions = new List<TimeManagerTaskSession>();
             task_groups = new ObservableCollection<TimeManagerGroup>();
         }
 
@@ -39,7 +40,25 @@ namespace TimeTracker.UI.Models
 
     public class TimeManagerGroup
     {
-        public string description { get; set; }
+        public string description
+        {
+            get
+            {
+                if(date_group_reference != DateTime.MinValue)
+                {
+                    if(date_group_reference.Date == DateTime.Now.Date)
+                    {
+                        return "Today";
+                    }
+                    else
+                    {
+                        return date_group_reference.ToString("dd/MM/yyyy");
+                    }
+                }
+
+                return null;
+            }
+        }
         public TimeSpan total_time { get; set; }
         public ObservableCollection<TimeManagerTask> tasks { get; set; }
         public DateTime date_group_reference { get; set; }
@@ -86,11 +105,11 @@ namespace TimeTracker.UI.Models
         }
     }
 
-    public class TimeManagerTask : TimeManagerTaskBase, INotifyPropertyChanged
+    public class TimeManagerTask : INotifyPropertyChanged
     {
-        public new ObservableCollection<TimeManagerTaskSession> sessions { get; set; }
+        public string description { get; set; }
+        public ObservableCollection<TimeManagerTaskSession> sessions { get; set; }
 
-        [JsonIgnore]
         public TimeSpan session_total_time
         {
             get
@@ -112,7 +131,6 @@ namespace TimeTracker.UI.Models
             }
         }
         private bool _is_detail_session_open;
-        [JsonIgnore]
         public bool is_detail_session_open
         {
             get => _is_detail_session_open;

@@ -26,18 +26,6 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Content="{Binding description, FallbackValue=description}" FontSize="22" Margin="10,0,10,0"></Label>
-
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Click="OnSummaryButtonClick" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand" 
-                                Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Transparent" Foreground="{StaticResource TextColorBrush}" 
-                                Padding="10,0,10,0" Grid.Column="0">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconFontAwesome Kind="TableListSolid" Width="14" Height="14" VerticalAlignment="Center" />
-                                <TextBlock Text="Get summary" VerticalAlignment="Center" Margin="5,0,0,0" />
-                            </StackPanel>
-                        </Button>
-                        <TextBlock Text="{Binding tasks_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
-                    </StackPanel>
                 </Grid>
             </Border>
 

@@ -29,13 +29,8 @@ namespace TimeTracker.UI
                 database_type = AppConfig.enDataBaseType.JSON,
                 json_database_config = new JSONDataBaseConfig
                 {
-                    directory = Path.Combine(
-                                    Debugger.IsAttached ? "./bin" : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                                    "iFredApps",
-                                    "Database",
-                                    "TimeTracker"
-                    ),
-                    filename = "db.json"
+                    directory = Debugger.IsAttached ? "./data" : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "iFredApps", "Database"),
+                    filename = "dbTimeTracker.json"
                 }
             };
         }

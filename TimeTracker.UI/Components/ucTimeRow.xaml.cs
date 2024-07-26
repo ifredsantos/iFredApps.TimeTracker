@@ -41,8 +41,8 @@ namespace TimeTracker.UI.Components
         {
             if (DataContext is TimeManagerTask taskData)
             {
-                taskData.description = ((TextBox)e.Source).Text;
-                OnTaskChanged?.Invoke(this, new TimeTaskRemoveEventArgs { TaskData = taskData });
+                //taskData.description = ((TextBox)e.Source).Text;
+                //OnTaskChanged?.Invoke(this, new TimeTaskRemoveEventArgs { TaskData = taskData });
             }
         }
 
