@@ -19,20 +19,53 @@ namespace TimeTracker.UI.Pages
    {
       public event EventHandler<NotificationEventArgs> OnNotificationShow;
 
-      private TimeManager m_timeManager = new TimeManager();
+      private TimeManager m_timeManager = null;
 
       public ucTimeManager()
       {
          InitializeComponent();
 
-         var data = DatabaseManager.LoadData();
-         m_timeManager.sessions = data ?? new List<TimeManagerTaskSession>();
+         InitData();
+      }
 
-         GroupingSessionIntoTasks();
+      private void InitData()
+      {
+         try
+         {
+            m_timeManager = new TimeManager();
 
-         DataContext = m_timeManager;
+            var data = DatabaseManager.LoadData();
+            if (data != null)
+            {
+               if (data.sessions != null && data.sessions.Count > 0)
+               {
+                  foreach (var session in data.sessions)
+                  {
+                     m_timeManager.sessions.Add(session);
+                  }
+               }
 
-         lstView.ItemsSource = m_timeManager.task_groups;
+               if (data.uncompleted_session != null)
+               {
+                  if (MessageBox.Show(string.Format("There is one session to complete \"{0}\". Do you want to resume?", data.uncompleted_session.description), "Calm down!",
+                          MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes
+                      ) == MessageBoxResult.Yes)
+                  {
+                     m_timeManager.current_session = data.uncompleted_session as TimeManagerTaskCurrentSession;
+                  }
+               }
+            }
+
+            GroupingSessionIntoTasks();
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+         finally
+         {
+            DataContext = m_timeManager;
+         }
       }
 
       private void GroupingSessionIntoTasks()
@@ -112,6 +145,19 @@ namespace TimeTracker.UI.Pages
          }
       }
 
+      private TimeManagerDatabaseData PrepareDataForRecording()
+      {
+         TimeManagerDatabaseData result = new TimeManagerDatabaseData();
+         result.sessions = m_timeManager.sessions;
+
+         if(m_timeManager.current_session?.is_working != null && m_timeManager.current_session.is_working)
+         {
+            result.uncompleted_session = m_timeManager.current_session;
+         }
+
+         return result;
+      }
+
       #region Events
 
       private void OnCurrentSessionChanged(object sender, TimeRowChangedEventArgs e)
@@ -131,7 +177,7 @@ namespace TimeTracker.UI.Pages
 
             GroupingSessionIntoTasks();
 
-            DatabaseManager.SaveTasks(m_timeManager.sessions, OnNotificationShow);
+            DatabaseManager.SaveTasks(PrepareDataForRecording(), OnNotificationShow);
          }
          catch (Exception ex)
          {
@@ -187,7 +233,7 @@ namespace TimeTracker.UI.Pages
                }
 
                GroupingSessionIntoTasks();
-               DatabaseManager.SaveTasks(m_timeManager.sessions, OnNotificationShow);
+               DatabaseManager.SaveTasks(PrepareDataForRecording(), OnNotificationShow);
             }
          }
          catch (Exception ex)
@@ -212,7 +258,7 @@ namespace TimeTracker.UI.Pages
                }
 
                GroupingSessionIntoTasks();
-               DatabaseManager.SaveTasks(m_timeManager.sessions, OnNotificationShow);
+               DatabaseManager.SaveTasks(PrepareDataForRecording(), OnNotificationShow);
             }
          }
          catch (Exception ex)

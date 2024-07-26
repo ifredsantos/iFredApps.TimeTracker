@@ -13,9 +13,9 @@ namespace TimeTracker.UI.Models
 {
    public static class DatabaseManager
    {
-      public static List<TimeManagerTaskSession> LoadData()
+      public static TimeManagerDatabaseData LoadData()
       {
-         List<TimeManagerTaskSession> result = null;
+         TimeManagerDatabaseData result = null;
          try
          {
             AppConfig appConfig = ((App)Application.Current)?.Config;
@@ -29,7 +29,7 @@ namespace TimeTracker.UI.Models
                if (File.Exists(databaseFileDir))
                {
                   string tasksJSON = File.ReadAllText(databaseFileDir);
-                  result = JsonConvert.DeserializeObject<List<TimeManagerTaskSession>>(tasksJSON);
+                  result = JsonConvert.DeserializeObject<TimeManagerDatabaseData>(tasksJSON);
                }
             }
          }
@@ -41,7 +41,7 @@ namespace TimeTracker.UI.Models
          return result;
       }
 
-      public static void SaveTasks(List<TimeManagerTaskSession> sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
+      public static void SaveTasks(TimeManagerDatabaseData sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
       {
          Task.Factory.StartNew(() =>
          {
