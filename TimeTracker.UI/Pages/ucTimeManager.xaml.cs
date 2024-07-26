@@ -51,7 +51,12 @@ namespace TimeTracker.UI.Pages
                           MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes
                       ) == MessageBoxResult.Yes)
                   {
-                     m_timeManager.current_session = data.uncompleted_session as TimeManagerTaskCurrentSession;
+                     m_timeManager.current_session = new TimeManagerTaskCurrentSession
+                     {
+                         description = data.uncompleted_session.description,
+                         start_date = data.uncompleted_session.start_date,
+                         observation = data.uncompleted_session.observation,
+                     };
                   }
                }
             }
