@@ -56,6 +56,7 @@ namespace TimeTracker.UI.Pages
                          description = data.uncompleted_session.description,
                          start_date = data.uncompleted_session.start_date,
                          observation = data.uncompleted_session.observation,
+                         total_time = DateTime.Now - data.uncompleted_session.start_date
                      };
                   }
                }
