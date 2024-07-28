@@ -41,9 +41,9 @@ namespace TimeTracker.UI.Models
          return result;
       }
 
-      public static void SaveTasks(TimeManagerDatabaseData sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
+      public static Task SaveTasks(TimeManagerDatabaseData sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
       {
-         Task.Factory.StartNew(() =>
+         return Task.Factory.StartNew(() =>
          {
             try
             {

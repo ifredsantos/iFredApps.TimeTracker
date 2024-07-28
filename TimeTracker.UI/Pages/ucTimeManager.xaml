@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-         <components:ucTimeRowEditor DataContext="{Binding current_session, Mode=TwoWay}" OnSessionChanged="OnCurrentSessionChanged" />
+         <components:ucTimeRowEditor x:Name="timeRowEditor" DataContext="{Binding current_session, Mode=TwoWay}" OnSessionStarts="SessionStarts" OnSessionChanged="OnCurrentSessionChanged" />
         </Grid>
         
         <ListView Name="lstView" Margin="15,0,15,15" HorizontalContentAlignment="Stretch" Grid.Row="1" ItemsSource="{Binding task_groups}">
