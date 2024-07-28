@@ -11,7 +11,8 @@ namespace TimeTracker.UI.Components
     /// </summary>
     public partial class ucTimeRowEditor : UserControl
     {
-        public event EventHandler<TimeRowChangedEventArgs> OnSessionChanged;
+        public event EventHandler<TimeRowSessionEventArgs> OnSessionStarts;
+        public event EventHandler<TimeRowSessionEventArgs> OnSessionChanged;
 
         private DispatcherTimer timer;
 
@@ -22,6 +23,19 @@ namespace TimeTracker.UI.Components
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += OnTimer_Tick;
+        }
+
+        public void StartSession()
+        {
+            if (DataContext is TimeManagerTaskCurrentSession currentSession)
+            {
+                if (currentSession.start_date == DateTime.MinValue)
+                    currentSession.start_date = DateTime.Now;
+                currentSession.is_working = true;
+                timer.Start();
+
+                OnSessionStarts?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
+            }
         }
 
         #region Events
@@ -52,13 +66,11 @@ namespace TimeTracker.UI.Components
                     currentSession.is_working = false;
                     timer.Stop();
 
-                    OnSessionChanged?.Invoke(this, new TimeRowChangedEventArgs { SessionData = currentSession });
+                    OnSessionChanged?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
                 }
                 else
                 {
-                    currentSession.start_date = DateTime.Now;
-                    currentSession.is_working = true;
-                    timer.Start();
+                    StartSession();
                 }
             }
         }

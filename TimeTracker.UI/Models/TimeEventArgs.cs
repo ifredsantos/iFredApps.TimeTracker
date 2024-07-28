@@ -2,7 +2,7 @@
 
 namespace TimeTracker.UI.Models
 {
-    public class TimeRowChangedEventArgs : EventArgs
+    public class TimeRowSessionEventArgs : EventArgs
     {
         public TimeManagerTaskSession SessionData { get; set; }
     }
