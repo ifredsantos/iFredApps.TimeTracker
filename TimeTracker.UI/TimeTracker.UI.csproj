@@ -37,6 +37,13 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+    <Company>iFredApps</Company>
+    <Product>Time Tracker</Product>
+    <Description>Never lose track of your project times! ;)</Description>
+    <PackageIcon>logo.png</PackageIcon>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <Authors>iFredApps</Authors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
@@ -110,5 +117,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Resources\logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 </Project>
