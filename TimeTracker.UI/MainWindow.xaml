@@ -9,7 +9,6 @@
         xmlns:local="clr-namespace:TimeTracker.UI" 
         xmlns:pages="clr-namespace:TimeTracker.UI.Pages" 
         mc:Ignorable="d"
-        mah:MetroWindow.GlowBrush="{DynamicResource AccentColorBrush}" 
         Title="Time Tracker" Height="600" Width="1100" Icon="./Resources/logo.png">
    <mah:MetroWindow.LeftWindowCommands>
       <mah:WindowCommands>
