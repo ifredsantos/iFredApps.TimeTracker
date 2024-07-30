@@ -188,12 +188,12 @@ namespace TimeTracker.UI.Pages
         {
             try
             {
-                long maxSessionID = 0;
+                int maxSessionID = 0;
 
                 if (m_timeManager?.sessions != null && m_timeManager.sessions.Count > 0)
-                    maxSessionID = m_timeManager.sessions.Max(x => x.id_session);
+                    maxSessionID = m_timeManager.sessions.Max(x => x.session_id);
 
-                e.SessionData.id_session = maxSessionID + 1;
+                e.SessionData.session_id = maxSessionID + 1;
 
                 m_timeManager.sessions.Add(e.SessionData);
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TimeTracker.SL;
 
 namespace TimeTracker.UI.Models
 {
@@ -149,7 +150,7 @@ namespace TimeTracker.UI.Models
         }
     }
 
-    public class TimeManagerTaskSession : TimeManagerTaskSessionBase, INotifyPropertyChanged
+    public class TimeManagerTaskSession : sSession, INotifyPropertyChanged
     {
         private TimeSpan _total_time;
         [JsonIgnore]
