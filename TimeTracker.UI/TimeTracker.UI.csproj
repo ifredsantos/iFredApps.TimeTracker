@@ -17,6 +17,12 @@
     <Authors>iFredApps</Authors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="publish\**" />
+    <EmbeddedResource Remove="publish\**" />
+    <None Remove="publish\**" />
+    <Page Remove="publish\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>

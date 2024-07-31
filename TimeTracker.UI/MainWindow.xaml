@@ -22,7 +22,7 @@
                                   Height="22"
                                   Kind="SocialGithubOctocat" />
          </Button>
-         <Button Click="LaunchGitHubSite" ToolTip="Buy me a coffee" Cursor="Hand">
+         <Button Click="Donation" ToolTip="Buy me a coffee" Cursor="Hand">
             <iconPacks:PackIconMaterialDesign Width="17"
                                   Height="17"
                                   Kind="Coffee" />

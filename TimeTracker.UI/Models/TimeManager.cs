@@ -80,30 +80,6 @@ namespace TimeTracker.UI.Models
                 return result;
             }
         }
-        public TimeSpan tasks_total_time_by_reference
-        {
-            get
-            {
-                TimeSpan result = TimeSpan.Zero;
-
-                if (tasks != null)
-                {
-                    foreach (var task in tasks)
-                    {
-                        if (task.sessions != null && task.sessions.Count > 0)
-                        {
-                            foreach (var session in task.sessions)
-                            {
-                                if (session.end_date.HasValue && session.end_date.Value.Date == date_group_reference.Date)
-                                    result += session.total_time;
-                            }
-                        }
-                    }
-                }
-
-                return result;
-            }
-        }
     }
 
     public class TimeManagerTask : INotifyPropertyChanged
