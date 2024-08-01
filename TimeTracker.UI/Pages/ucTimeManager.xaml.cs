@@ -45,7 +45,7 @@ namespace TimeTracker.UI.Pages
             {
                 m_timeManager = new TimeManager();
 
-                var data = DatabaseManager.LoadData();
+                var data = await DatabaseManager.LoadData();
                 if (data != null)
                 {
                     if (data.sessions != null && data.sessions.Count > 0)

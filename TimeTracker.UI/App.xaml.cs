@@ -30,13 +30,21 @@ namespace TimeTracker.UI
 
       private AppConfig LoadAppInfo()
       {
+         //return new AppConfig
+         //{
+         //   database_type = AppConfig.enDataBaseType.JSON,
+         //   json_database_config = new JSONDataBaseConfig
+         //   {
+         //      directory = Debugger.IsAttached ? "./data" : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "iFredApps", "Database"),
+         //      filename = "dbTimeTracker.json"
+         //   }
+         //};
          return new AppConfig
          {
-            database_type = AppConfig.enDataBaseType.JSON,
-            json_database_config = new JSONDataBaseConfig
+            database_type = AppConfig.enDataBaseType.WebApi,
+            webapi_connection_config = new WebApiConnectionConfig
             {
-               directory = Debugger.IsAttached ? "./data" : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "iFredApps", "Database"),
-               filename = "dbTimeTracker.json"
+               baseaddress = "https://localhost:7041/api/"
             }
          };
       }

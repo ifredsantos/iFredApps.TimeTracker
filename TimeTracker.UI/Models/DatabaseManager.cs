@@ -13,23 +13,34 @@ namespace TimeTracker.UI.Models
 {
    public static class DatabaseManager
    {
-      public static TimeManagerDatabaseData LoadData()
+      public static async Task<TimeManagerDatabaseData> LoadData()
       {
          TimeManagerDatabaseData result = null;
          try
          {
             AppConfig appConfig = ((App)Application.Current)?.Config;
 
-            if (appConfig != null && appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
+            if (appConfig != null)
             {
-               string directory = appConfig.json_database_config.directory;
-               string filename = appConfig.json_database_config.filename;
-               string databaseFileDir = Path.Combine(directory, filename);
-
-               if (File.Exists(databaseFileDir))
+               if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
                {
-                  string tasksJSON = File.ReadAllText(databaseFileDir);
-                  result = JsonConvert.DeserializeObject<TimeManagerDatabaseData>(tasksJSON);
+                  string directory = appConfig.json_database_config.directory;
+                  string filename = appConfig.json_database_config.filename;
+                  string databaseFileDir = Path.Combine(directory, filename);
+
+                  if (File.Exists(databaseFileDir))
+                  {
+                     string tasksJSON = File.ReadAllText(databaseFileDir);
+                     result = JsonConvert.DeserializeObject<TimeManagerDatabaseData>(tasksJSON);
+                  }
+               }
+               else if(appConfig.database_type == AppConfig.enDataBaseType.WebApi && appConfig.webapi_connection_config != null)
+               {
+                  var data = await new WebApiClient(appConfig.webapi_connection_config.baseaddress).GetAsync("Session?user_id={0}", 1);
+                  result = new TimeManagerDatabaseData
+                  {
+                     sessions = JsonConvert.DeserializeObject<List<TimeManagerTaskSession>>(data)
+                  };
                }
             }
          }
