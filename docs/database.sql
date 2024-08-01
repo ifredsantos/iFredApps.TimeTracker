@@ -1,17 +1,20 @@
 CREATE DATABASE timetracker_app;
 
 CREATE TABLE users (
-    username VARCHAR(40) NOT NULL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NULL,
-    password VARCHAR(100) NULL,
+    user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(60) NOT NULL,
+    name VARCHAR(120) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    password VARCHAR(100) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT NOW()
-)
+);
 
 CREATE TABLE sessions (
     session_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
     start_date DATETIME NOT NULL,
     end_date DATETIME NULL,
     description VARCHAR(255) NOT NULL,
-    observation VARCHAR(500) NULL
-)
+    observation VARCHAR(500) NULL,
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+);
