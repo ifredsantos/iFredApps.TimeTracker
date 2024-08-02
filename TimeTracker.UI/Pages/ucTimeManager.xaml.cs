@@ -74,7 +74,7 @@ namespace TimeTracker.UI.Pages
                         {
                             m_timeManager.current_session = new TimeManagerTaskCurrentSession();
 
-                            await DatabaseManager.SaveTasks(PrepareDataForRecording(), OnNotificationShow);
+                            await DatabaseManager.SaveAllSessions(PrepareDataForRecording(), OnNotificationShow);
                         }
                     }
                 }
@@ -201,7 +201,7 @@ namespace TimeTracker.UI.Pages
 
                 GroupingSessionIntoTasks();
 
-                await DatabaseManager.SaveTasks(PrepareDataForRecording(), OnNotificationShow);
+                await DatabaseManager.SaveAllSessions(PrepareDataForRecording(), OnNotificationShow);
             }
             catch (Exception ex)
             {
@@ -257,7 +257,7 @@ namespace TimeTracker.UI.Pages
                     }
 
                     GroupingSessionIntoTasks();
-                    await DatabaseManager.SaveTasks(PrepareDataForRecording(), OnNotificationShow);
+                    await DatabaseManager.SaveAllSessions(PrepareDataForRecording(), OnNotificationShow);
                 }
             }
             catch (Exception ex)
@@ -282,7 +282,7 @@ namespace TimeTracker.UI.Pages
                     }
 
                     GroupingSessionIntoTasks();
-                    await DatabaseManager.SaveTasks(PrepareDataForRecording(), OnNotificationShow);
+                    await DatabaseManager.SaveAllSessions(PrepareDataForRecording(), OnNotificationShow);
                 }
             }
             catch (Exception ex)
@@ -293,7 +293,7 @@ namespace TimeTracker.UI.Pages
 
         private async void SessionStarts(object sender, TimeRowSessionEventArgs e)
         {
-            await DatabaseManager.SaveTasks(PrepareDataForRecording(), OnNotificationShow);
+            await DatabaseManager.SaveAllSessions(PrepareDataForRecording(), OnNotificationShow);
         }
 
         #endregion

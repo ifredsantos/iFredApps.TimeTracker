@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ControlzEx.Standard;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,9 +25,7 @@ namespace TimeTracker.UI.Models
             {
                if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
                {
-                  string directory = appConfig.json_database_config.directory;
-                  string filename = appConfig.json_database_config.filename;
-                  string databaseFileDir = Path.Combine(directory, filename);
+                  string databaseFileDir = Path.Combine(appConfig.json_database_config.directory, appConfig.json_database_config.filename);
 
                   if (File.Exists(databaseFileDir))
                   {
@@ -36,10 +35,10 @@ namespace TimeTracker.UI.Models
                }
                else if(appConfig.database_type == AppConfig.enDataBaseType.WebApi && appConfig.webapi_connection_config != null)
                {
-                  var data = await new WebApiClient(appConfig.webapi_connection_config.baseaddress).GetAsync("Session?user_id={0}", 1);
+                  var sessions = await new WebApiClient(appConfig.webapi_connection_config.baseaddress).GetAsync<List<TimeManagerTaskSession>>("Session?user_id={0}", 1);
                   result = new TimeManagerDatabaseData
                   {
-                     sessions = JsonConvert.DeserializeObject<List<TimeManagerTaskSession>>(data)
+                     sessions = sessions
                   };
                }
             }
@@ -52,23 +51,28 @@ namespace TimeTracker.UI.Models
          return result;
       }
 
-      public static Task SaveTasks(TimeManagerDatabaseData sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
+      public static Task SaveAllSessions(TimeManagerDatabaseData sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
       {
          return Task.Factory.StartNew(() =>
          {
             try
             {
                AppConfig appConfig = ((App)Application.Current).Config;
+               if (appConfig != null)
+               {
+                  if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
+                  {
+                     string directory = appConfig.json_database_config.directory;
+                     string filename = appConfig.json_database_config.filename;
+                     string databaseFileDir = Path.Combine(directory, filename);
 
-               string directory = appConfig.json_database_config.directory;
-               string filename = appConfig.json_database_config.filename;
-               string databaseFileDir = Path.Combine(directory, filename);
+                     if (!Directory.Exists(directory))
+                        Directory.CreateDirectory(directory);
 
-               if (!Directory.Exists(directory))
-                  Directory.CreateDirectory(directory);
-
-               string tasksJSON = JsonConvert.SerializeObject(sessions);
-               File.WriteAllText(databaseFileDir, tasksJSON);
+                     string tasksJSON = JsonConvert.SerializeObject(sessions);
+                     File.WriteAllText(databaseFileDir, tasksJSON);
+                  }
+               }
             }
             catch (Exception ex)
             {
