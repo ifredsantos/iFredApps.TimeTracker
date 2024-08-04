@@ -7,6 +7,28 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker.UI", "TimeTrack
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TimeTracker.Setup", "TimeTracker.Setup\TimeTracker.Setup.vdproj", "{E584BC76-CA8C-4958-9E22-C5612BF6AFEE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimerTracker.WebApi", "TimerTracker.WebApi\TimerTracker.WebApi.csproj", "{E0AD5083-6E07-4032-8B72-16D0C88CA3B0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921} = {60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}
+		{6DC7DFC8-236F-498D-9F88-F8F907310903} = {6DC7DFC8-236F-498D-9F88-F8F907310903}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker.Data", "TimeTracker.Data\TimeTracker.Data.csproj", "{6DC7DFC8-236F-498D-9F88-F8F907310903}"
+	ProjectSection(ProjectDependencies) = postProject
+		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921} = {60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker.Core", "TimeTracker.Core\TimeTracker.Core.csproj", "{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_dependencies", "_dependencies", "{12B6EFB9-2AA4-454F-AA95-E7C6A8BAD650}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.Lib", "..\iFredApps.Lib\iFredApps.Lib.csproj", "{99FCBA3E-E5B5-4438-8D46-4CFAA6E70560}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2C3D7DD5-00A3-4A26-BBD8-CE765E778D82}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,9 +41,28 @@ Global
 		{7F1C8FED-00F6-4B9B-BCD4-100B2F6CF3A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E584BC76-CA8C-4958-9E22-C5612BF6AFEE}.Debug|Any CPU.ActiveCfg = Debug
 		{E584BC76-CA8C-4958-9E22-C5612BF6AFEE}.Release|Any CPU.ActiveCfg = Release
+		{E0AD5083-6E07-4032-8B72-16D0C88CA3B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0AD5083-6E07-4032-8B72-16D0C88CA3B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0AD5083-6E07-4032-8B72-16D0C88CA3B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0AD5083-6E07-4032-8B72-16D0C88CA3B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC7DFC8-236F-498D-9F88-F8F907310903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC7DFC8-236F-498D-9F88-F8F907310903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC7DFC8-236F-498D-9F88-F8F907310903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC7DFC8-236F-498D-9F88-F8F907310903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99FCBA3E-E5B5-4438-8D46-4CFAA6E70560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99FCBA3E-E5B5-4438-8D46-4CFAA6E70560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99FCBA3E-E5B5-4438-8D46-4CFAA6E70560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99FCBA3E-E5B5-4438-8D46-4CFAA6E70560}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{99FCBA3E-E5B5-4438-8D46-4CFAA6E70560} = {12B6EFB9-2AA4-454F-AA95-E7C6A8BAD650}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CFABD38F-82C0-4487-A256-64D6D5668B14}

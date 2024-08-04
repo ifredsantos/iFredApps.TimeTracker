@@ -9,7 +9,6 @@
         xmlns:local="clr-namespace:TimeTracker.UI" 
         xmlns:pages="clr-namespace:TimeTracker.UI.Pages" 
         mc:Ignorable="d"
-        mah:MetroWindow.GlowBrush="{DynamicResource AccentColorBrush}" 
         Title="Time Tracker" Height="600" Width="1100" Icon="./Resources/logo.png">
    <mah:MetroWindow.LeftWindowCommands>
       <mah:WindowCommands>
@@ -23,7 +22,7 @@
                                   Height="22"
                                   Kind="SocialGithubOctocat" />
          </Button>
-         <Button Click="LaunchGitHubSite" ToolTip="Buy me a coffee" Cursor="Hand">
+         <Button Click="Donation" ToolTip="Buy me a coffee" Cursor="Hand">
             <iconPacks:PackIconMaterialDesign Width="17"
                                   Height="17"
                                   Kind="Coffee" />
@@ -47,7 +46,9 @@
    </mah:MetroWindow.RightWindowCommands>
 
    <Grid>
-      <pages:ucTimeManager OnNotificationShow="OnNotificationShow" />
+      <ContentControl Name="contentControl" />
+
+
       <materialDesign:Snackbar Name="snackBar" MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Panel.ZIndex="999999" Margin="15"
                                  Foreground="{StaticResource TextColorBrush}" Background="{StaticResource MahApps.Brushes.Gray}">
       </materialDesign:Snackbar>
