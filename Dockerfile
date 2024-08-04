@@ -1,12 +1,17 @@
 # Build Stage
-FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /source
-COPY . .
+
+# Copie os arquivos de projeto e restaure as dependências
+COPY ./TimeTracker.WebApi/TimeTracker.WebApi.csproj ./TimeTracker.WebApi/
 RUN dotnet restore "./TimeTracker.WebApi/TimeTracker.WebApi.csproj" --disable-parallel
+
+# Copie o restante do código e publique a aplicação
+COPY . .
 RUN dotnet publish "./TimeTracker.WebApi/TimeTracker.WebApi.csproj" -c release -o /app --no-restore
 
 # Serve Stage
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app ./
 
