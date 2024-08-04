@@ -18,7 +18,7 @@ namespace TimerTracker.WebApi.Controllers
          _sessionService = sessionService;
       }
 
-      [HttpGet("GetSessions")]
+      [HttpGet("GetSessions/{user_id}")]
       //[Authorize]
       public async Task<ActionResult<IEnumerable<Session>>> GetSessions(int user_id)
       {
@@ -26,32 +26,32 @@ namespace TimerTracker.WebApi.Controllers
          return Ok(users);
       }
 
-      [HttpPost]
-      public async Task<ActionResult> CreateSession([FromBody] Session session)
+      [HttpPost("CreateSession")]
+      public async Task<ActionResult<Session>> CreateSession([FromBody] Session session)
       {
          if (session == null || !ModelState.IsValid)
          {
             return BadRequest("Invalid user data.");
          }
 
-         await _sessionService.CreateSession(session);
+         var result = await _sessionService.CreateSession(session);
 
-         return Ok("Session created successfully.");
+         return Ok(result);
       }
 
-      [HttpPut("{id}")]
+      [HttpPut("UpdateSession/{id}")]
       //[Authorize]
-      public async Task<ActionResult> UpdateSession(int id, [FromBody] Session session)
+      public async Task<ActionResult<Session>> UpdateSession(int id, [FromBody] Session session)
       {
          if (id != session.session_id)
          {
             return BadRequest();
          }
-         await _sessionService.UpdateSession(session);
-         return NoContent();
+         var result = await _sessionService.UpdateSession(session);
+         return Ok(result);
       }
 
-      [HttpDelete("{id}")]
+      [HttpDelete("DeleteSession/{id}")]
       //[Authorize]
       public async Task<ActionResult> DeleteSession(int id)
       {

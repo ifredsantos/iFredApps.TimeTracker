@@ -24,16 +24,20 @@ namespace TimeTracker.Data.Repositories
          return await _context.Sessions.Where(x => x.user_id == user_id).ToListAsync();
       }
 
-      public async Task CreateSession(Session session)
+      public async Task<Session> CreateSession(Session session)
       {
          await _context.Sessions.AddAsync(session);
          await _context.SaveChangesAsync();
+
+         return session;
       }
 
-      public async Task UpdateSession(Session session)
+      public async Task<Session> UpdateSession(Session session)
       {
          _context.Sessions.Update(session);
          await _context.SaveChangesAsync();
+
+         return session;
       }
 
       public async Task DeleteSession(int session_id)

@@ -12,6 +12,7 @@ namespace TimeTracker.UI.ViewModels
    {
       public string? user { get; set; }
       public string? password { get; set; }
+      public bool isLoading { get; set; }
    }
 
    public class LoginVM : ViewModelBase
@@ -41,6 +42,16 @@ namespace TimeTracker.UI.ViewModels
          {
             login.password = value;
             NotifyPropertyChanged(nameof(password));
+         }
+      }
+
+      public bool isLoading
+      {
+         get => login.isLoading;
+         set
+         {
+            login.isLoading = value;
+            NotifyPropertyChanged(nameof(isLoading));
          }
       }
    }

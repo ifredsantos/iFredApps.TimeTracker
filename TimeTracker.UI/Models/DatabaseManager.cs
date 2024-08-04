@@ -34,19 +34,21 @@ namespace TimeTracker.UI.Models
                      result = JsonConvert.DeserializeObject<TimeManagerDatabaseData>(tasksJSON);
                   }
                }
-               else if(appConfig.database_type == AppConfig.enDataBaseType.WebApi && appConfig.webapi_connection_config != null)
+               else if (appConfig.database_type == AppConfig.enDataBaseType.WebApi && appConfig.webapi_connection_config != null)
                {
                   var sessions = await WebApiCall.Session.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+
                   result = new TimeManagerDatabaseData
                   {
-                     sessions = sessions
+                     sessions = sessions,
+                     uncompleted_session = sessions?.Find(x => x.end_date == null)
                   };
                }
             }
          }
          catch (Exception ex)
          {
-            ex.ShowException();
+            throw;
          }
 
          return result;
@@ -58,38 +60,111 @@ namespace TimeTracker.UI.Models
       /// <param name="sessions"></param>
       /// <param name="OnNotificationShow"></param>
       /// <returns></returns>
-      public static Task SaveAllSessions(TimeManagerDatabaseData sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
+      //public static Task SaveAllSessions(TimeManagerDatabaseData sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
+      //{
+      //   return Task.Factory.StartNew(() =>
+      //   {
+      //      try
+      //      {
+      //         AppConfig appConfig = SettingsLoader<AppConfig>.Instance.Data;
+      //         if (appConfig != null)
+      //         {
+      //            if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
+      //            {
+      //               string directory = appConfig.json_database_config.directory;
+      //               string filename = appConfig.json_database_config.filename;
+      //               string databaseFileDir = Path.Combine(directory, filename);
+
+      //               if (!Directory.Exists(directory))
+      //                  Directory.CreateDirectory(directory);
+
+      //               string tasksJSON = JsonConvert.SerializeObject(sessions);
+      //               File.WriteAllText(databaseFileDir, tasksJSON);
+      //            }
+      //         }
+      //      }
+      //      catch (Exception ex)
+      //      {
+      //         ex.ShowException();
+      //      }
+      //   })
+      //   .ContinueWith(t =>
+      //   {
+      //      OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
+      //   }, TaskScheduler.FromCurrentSynchronizationContext());
+      //}
+
+      public static async Task<TimeManagerTaskSession> CreateSession(TimeManagerTaskSession session, EventHandler<NotificationEventArgs> OnNotificationShow)
       {
-         return Task.Factory.StartNew(() =>
+         TimeManagerTaskSession result = null;
+         try
          {
-            try
+            AppConfig appConfig = SettingsLoader<AppConfig>.Instance.Data;
+            if (appConfig != null)
             {
-               AppConfig appConfig = ((App)Application.Current).Config;
-               if (appConfig != null)
+               if (appConfig.database_type == AppConfig.enDataBaseType.WebApi && appConfig.webapi_connection_config != null)
                {
-                  if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
-                  {
-                     string directory = appConfig.json_database_config.directory;
-                     string filename = appConfig.json_database_config.filename;
-                     string databaseFileDir = Path.Combine(directory, filename);
+                  session.user_id = AppWebClient.Instance.GetLoggedUserData().user_id;
 
-                     if (!Directory.Exists(directory))
-                        Directory.CreateDirectory(directory);
+                  result = await WebApiCall.Session.CreateSession(AppWebClient.Instance.GetClient(), session);
 
-                     string tasksJSON = JsonConvert.SerializeObject(sessions);
-                     File.WriteAllText(databaseFileDir, tasksJSON);
-                  }
+                  OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
                }
             }
-            catch (Exception ex)
-            {
-               ex.ShowException();
-            }
-         })
-         .ContinueWith(t =>
+         }
+         catch (Exception ex)
          {
-            OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
-         }, TaskScheduler.FromCurrentSynchronizationContext());
+            throw;
+         }
+
+         return result;
+      }
+
+      public static async Task<TimeManagerTaskSession> UpdateSession(TimeManagerTaskSession session, EventHandler<NotificationEventArgs> OnNotificationShow)
+      {
+         TimeManagerTaskSession result = null;
+         try
+         {
+            AppConfig appConfig = SettingsLoader<AppConfig>.Instance.Data;
+            if (appConfig != null)
+            {
+               if (appConfig.database_type == AppConfig.enDataBaseType.WebApi && appConfig.webapi_connection_config != null)
+               {
+                  session.user_id = AppWebClient.Instance.GetLoggedUserData().user_id;
+
+                  result = await WebApiCall.Session.UpdateSession(AppWebClient.Instance.GetClient(), session);
+
+                  OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            throw;
+         }
+
+         return result;
+      }
+
+      public static async Task DeleteSession(int sessionID, EventHandler<NotificationEventArgs> OnNotificationShow)
+      {
+         try
+         {
+            AppConfig appConfig = SettingsLoader<AppConfig>.Instance.Data;
+            if (appConfig != null)
+            {
+               if (appConfig.database_type == AppConfig.enDataBaseType.WebApi && appConfig.webapi_connection_config != null)
+               {
+                  await WebApiCall.Session.DeleteSession(AppWebClient.Instance.GetClient(), sessionID);
+
+                  OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            throw;
+         }
       }
    }
 }

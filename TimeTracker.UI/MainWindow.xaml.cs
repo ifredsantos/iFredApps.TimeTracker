@@ -24,6 +24,9 @@ namespace TimeTracker.UI
 
       private void SetLoginView()
       {
+         Width = 400;
+         Height = 500;
+
          ucLoginView loginView = new ucLoginView();
          loginView.OnLoginSuccess += LoginView_OnLoginSuccess;
          contentControl.Content = loginView;
@@ -31,6 +34,9 @@ namespace TimeTracker.UI
 
       private void SetTimeTrackerView()
       {
+         Width = 1100;
+         Height = 600;
+
          ucTimeManagerView timeManagerView = new ucTimeManagerView();
          timeManagerView.OnNotificationShow += OnNotificationShow;
          contentControl.Content = timeManagerView;
