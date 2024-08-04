@@ -4,6 +4,9 @@ WORKDIR /source
 
 # Copie os arquivos de projeto e restaure as dependências
 COPY ./TimeTracker.WebApi/TimeTracker.WebApi.csproj ./TimeTracker.WebApi/
+COPY ./TimeTracker.Core/TimeTracker.Core.csproj ./TimeTracker.Core/
+COPY ./TimeTracker.Data/TimeTracker.Data.csproj ./TimeTracker.Data/
+
 RUN dotnet restore "./TimeTracker.WebApi/TimeTracker.WebApi.csproj" --disable-parallel
 
 # Copie o restante do código e publique a aplicação
