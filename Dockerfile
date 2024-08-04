@@ -1,6 +1,6 @@
 # Build Stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /source
+WORKDIR /app
 
 # Copie os arquivos de projeto e restaure as dependências
 COPY ./TimeTracker.WebApi/TimeTracker.WebApi.csproj ./TimeTracker.WebApi/
@@ -16,8 +16,6 @@ RUN dotnet publish "./TimeTracker.WebApi/TimeTracker.WebApi.csproj" -c release -
 # Serve Stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=build /app ./
-
 EXPOSE 80
-
+COPY --from=build /app ./
 ENTRYPOINT ["dotnet", "TimeTracker.WebApi.dll"]
