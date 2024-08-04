@@ -46,7 +46,9 @@
    </mah:MetroWindow.RightWindowCommands>
 
    <Grid>
-      <pages:ucTimeManager OnNotificationShow="OnNotificationShow" />
+      <ContentControl Name="contentControl" />
+
+
       <materialDesign:Snackbar Name="snackBar" MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Panel.ZIndex="999999" Margin="15"
                                  Foreground="{StaticResource TextColorBrush}" Background="{StaticResource MahApps.Brushes.Gray}">
       </materialDesign:Snackbar>

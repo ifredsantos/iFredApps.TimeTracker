@@ -18,7 +18,7 @@ namespace TimerTracker.WebApi.Controllers
          _sessionService = sessionService;
       }
 
-      [HttpGet]
+      [HttpGet("GetSessions")]
       //[Authorize]
       public async Task<ActionResult<IEnumerable<Session>>> GetSessions(int user_id)
       {

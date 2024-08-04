@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using TimeTracker.UI.Models;
+using TimeTracker.UI.Pages;
 using TimeTracker.UI.Utils;
 
 namespace TimeTracker.UI
@@ -15,7 +16,36 @@ namespace TimeTracker.UI
       public MainWindow()
       {
          InitializeComponent();
+
+         SetLoginView();
       }
+
+      #region Methods
+
+      private void SetLoginView()
+      {
+         ucLoginView loginView = new ucLoginView();
+         loginView.OnLoginSuccess += LoginView_OnLoginSuccess;
+         contentControl.Content = loginView;
+      }
+
+      private void SetTimeTrackerView()
+      {
+         ucTimeManagerView timeManagerView = new ucTimeManagerView();
+         timeManagerView.OnNotificationShow += OnNotificationShow;
+         contentControl.Content = timeManagerView;
+      }
+
+      #endregion
+
+      #region Events
+
+      private void LoginView_OnLoginSuccess(object? sender, LoginEventArgs e)
+      {
+         SetTimeTrackerView();
+      }
+
+      #endregion
 
       #region Buttons
 
@@ -63,7 +93,7 @@ namespace TimeTracker.UI
          }
       }
 
-      private void OnNotificationShow(object sender, NotificationEventArgs e)
+      private void OnNotificationShow(object? sender, NotificationEventArgs e)
       {
          try
          {

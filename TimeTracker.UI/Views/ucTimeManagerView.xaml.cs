@@ -15,13 +15,13 @@ namespace TimeTracker.UI.Pages
     /// <summary>
     /// Interaction logic for ucTimeManager.xaml
     /// </summary>
-    public partial class ucTimeManager : UserControl
+    public partial class ucTimeManagerView : UserControl
     {
         public event EventHandler<NotificationEventArgs> OnNotificationShow;
 
         private TimeManager m_timeManager = null;
 
-        public ucTimeManager()
+        public ucTimeManagerView()
         {
             InitializeComponent();
             Loaded += UcTimeManager_Loaded;

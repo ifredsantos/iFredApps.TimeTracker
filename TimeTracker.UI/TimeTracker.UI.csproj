@@ -34,6 +34,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\iFredApps.Lib\iFredApps.Lib.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="logo.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +47,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Update="iFredApps.TimeTracker.config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -52,5 +58,8 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\net8.0-windows\" />
   </ItemGroup>
 </Project>

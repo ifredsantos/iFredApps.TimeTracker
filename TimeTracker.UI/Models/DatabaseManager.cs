@@ -1,4 +1,5 @@
 ﻿using ControlzEx.Standard;
+using iFredApps.Lib.WebApi;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace TimeTracker.UI.Models
          TimeManagerDatabaseData result = null;
          try
          {
-            AppConfig appConfig = ((App)Application.Current)?.Config;
+            AppConfig appConfig = SettingsLoader<AppConfig>.Instance.Data;
 
             if (appConfig != null)
             {
@@ -35,7 +36,7 @@ namespace TimeTracker.UI.Models
                }
                else if(appConfig.database_type == AppConfig.enDataBaseType.WebApi && appConfig.webapi_connection_config != null)
                {
-                  var sessions = await new WebApiClient(appConfig.webapi_connection_config.baseaddress).GetAsync<List<TimeManagerTaskSession>>("Session?user_id={0}", 1);
+                  var sessions = await WebApiCall.Session.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
                   result = new TimeManagerDatabaseData
                   {
                      sessions = sessions
@@ -51,6 +52,12 @@ namespace TimeTracker.UI.Models
          return result;
       }
 
+      /// <summary>
+      /// Supported for local database only
+      /// </summary>
+      /// <param name="sessions"></param>
+      /// <param name="OnNotificationShow"></param>
+      /// <returns></returns>
       public static Task SaveAllSessions(TimeManagerDatabaseData sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
       {
          return Task.Factory.StartNew(() =>

@@ -28,7 +28,7 @@ namespace TimerTracker.WebApi.Controllers
          _audience = configuration["Jwt:Audience"];
       }
 
-      [HttpGet]
+      [HttpGet("GetUsers")]
       [Authorize]
       public async Task<ActionResult<IEnumerable<User>>> GetUsers()
       {
@@ -36,8 +36,8 @@ namespace TimerTracker.WebApi.Controllers
          return Ok(users);
       }
 
-      [HttpPost("login")]
-      public async Task<IActionResult> Login([FromBody] LoginModel model)
+      [HttpPost("Login")]
+      public async Task<ActionResult<User>> Login([FromBody] LoginModel model)
       {
          var userData = await _userService.ValidateUser(model.UserSearchTerm, model.Password);
          if (userData == null)
@@ -45,27 +45,27 @@ namespace TimerTracker.WebApi.Controllers
             return Unauthorized();
          }
 
-         var tokenHandler = new JwtSecurityTokenHandler();
-         var key = Encoding.ASCII.GetBytes(_key);
+         //var tokenHandler = new JwtSecurityTokenHandler();
+         //var key = Encoding.ASCII.GetBytes(_key);
+         //
+         //var tokenDescriptor = new SecurityTokenDescriptor
+         //{
+         //   Subject = new ClaimsIdentity(new Claim[]
+         //   {
+         //      new Claim(ClaimTypes.Name, userData.username)
+         //   }),
+         //   Expires = DateTime.UtcNow.AddHours(1),
+         //   SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+         //};
+         //
+         //var token = tokenHandler.CreateToken(tokenDescriptor);
+         //var tokenString = tokenHandler.WriteToken(token);
 
-         var tokenDescriptor = new SecurityTokenDescriptor
-         {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-               new Claim(ClaimTypes.Name, userData.username)
-            }),
-            Expires = DateTime.UtcNow.AddHours(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-         };
-
-         var token = tokenHandler.CreateToken(tokenDescriptor);
-         var tokenString = tokenHandler.WriteToken(token);
-
-         return Ok(new { UserData = userData, Token = tokenString });
+         return Ok(userData);
       }
 
       //TODO: Implement auth
-      [HttpPost]
+      [HttpPost("CreateUser")]
       public async Task<ActionResult> PostUser([FromBody] User user)
       {
          if (user == null || !ModelState.IsValid)
