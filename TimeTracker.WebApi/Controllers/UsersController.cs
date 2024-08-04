@@ -8,7 +8,7 @@ using System.Text;
 using TimeTracker.Core.Interfaces.Services;
 using TimeTracker.Core.Models;
 
-namespace TimerTracker.WebApi.Controllers
+namespace TimeTracker.WebApi.Controllers
 {
    [Route("api/[controller]")]
    [ApiController]

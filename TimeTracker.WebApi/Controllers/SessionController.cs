@@ -5,7 +5,7 @@ using TimeTracker.Core.Interfaces.Services;
 using TimeTracker.Core.Models;
 using TimeTracker.Core.Services;
 
-namespace TimerTracker.WebApi.Controllers
+namespace TimeTracker.WebApi.Controllers
 {
    [Route("api/[controller]")]
    [ApiController]

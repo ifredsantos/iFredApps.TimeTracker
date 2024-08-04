@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>Z:\Programas\DotNET\WPF-TimeTracker\TimerTracker.WebApi\bin\Release\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2024-08-04T13:48:51.8144084Z;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>
