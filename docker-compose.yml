@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  timetracker.webapi:
+    image: ${DOCKER_REGISTRY-}timetrackerwebapi
+    build:
+      context: .
+      dockerfile: TimeTracker.WebApi/Dockerfile
