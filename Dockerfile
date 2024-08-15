@@ -16,7 +16,7 @@ RUN dotnet restore #"TimeTracker.WebApi/TimeTracker.WebApi.csproj" --disable-par
 # Copie todo o código fonte e publique a aplicação
 COPY . .
 WORKDIR "/src/TimeTracker.WebApi"
-RUN dotnet publish "TimeTracker.WebApi.csproj" -c Release -o /app/publish --no-restore
+RUN dotnet publish "TimeTracker.WebApi.csproj" -c Release -o /publish --no-restore
 
 # Use a imagem base para rodar a aplicação
 FROM base AS final
