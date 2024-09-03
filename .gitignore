@@ -5,3 +5,6 @@
 /TimeTracker.UI/publish
 TimeTracker.UI/TimeTracker.UI.csproj.user
 TimeTracker.UI/TimeTracker.UI_TemporaryKey.pfx
+**/*.dcproj
+docker-compose.yml
+docker-compose.override.yml
