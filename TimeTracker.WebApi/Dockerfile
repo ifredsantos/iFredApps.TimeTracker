@@ -9,9 +9,9 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["../TimeTracker.WebApi/TimeTracker.WebApi.csproj", "TimeTracker.WebApi/"]
-COPY ["../TimeTracker.Core/TimeTracker.Core.csproj", "TimeTracker.Core/"]
-COPY ["../TimeTracker.Data/TimeTracker.Data.csproj", "TimeTracker.Data/"]
+COPY ["TimeTracker.WebApi/TimeTracker.WebApi.csproj", "TimeTracker.WebApi/"]
+COPY ["TimeTracker.Core/TimeTracker.Core.csproj", "TimeTracker.Core/"]
+COPY ["TimeTracker.Data/TimeTracker.Data.csproj", "TimeTracker.Data/"]
 RUN dotnet restore "./TimeTracker.WebApi/TimeTracker.WebApi.csproj"
 COPY . .
 WORKDIR "/src/TimeTracker.WebApi"
