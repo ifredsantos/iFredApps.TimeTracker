@@ -9,6 +9,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["iFredApps.Lib/iFredApps.Lib.csproj", "iFredApps.Lib/"]
 COPY ["TimeTracker.WebApi/TimeTracker.WebApi.csproj", "TimeTracker.WebApi/"]
 COPY ["TimeTracker.Core/TimeTracker.Core.csproj", "TimeTracker.Core/"]
 COPY ["TimeTracker.Data/TimeTracker.Data.csproj", "TimeTracker.Data/"]
