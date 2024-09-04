@@ -86,23 +86,37 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-var app = builder.Build();
-
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-// Configuração do pipeline de requisições HTTP
-if (app.Environment.IsDevelopment())
+try
 {
-   app.UseSwagger();
-   app.UseSwaggerUI(c =>
+   var app = builder.Build();
+
+   app.UseHttpsRedirection();
+
+   app.UseAuthentication();
+   app.UseAuthorization();
+
+   // Configuração do pipeline de requisições HTTP
+   if (app.Environment.IsDevelopment())
    {
-      c.SwaggerEndpoint("/swagger/v1/swagger.json", "iFredApps TimeTracker API v1");
-   });
+      app.UseSwagger();
+      app.UseSwaggerUI(c =>
+      {
+         c.SwaggerEndpoint("/swagger/v1/swagger.json", "iFredApps TimeTracker API v1");
+      });
+   }
+
+   app.MapControllers();
+
+   app.Run();
+
 }
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+   Console.WriteLine("Unhandled exception caught: " + ex.Message);
+   Console.WriteLine("Stack Trace: " + ex.StackTrace);
+   if (ex.InnerException != null)
+   {
+      Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+   }
+   throw;
+}
