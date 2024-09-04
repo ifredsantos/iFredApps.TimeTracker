@@ -90,6 +90,27 @@ try
 {
    var app = builder.Build();
 
+   // Test the database connection
+   try
+   {
+      using (var scope = app.Services.CreateScope())
+      {
+         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+         dbContext.Database.EnsureCreated(); 
+         Console.WriteLine("Database connection successful.");
+      }
+   }
+   catch (Exception ex)
+   {
+      Console.WriteLine("Database connection failed: " + ex.Message);
+      Console.WriteLine("Stack Trace: " + ex.StackTrace);
+      if (ex.InnerException != null)
+      {
+         Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+      }
+      throw;
+   }
+
    app.UseHttpsRedirection();
 
    app.UseAuthentication();
