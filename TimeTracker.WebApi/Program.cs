@@ -96,14 +96,14 @@ try
    app.UseAuthorization();
 
    // Configuração do pipeline de requisições HTTP
-   if (app.Environment.IsDevelopment())
-   {
+   //if (app.Environment.IsDevelopment())
+   //{
       app.UseSwagger();
       app.UseSwaggerUI(c =>
       {
          c.SwaggerEndpoint("/swagger/v1/swagger.json", "iFredApps TimeTracker API v1");
       });
-   }
+   //}
 
    app.MapControllers();
 
