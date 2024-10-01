@@ -61,8 +61,6 @@
     <Folder Include="bin\Debug\net8.0-windows\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="iFredApps.Lib">
-      <HintPath>..\dlls\iFredApps.Lib.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\iFredApps.Lib\iFredApps.Lib.csproj" />
   </ItemGroup>
 </Project>

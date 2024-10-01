@@ -13,11 +13,21 @@ namespace TimeTracker.UI
    /// </summary>
    public partial class MainWindow : MetroWindow
    {
+      private AppConfig appConfig;
       public MainWindow()
       {
          InitializeComponent();
 
-         SetLoginView();
+         appConfig = SettingsLoader<AppConfig>.Instance.Data;
+
+         if (appConfig.database_type == AppConfig.enDataBaseType.WebApi)
+         {
+            SetLoginView();
+         }
+         else if(appConfig.database_type == AppConfig.enDataBaseType.JSON)
+         {
+            SetTimeTrackerView();
+         }
       }
 
       #region Methods

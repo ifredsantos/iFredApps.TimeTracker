@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker.WebApi", "TimeTracker.WebApi\TimeTracker.WebApi.csproj", "{5D3F35A4-6090-4A82-AB75-41284101551C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.Lib", "..\iFredApps.Lib\iFredApps.Lib.csproj", "{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,9 +47,16 @@ Global
 		{5D3F35A4-6090-4A82-AB75-41284101551C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D3F35A4-6090-4A82-AB75-41284101551C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D3F35A4-6090-4A82-AB75-41284101551C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{573CB89D-3FC6-4766-BBF3-ABB2E37315DA} = {2C3D7DD5-00A3-4A26-BBD8-CE765E778D82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CFABD38F-82C0-4487-A256-64D6D5668B14}

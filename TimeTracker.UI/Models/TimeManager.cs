@@ -172,5 +172,9 @@ namespace TimeTracker.UI.Models
    {
         public TimeManagerTaskSession uncompleted_session { get; set; }
         public List<TimeManagerTaskSession> sessions { get; set; }
-    }
+        public TimeManagerDatabaseData()
+        {
+           sessions = new List<TimeManagerTaskSession>();
+        }
+   }
 }
