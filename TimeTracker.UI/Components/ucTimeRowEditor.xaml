@@ -33,7 +33,7 @@
                 <Grid Grid.Column="1">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
-                        <Button Foreground="{DynamicResource TextColorBrush}" Click="OnStartStopButton_Click">
+                        <Button Name="btnStartStop" Foreground="{DynamicResource TextColorBrush}" Click="OnStartStopButton_Click">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignRaisedButton}">
                                     <Setter Property="Content">

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using TimeTracker.UI.Models;
 using TimeTracker.UI.Utils;
 
@@ -25,19 +26,9 @@ namespace TimeTracker.UI.Pages
       public ucTimeManagerView()
       {
          InitializeComponent();
-         Loaded += UcTimeManager_Loaded;
-      }
 
-      private void UcTimeManager_Loaded(object sender, RoutedEventArgs e)
-      {
-         try
-         {
-            InitData();
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
+         Loaded += UcTimeManager_Loaded;
+         KeyUp += UcTimeManagerView_KeyUp;
       }
 
       private async void InitData()
@@ -92,10 +83,7 @@ namespace TimeTracker.UI.Pages
          {
             DataContext = m_timeManager;
 
-            if (!string.IsNullOrEmpty(m_timeManager.current_session.description))
-            {
-               timeRowEditor.StartSession();
-            }
+            timeRowEditor.StartStopSession();
          }
       }
 
@@ -173,6 +161,33 @@ namespace TimeTracker.UI.Pages
       }
 
       #region Events
+
+      private void UcTimeManager_Loaded(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            InitData();
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void UcTimeManagerView_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+      {
+         try
+         {
+            if (e.Key == Key.Enter)
+            {
+               timeRowEditor.StartStopSession();
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
 
       private async void OnCurrentSessionChanged(object sender, TimeRowSessionEventArgs e)
       {
