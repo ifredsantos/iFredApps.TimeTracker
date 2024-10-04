@@ -19,9 +19,13 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="bin\**" />
     <Compile Remove="publish\**" />
+    <EmbeddedResource Remove="bin\**" />
     <EmbeddedResource Remove="publish\**" />
+    <None Remove="bin\**" />
     <None Remove="publish\**" />
+    <Page Remove="bin\**" />
     <Page Remove="publish\**" />
   </ItemGroup>
   <ItemGroup>
@@ -56,9 +60,6 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Debug\net8.0-windows\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\iFredApps.Lib\iFredApps.Lib.csproj" />
