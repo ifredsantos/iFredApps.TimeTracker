@@ -1,7 +1,10 @@
 ﻿using MahApps.Metro.Controls;
+using MahApps.Metro.IconPacks;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Documents;
 using TimeTracker.UI.Models;
 using TimeTracker.UI.Pages;
 using TimeTracker.UI.Utils;
@@ -14,17 +17,20 @@ namespace TimeTracker.UI
    public partial class MainWindow : MetroWindow
    {
       private AppConfig appConfig;
+
       public MainWindow()
       {
          InitializeComponent();
 
          appConfig = SettingsLoader<AppConfig>.Instance.Data;
 
+         InitMenu();
+
          if (appConfig.database_type == AppConfig.enDataBaseType.WebApi)
          {
             SetLoginView();
          }
-         else if(appConfig.database_type == AppConfig.enDataBaseType.JSON)
+         else if (appConfig.database_type == AppConfig.enDataBaseType.JSON)
          {
             SetTimeTrackerView();
          }
@@ -50,6 +56,18 @@ namespace TimeTracker.UI
          ucTimeManagerView timeManagerView = new ucTimeManagerView();
          timeManagerView.OnNotificationShow += OnNotificationShow;
          contentControl.Content = timeManagerView;
+      }
+
+      private void InitMenu()
+      {
+         List<AppMenu> menus = new List<AppMenu>
+         {
+            new AppMenu("Time Tracker", PackIconFontAwesomeKind.ClockRegular),
+            new AppMenu("Projects", PackIconFontAwesomeKind.TableColumnsSolid),
+            new AppMenu("Settings", PackIconFontAwesomeKind.GearSolid)
+         };
+
+         menuList.ItemsSource = menus;
       }
 
       #endregion

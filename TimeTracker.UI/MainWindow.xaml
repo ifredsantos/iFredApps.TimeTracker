@@ -46,16 +46,42 @@
    </mah:MetroWindow.RightWindowCommands>
 
    <Grid>
-      <ContentControl Name="contentControl" />
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="200" />
+         <ColumnDefinition />
+      </Grid.ColumnDefinitions>
 
+      <Grid Grid.Column="0">
+         <ListView x:Name="menuList" Margin="0,15,0,0">
+            <ListView.ItemsPanel>
+               <ItemsPanelTemplate>
+                  <StackPanel Orientation="Vertical" />
+               </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+               <DataTemplate>
+                  <StackPanel Orientation="Horizontal">
+                     <Grid HorizontalAlignment="Center" Margin="5,5,6,0">
+                        <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="{Binding icon}" />
+                     </Grid>
+                     <Label Content="{Binding description}" HorizontalAlignment="Center" />
+                  </StackPanel>
+               </DataTemplate>
+            </ListView.ItemTemplate>
+         </ListView>
+      </Grid>
 
-      <materialDesign:Snackbar Name="snackBar" MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Panel.ZIndex="999999" Margin="15"
+      <ContentControl Name="contentControl" Grid.Column="1" />
+
+      <Grid Grid.ColumnSpan="2">
+         <materialDesign:Snackbar Name="snackBar" MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Panel.ZIndex="999999" Margin="15"
                                  Foreground="{StaticResource TextColorBrush}" Background="{StaticResource MahApps.Brushes.Gray}">
-      </materialDesign:Snackbar>
+         </materialDesign:Snackbar>
 
-      <Border Background="#3F000000" VerticalAlignment="Bottom" Opacity="1" Visibility="Collapsed">
-         <TextBlock Text="Developed by Frederico Santos" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,2,15,2" 
+         <Border Background="#3F000000" VerticalAlignment="Bottom" Opacity="1" Visibility="Collapsed">
+            <TextBlock Text="Developed by Frederico Santos" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,2,15,2" 
                        FontStyle="Oblique" Opacity="0.3" FontSize="12" />
-      </Border>
+         </Border>
+      </Grid>
    </Grid>
 </mah:MetroWindow>
