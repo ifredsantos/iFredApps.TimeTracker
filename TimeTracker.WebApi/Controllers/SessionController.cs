@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TimeTracker.Core.Interfaces.Services;
 using TimeTracker.Core.Models;
-using TimeTracker.Core.Services;
 
 namespace TimeTracker.WebApi.Controllers
 {

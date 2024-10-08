@@ -1,15 +1,10 @@
-﻿using ControlzEx.Standard;
-using iFredApps.Lib.WebApi;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.Pkcs;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using TimeTracker.UI.Utils;
 
 namespace TimeTracker.UI.Models

@@ -2,14 +2,14 @@
 
 namespace TimeTracker.UI.Models
 {
-    public class TimeRowSessionEventArgs : EventArgs
-    {
-        public TimeManagerTaskSession SessionData { get; set; }
-    }
+   public class TimeRowSessionEventArgs : EventArgs
+   {
+      public TimeManagerTaskSession SessionData { get; set; }
+   }
 
-    public class TimeTaskContinueEventArgs : EventArgs
-    {
-        public TimeManagerTask TaskData { get; set; }
+   public class TimeTaskContinueEventArgs : EventArgs
+   {
+      public TimeManagerTask TaskData { get; set; }
    }
 
    public class TimeTaskRemoveEventArgs : EventArgs
@@ -19,7 +19,7 @@ namespace TimeTracker.UI.Models
 
    public class TimeTaskEditEventArgs : EventArgs
    {
-        public string oldDescription { get; set; }
-        public TimeManagerTask TaskData { get; set; }
+      public string oldDescription { get; set; }
+      public TimeManagerTask TaskData { get; set; }
    }
 }

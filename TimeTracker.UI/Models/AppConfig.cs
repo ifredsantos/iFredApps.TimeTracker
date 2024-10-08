@@ -2,17 +2,17 @@
 
 namespace TimeTracker.UI.Models
 {
-    public class AppConfig : BaseSettingsData
+   public class AppConfig : BaseSettingsData
    {
-        public enDataBaseType database_type { get; set; }
-        public JSONDataBaseConfig? json_database_config { get; set; }
-        public WebApiConnectionConfig? webapi_connection_config { get; set; }
+      public enDataBaseType database_type { get; set; }
+      public JSONDataBaseConfig? json_database_config { get; set; }
+      public WebApiConnectionConfig? webapi_connection_config { get; set; }
 
-        public enum enDataBaseType
-        {
-            JSON,
-            WebApi
-        }
+      public enum enDataBaseType
+      {
+         JSON,
+         WebApi
+      }
    }
 
    public class JSONDataBaseConfig

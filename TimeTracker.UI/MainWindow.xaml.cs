@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Documents;
 using TimeTracker.UI.Models;
 using TimeTracker.UI.Utils;
 using TimeTracker.UI.Views;
@@ -90,9 +89,9 @@ namespace TimeTracker.UI
       {
          try
          {
-            if(e.AddedItems[0] is AppMenu menu)
+            if (e.AddedItems[0] is AppMenu menu)
             {
-               if(menu.screen != null)
+               if (menu.screen != null)
                {
                   contentControl.Content = menu.screen;
                }
