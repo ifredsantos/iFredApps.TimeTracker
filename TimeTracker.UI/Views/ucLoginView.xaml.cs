@@ -16,7 +16,7 @@ using TimeTracker.UI.Models;
 using TimeTracker.UI.Utils;
 using TimeTracker.UI.ViewModels;
 
-namespace TimeTracker.UI.Pages
+namespace TimeTracker.UI.Views
 {
    /// <summary>
    /// Interaction logic for ucLoginView.xaml

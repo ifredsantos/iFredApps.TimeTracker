@@ -10,7 +10,6 @@ using System.Security.Cryptography.Pkcs;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using TimeTracker.UI.Pages;
 using TimeTracker.UI.Utils;
 
 namespace TimeTracker.UI.Models

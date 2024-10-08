@@ -6,8 +6,8 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Documents;
 using TimeTracker.UI.Models;
-using TimeTracker.UI.Pages;
 using TimeTracker.UI.Utils;
+using TimeTracker.UI.Views;
 
 namespace TimeTracker.UI
 {
@@ -53,21 +53,55 @@ namespace TimeTracker.UI
          Width = 1100;
          Height = 600;
 
+         menuList.SelectedIndex = 0;
+      }
+
+      private ucTimeManagerView GetTimeTrackerView()
+      {
+         Width = 1100;
+         Height = 600;
+
          ucTimeManagerView timeManagerView = new ucTimeManagerView();
          timeManagerView.OnNotificationShow += OnNotificationShow;
-         contentControl.Content = timeManagerView;
+
+         return timeManagerView;
       }
+
+      #endregion
+
+      #region Menu
 
       private void InitMenu()
       {
          List<AppMenu> menus = new List<AppMenu>
          {
-            new AppMenu("Time Tracker", PackIconFontAwesomeKind.ClockRegular),
-            new AppMenu("Projects", PackIconFontAwesomeKind.TableColumnsSolid),
-            new AppMenu("Settings", PackIconFontAwesomeKind.GearSolid)
+            new AppMenu("Time Tracker", PackIconFontAwesomeKind.ClockRegular, GetTimeTrackerView()),
+            new AppMenu("Projects", PackIconFontAwesomeKind.TableColumnsSolid, new ucProjectsView()),
+            new AppMenu("Workspaces", PackIconFontAwesomeKind.SpaceAwesomeBrands, new ucWorkspacesView()),
+            new AppMenu("Settings", PackIconFontAwesomeKind.GearSolid, new ucSettingsView())
          };
 
          menuList.ItemsSource = menus;
+
+         menuList.SelectionChanged += MenuList_SelectionChanged;
+      }
+
+      private void MenuList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+      {
+         try
+         {
+            if(e.AddedItems[0] is AppMenu menu)
+            {
+               if(menu.screen != null)
+               {
+                  contentControl.Content = menu.screen;
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       #endregion
@@ -76,7 +110,7 @@ namespace TimeTracker.UI
 
       private void LoginView_OnLoginSuccess(object? sender, LoginEventArgs e)
       {
-         SetTimeTrackerView();
+         GetTimeTrackerView();
       }
 
       #endregion

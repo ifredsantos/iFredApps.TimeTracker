@@ -12,7 +12,7 @@ using System.Windows.Input;
 using TimeTracker.UI.Models;
 using TimeTracker.UI.Utils;
 
-namespace TimeTracker.UI.Pages
+namespace TimeTracker.UI.Views
 {
    /// <summary>
    /// Interaction logic for ucTimeManager.xaml
@@ -28,7 +28,6 @@ namespace TimeTracker.UI.Pages
          InitializeComponent();
 
          Loaded += UcTimeManager_Loaded;
-         KeyUp += UcTimeManagerView_KeyUp;
       }
 
       private async void InitData()
@@ -82,8 +81,6 @@ namespace TimeTracker.UI.Pages
          finally
          {
             DataContext = m_timeManager;
-
-            timeRowEditor.StartStopSession();
          }
       }
 
@@ -167,21 +164,6 @@ namespace TimeTracker.UI.Pages
          try
          {
             InitData();
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-      }
-
-      private void UcTimeManagerView_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-      {
-         try
-         {
-            if (e.Key == Key.Enter)
-            {
-               timeRowEditor.StartStopSession();
-            }
          }
          catch (Exception ex)
          {
