@@ -6,8 +6,8 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
-        xmlns:local="clr-namespace:TimeTracker.UI" 
-        mc:Ignorable="d"
+        xmlns:local="clr-namespace:TimeTracker.UI" xmlns:components="clr-namespace:TimeTracker.UI.Components"
+                 mc:Ignorable="d"
         Title="Time Tracker" Height="600" Width="1100" Icon="./Resources/logo.png">
    <mah:MetroWindow.LeftWindowCommands>
       <mah:WindowCommands>
@@ -50,25 +50,7 @@
          <ColumnDefinition />
       </Grid.ColumnDefinitions>
 
-      <Grid Grid.Column="0">
-         <ListView x:Name="menuList" Margin="0,15,0,0" Width="200" Visibility="Visible">
-            <ListView.ItemsPanel>
-               <ItemsPanelTemplate>
-                  <StackPanel Orientation="Vertical" />
-               </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-               <DataTemplate>
-                  <StackPanel Orientation="Horizontal">
-                     <Grid HorizontalAlignment="Center" Margin="5,5,6,0">
-                        <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="{Binding icon}" />
-                     </Grid>
-                     <Label Content="{Binding description}" HorizontalAlignment="Center" />
-                  </StackPanel>
-               </DataTemplate>
-            </ListView.ItemTemplate>
-         </ListView>
-      </Grid>
+      <components:ucLateralMenu x:Name="cmpMenu" Grid.Column="0" />
 
       <ContentControl Name="contentControl" Grid.Column="1" />
 

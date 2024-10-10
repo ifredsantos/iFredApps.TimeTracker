@@ -52,7 +52,7 @@ namespace TimeTracker.UI
          Width = 1100;
          Height = 600;
 
-         menuList.SelectedIndex = 0;
+         cmpMenu.menuList.SelectedIndex = 0;
       }
 
       private ucTimeManagerView GetTimeTrackerView()
@@ -80,9 +80,9 @@ namespace TimeTracker.UI
             new AppMenu("Settings", PackIconFontAwesomeKind.GearSolid, new ucSettingsView())
          };
 
-         menuList.ItemsSource = menus;
+         cmpMenu.menuList.ItemsSource = menus;
 
-         menuList.SelectionChanged += MenuList_SelectionChanged;
+         cmpMenu.menuList.SelectionChanged += MenuList_SelectionChanged;
       }
 
       private void MenuList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -107,7 +107,7 @@ namespace TimeTracker.UI
 
       #region Events
 
-      private void LoginView_OnLoginSuccess(object? sender, LoginEventArgs e)
+      private void LoginView_OnLoginSuccess(object sender, LoginEventArgs e)
       {
          GetTimeTrackerView();
       }
@@ -160,7 +160,7 @@ namespace TimeTracker.UI
          }
       }
 
-      private void OnNotificationShow(object? sender, NotificationEventArgs e)
+      private void OnNotificationShow(object sender, NotificationEventArgs e)
       {
          try
          {

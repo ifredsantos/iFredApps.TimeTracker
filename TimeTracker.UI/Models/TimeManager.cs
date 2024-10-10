@@ -18,7 +18,7 @@ namespace TimeTracker.UI.Models
          {
             if (value == _current_session) return;
             _current_session = value;
-            NotifyPropertyChanged();
+            NotifyPropertyChanged(nameof(current_session));
          }
       }
       public List<TimeManagerTaskSession> sessions { get; set; }

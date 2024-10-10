@@ -22,7 +22,7 @@ namespace TimeTracker.UI.Views
       {
          InitializeComponent();
 
-         Loaded += UcTimeManager_Loaded;
+         InitData();
       }
 
       private async void InitData()
@@ -30,6 +30,7 @@ namespace TimeTracker.UI.Views
          try
          {
             m_timeManager = new TimeManager();
+            DataContext = m_timeManager;
 
             var data = await DatabaseManager.LoadData();
             if (data != null)
@@ -57,6 +58,8 @@ namespace TimeTracker.UI.Views
                         observation = data.uncompleted_session.observation,
                         total_time = DateTime.Now - data.uncompleted_session.start_date
                      };
+
+                     timeRowEditor.StartStopSession();
                   }
                   else
                   {
@@ -72,10 +75,6 @@ namespace TimeTracker.UI.Views
          catch (Exception ex)
          {
             ex.ShowException();
-         }
-         finally
-         {
-            DataContext = m_timeManager;
          }
       }
 
@@ -153,18 +152,6 @@ namespace TimeTracker.UI.Views
       }
 
       #region Events
-
-      private void UcTimeManager_Loaded(object sender, RoutedEventArgs e)
-      {
-         try
-         {
-            InitData();
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-      }
 
       private async void OnCurrentSessionChanged(object sender, TimeRowSessionEventArgs e)
       {
