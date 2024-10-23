@@ -1,10 +1,12 @@
 ﻿using MahApps.Metro.Controls;
+using MahApps.Metro.IconPacks;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using TimeTracker.UI.Models;
-using TimeTracker.UI.Pages;
 using TimeTracker.UI.Utils;
+using TimeTracker.UI.Views;
 
 namespace TimeTracker.UI
 {
@@ -14,17 +16,20 @@ namespace TimeTracker.UI
    public partial class MainWindow : MetroWindow
    {
       private AppConfig appConfig;
+
       public MainWindow()
       {
          InitializeComponent();
 
          appConfig = SettingsLoader<AppConfig>.Instance.Data;
 
+         InitMenu();
+
          if (appConfig.database_type == AppConfig.enDataBaseType.WebApi)
          {
             SetLoginView();
          }
-         else if(appConfig.database_type == AppConfig.enDataBaseType.JSON)
+         else if (appConfig.database_type == AppConfig.enDataBaseType.JSON)
          {
             SetTimeTrackerView();
          }
@@ -47,18 +52,64 @@ namespace TimeTracker.UI
          Width = 1100;
          Height = 600;
 
+         cmpMenu.menuList.SelectedIndex = 0;
+      }
+
+      private ucTimeManagerView GetTimeTrackerView()
+      {
+         Width = 1100;
+         Height = 600;
+
          ucTimeManagerView timeManagerView = new ucTimeManagerView();
          timeManagerView.OnNotificationShow += OnNotificationShow;
-         contentControl.Content = timeManagerView;
+
+         return timeManagerView;
+      }
+
+      #endregion
+
+      #region Menu
+
+      private void InitMenu()
+      {
+         List<AppMenu> menus = new List<AppMenu>
+         {
+            new AppMenu("Time Tracker", PackIconFontAwesomeKind.ClockRegular, GetTimeTrackerView()),
+            new AppMenu("Projects", PackIconFontAwesomeKind.TableColumnsSolid, new ucProjectsView()),
+            new AppMenu("Workspaces", PackIconFontAwesomeKind.SpaceAwesomeBrands, new ucWorkspacesView()),
+            new AppMenu("Settings", PackIconFontAwesomeKind.GearSolid, new ucSettingsView())
+         };
+
+         cmpMenu.menuList.ItemsSource = menus;
+
+         cmpMenu.menuList.SelectionChanged += MenuList_SelectionChanged;
+      }
+
+      private void MenuList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+      {
+         try
+         {
+            if (e.AddedItems[0] is AppMenu menu)
+            {
+               if (menu.screen != null)
+               {
+                  contentControl.Content = menu.screen;
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       #endregion
 
       #region Events
 
-      private void LoginView_OnLoginSuccess(object? sender, LoginEventArgs e)
+      private void LoginView_OnLoginSuccess(object sender, LoginEventArgs e)
       {
-         SetTimeTrackerView();
+         GetTimeTrackerView();
       }
 
       #endregion
@@ -109,7 +160,7 @@ namespace TimeTracker.UI
          }
       }
 
-      private void OnNotificationShow(object? sender, NotificationEventArgs e)
+      private void OnNotificationShow(object sender, NotificationEventArgs e)
       {
          try
          {

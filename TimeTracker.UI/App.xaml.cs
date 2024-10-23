@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Windows;
-using TimeTracker.UI.Models;
+﻿using System.Windows;
 
 namespace TimeTracker.UI
 {

@@ -96,7 +96,7 @@ try
       using (var scope = app.Services.CreateScope())
       {
          var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-         dbContext.Database.EnsureCreated(); 
+         dbContext.Database.EnsureCreated();
          Console.WriteLine("Database connection successful.");
       }
    }
@@ -119,11 +119,11 @@ try
    // Configuração do pipeline de requisições HTTP
    //if (app.Environment.IsDevelopment())
    //{
-      app.UseSwagger();
-      app.UseSwaggerUI(c =>
-      {
-         c.SwaggerEndpoint("/swagger/v1/swagger.json", "iFredApps TimeTracker API v1");
-      });
+   app.UseSwagger();
+   app.UseSwaggerUI(c =>
+   {
+      c.SwaggerEndpoint("/swagger/v1/swagger.json", "iFredApps TimeTracker API v1");
+   });
    //}
 
    app.MapControllers();

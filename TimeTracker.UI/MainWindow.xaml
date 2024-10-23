@@ -6,9 +6,8 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
-        xmlns:local="clr-namespace:TimeTracker.UI" 
-        xmlns:pages="clr-namespace:TimeTracker.UI.Pages" 
-        mc:Ignorable="d"
+        xmlns:local="clr-namespace:TimeTracker.UI" xmlns:components="clr-namespace:TimeTracker.UI.Components"
+                 mc:Ignorable="d"
         Title="Time Tracker" Height="600" Width="1100" Icon="./Resources/logo.png">
    <mah:MetroWindow.LeftWindowCommands>
       <mah:WindowCommands>
@@ -46,16 +45,24 @@
    </mah:MetroWindow.RightWindowCommands>
 
    <Grid>
-      <ContentControl Name="contentControl" />
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="Auto" />
+         <ColumnDefinition />
+      </Grid.ColumnDefinitions>
 
+      <components:ucLateralMenu x:Name="cmpMenu" Grid.Column="0" />
 
-      <materialDesign:Snackbar Name="snackBar" MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Panel.ZIndex="999999" Margin="15"
+      <ContentControl Name="contentControl" Grid.Column="1" />
+
+      <Grid Grid.ColumnSpan="2">
+         <materialDesign:Snackbar Name="snackBar" MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Panel.ZIndex="999999" Margin="15"
                                  Foreground="{StaticResource TextColorBrush}" Background="{StaticResource MahApps.Brushes.Gray}">
-      </materialDesign:Snackbar>
+         </materialDesign:Snackbar>
 
-      <Border Background="#3F000000" VerticalAlignment="Bottom" Opacity="1" Visibility="Collapsed">
-         <TextBlock Text="Developed by Frederico Santos" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,2,15,2" 
+         <Border Background="#3F000000" VerticalAlignment="Bottom" Opacity="1" Visibility="Collapsed">
+            <TextBlock Text="Developed by Frederico Santos" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,2,15,2" 
                        FontStyle="Oblique" Opacity="0.3" FontSize="12" />
-      </Border>
+         </Border>
+      </Grid>
    </Grid>
 </mah:MetroWindow>

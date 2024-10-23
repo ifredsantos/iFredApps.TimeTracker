@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace TimeTracker.UI.Models
 {
@@ -9,7 +8,7 @@ namespace TimeTracker.UI.Models
       public int user_id { get; set; }
       public DateTime start_date { get; set; }
       public DateTime? end_date { get; set; }
-      public string? description { get; set; }
-      public string? observation { get; set; }
+      public string description { get; set; }
+      public string observation { get; set; }
    }
 }

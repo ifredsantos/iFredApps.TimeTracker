@@ -1,8 +1,5 @@
 ﻿using iFredApps.Lib.WebApi;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TimeTracker.UI.Utils;
 
@@ -12,8 +9,8 @@ namespace TimeTracker.UI.Models
    {
       private WebApiClient _client;
 
-      private string _user;
-      private string _password;
+      private string _user = "";
+      private string _password = "";
       private User _userData;
 
       public AppWebClient()
@@ -52,7 +49,7 @@ namespace TimeTracker.UI.Models
          {
             if (!IsClientValid())
             {
-               Login(_user, _password);
+               Login(_user, _password).GetAwaiter();
             }
          }
          catch

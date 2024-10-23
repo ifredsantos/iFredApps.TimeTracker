@@ -1,16 +1,10 @@
-﻿using ControlzEx.Standard;
-using iFredApps.Lib.WebApi;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.Pkcs;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using TimeTracker.UI.Pages;
 using TimeTracker.UI.Utils;
 
 namespace TimeTracker.UI.Models
@@ -41,7 +35,7 @@ namespace TimeTracker.UI.Models
 
                   if (File.Exists(databaseFileDir))
                   {
-                     string tasksJSON = File.ReadAllText(databaseFileDir);
+                     string tasksJSON = await File.ReadAllTextAsync(databaseFileDir);
                      var sessions = JsonConvert.DeserializeObject<List<TimeManagerTaskSession>>(tasksJSON);
                      result = new TimeManagerDatabaseData
                      {
@@ -67,7 +61,7 @@ namespace TimeTracker.UI.Models
          }
          catch (Exception ex)
          {
-            throw;
+            ex.ShowException();
          }
 
          return result;
@@ -98,7 +92,7 @@ namespace TimeTracker.UI.Models
                         Directory.CreateDirectory(directory);
 
                      string tasksJSON = JsonConvert.SerializeObject(sessions);
-                     File.WriteAllText(databaseFileDir, tasksJSON);
+                     File.WriteAllTextAsync(databaseFileDir, tasksJSON);
                   }
                }
             }
@@ -143,7 +137,7 @@ namespace TimeTracker.UI.Models
          }
          catch (Exception ex)
          {
-            throw;
+            ex.ShowException();
          }
 
          return result;
@@ -183,7 +177,7 @@ namespace TimeTracker.UI.Models
          }
          catch (Exception ex)
          {
-            throw;
+            ex.ShowException();
          }
 
          return result;
@@ -213,7 +207,7 @@ namespace TimeTracker.UI.Models
          }
          catch (Exception ex)
          {
-            throw;
+            ex.ShowException();
          }
       }
    }

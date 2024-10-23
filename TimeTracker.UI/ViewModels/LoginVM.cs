@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-
-namespace TimeTracker.UI.ViewModels
+﻿namespace TimeTracker.UI.ViewModels
 {
    public class LoginModel
    {
-      public string? user { get; set; }
-      public string? password { get; set; }
+      public string user { get; set; }
+      public string password { get; set; }
       public bool isLoading { get; set; }
    }
 
    public class LoginVM : ViewModelBase
    {
       private LoginModel login;
-      private string userSearchTerm;
+      //private string userSearchTerm;
 
       public LoginVM()
       {

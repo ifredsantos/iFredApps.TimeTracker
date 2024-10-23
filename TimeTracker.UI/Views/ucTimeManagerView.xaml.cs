@@ -1,18 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Eventing.Reader;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using TimeTracker.UI.Models;
 using TimeTracker.UI.Utils;
 
-namespace TimeTracker.UI.Pages
+namespace TimeTracker.UI.Views
 {
    /// <summary>
    /// Interaction logic for ucTimeManager.xaml
@@ -27,8 +22,7 @@ namespace TimeTracker.UI.Pages
       {
          InitializeComponent();
 
-         Loaded += UcTimeManager_Loaded;
-         KeyUp += UcTimeManagerView_KeyUp;
+         InitData();
       }
 
       private async void InitData()
@@ -36,6 +30,7 @@ namespace TimeTracker.UI.Pages
          try
          {
             m_timeManager = new TimeManager();
+            DataContext = m_timeManager;
 
             var data = await DatabaseManager.LoadData();
             if (data != null)
@@ -63,6 +58,8 @@ namespace TimeTracker.UI.Pages
                         observation = data.uncompleted_session.observation,
                         total_time = DateTime.Now - data.uncompleted_session.start_date
                      };
+
+                     timeRowEditor.StartStopSession();
                   }
                   else
                   {
@@ -78,12 +75,6 @@ namespace TimeTracker.UI.Pages
          catch (Exception ex)
          {
             ex.ShowException();
-         }
-         finally
-         {
-            DataContext = m_timeManager;
-
-            timeRowEditor.StartStopSession();
          }
       }
 
@@ -161,33 +152,6 @@ namespace TimeTracker.UI.Pages
       }
 
       #region Events
-
-      private void UcTimeManager_Loaded(object sender, RoutedEventArgs e)
-      {
-         try
-         {
-            InitData();
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-      }
-
-      private void UcTimeManagerView_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-      {
-         try
-         {
-            if (e.Key == Key.Enter)
-            {
-               timeRowEditor.StartStopSession();
-            }
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-      }
 
       private async void OnCurrentSessionChanged(object sender, TimeRowSessionEventArgs e)
       {

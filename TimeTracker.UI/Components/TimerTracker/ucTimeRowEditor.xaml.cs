@@ -24,6 +24,8 @@ namespace TimeTracker.UI.Components
          timer = new DispatcherTimer();
          timer.Interval = TimeSpan.FromSeconds(1);
          timer.Tick += OnTimer_Tick;
+
+         KeyUp += UcTimeRowEditor_KeyUp;
       }
 
       private void StartSession()
@@ -45,6 +47,9 @@ namespace TimeTracker.UI.Components
          {
             if (currentSession.is_working)
             {
+               if (currentSession.description == null)
+                  currentSession.description = txtDescription.Text;
+
                if (currentSession.description != null)
                   currentSession.description = currentSession.description.TrimEnd(); //Remove empty spaces at the end
 
@@ -82,6 +87,21 @@ namespace TimeTracker.UI.Components
          try
          {
             StartStopSession();
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void UcTimeRowEditor_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+      {
+         try
+         {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+               StartStopSession();
+            }
          }
          catch (Exception ex)
          {
