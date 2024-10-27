@@ -67,5 +67,15 @@ namespace TimeTracker.UI.Components
       }
 
       #endregion
+
+      private void OnEditSessionRow(object sender, RoutedEventArgs e)
+      {
+
+      }
+
+      private void OnDeleteSessionRow(object sender, RoutedEventArgs e)
+      {
+
+      }
    }
 }
