@@ -82,10 +82,10 @@
                                         <TextBlock Text=" - "/>
                                         <TextBlock Text="{Binding end_date, StringFormat='dd/MM/yyyy HH:mm:ss', FallbackValue='[End date]'}"/>
                                         <TextBlock Margin="10,0,0,0" FontWeight="Bold" Text="{Binding total_time, StringFormat=(\{0:hh\\:mm\\:ss\}), FallbackValue='([Total time])'}"/>
-                                        <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="15,0,0,0" Width="35" Height="20" HorizontalContentAlignment="Center">
+                                        <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="15,0,0,0" Width="35" Height="20" HorizontalContentAlignment="Center" Click="OnEditSessionRow">
                                             <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PencilSolid" Foreground="CornflowerBlue" ToolTip="Edit session" />
                                         </Button>
-                                        <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="5,0,0,0" Width="35" Height="20" HorizontalContentAlignment="Center">
+                                        <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="5,0,0,0" Width="35" Height="20" HorizontalContentAlignment="Center" Click="OnDeleteSessionRow">
                                             <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="TrashSolid" Foreground="IndianRed" ToolTip="Delete session" />
                                         </Button>
                                     </StackPanel>
