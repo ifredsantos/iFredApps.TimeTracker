@@ -3,25 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker.UI", "TimeTracker.UI\TimeTracker.UI.csproj", "{7F1C8FED-00F6-4B9B-BCD4-100B2F6CF3A9}"
-EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TimeTracker.Setup", "TimeTracker.Setup\TimeTracker.Setup.vdproj", "{E584BC76-CA8C-4958-9E22-C5612BF6AFEE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker.Data", "TimeTracker.Data\TimeTracker.Data.csproj", "{6DC7DFC8-236F-498D-9F88-F8F907310903}"
-	ProjectSection(ProjectDependencies) = postProject
-		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921} = {60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker.Core", "TimeTracker.Core\TimeTracker.Core.csproj", "{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2C3D7DD5-00A3-4A26-BBD8-CE765E778D82}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker.WebApi", "TimeTracker.WebApi\TimeTracker.WebApi.csproj", "{5D3F35A4-6090-4A82-AB75-41284101551C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.Lib", "..\iFredApps.Lib\iFredApps.Lib.csproj", "{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.UI", "iFredApps.TimeTracker.UI\iFredApps.TimeTracker.UI.csproj", "{D7DAEFB5-A78B-42F8-BA4A-4EB7CF4A3AD8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.SL", "iFredApps.TimeTracker.SL\iFredApps.TimeTracker.SL.csproj", "{1B0DF52D-4D00-43D3-A58F-6C724A3C3F6F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.WebApi", "iFredApps.TimeTracker.WebApi\iFredApps.TimeTracker.WebApi.csproj", "{D5631F79-7AFB-4705-8890-DCEAED8C8125}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.DL", "iFredApps.TimeTracker.DL\iFredApps.TimeTracker.DL.csproj", "{FCD97659-F431-4B62-BCB9-70C826A2CED0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.Data", "iFredApps.TimeTracker.Data\iFredApps.TimeTracker.Data.csproj", "{40943C01-9465-42D9-A14D-95E9A1FCDAE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.Core", "iFredApps.TimeTracker.Core\iFredApps.TimeTracker.Core.csproj", "{05E445B6-0F64-427D-9FF2-879BB3EC9924}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,28 +28,34 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7F1C8FED-00F6-4B9B-BCD4-100B2F6CF3A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F1C8FED-00F6-4B9B-BCD4-100B2F6CF3A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F1C8FED-00F6-4B9B-BCD4-100B2F6CF3A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F1C8FED-00F6-4B9B-BCD4-100B2F6CF3A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E584BC76-CA8C-4958-9E22-C5612BF6AFEE}.Debug|Any CPU.ActiveCfg = Debug
-		{E584BC76-CA8C-4958-9E22-C5612BF6AFEE}.Release|Any CPU.ActiveCfg = Release
-		{6DC7DFC8-236F-498D-9F88-F8F907310903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DC7DFC8-236F-498D-9F88-F8F907310903}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DC7DFC8-236F-498D-9F88-F8F907310903}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DC7DFC8-236F-498D-9F88-F8F907310903}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60FBFB31-FA41-4FDA-A3A5-4B84FDE8A921}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D3F35A4-6090-4A82-AB75-41284101551C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D3F35A4-6090-4A82-AB75-41284101551C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D3F35A4-6090-4A82-AB75-41284101551C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D3F35A4-6090-4A82-AB75-41284101551C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{573CB89D-3FC6-4766-BBF3-ABB2E37315DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7DAEFB5-A78B-42F8-BA4A-4EB7CF4A3AD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7DAEFB5-A78B-42F8-BA4A-4EB7CF4A3AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7DAEFB5-A78B-42F8-BA4A-4EB7CF4A3AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7DAEFB5-A78B-42F8-BA4A-4EB7CF4A3AD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B0DF52D-4D00-43D3-A58F-6C724A3C3F6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B0DF52D-4D00-43D3-A58F-6C724A3C3F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B0DF52D-4D00-43D3-A58F-6C724A3C3F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B0DF52D-4D00-43D3-A58F-6C724A3C3F6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5631F79-7AFB-4705-8890-DCEAED8C8125}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5631F79-7AFB-4705-8890-DCEAED8C8125}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5631F79-7AFB-4705-8890-DCEAED8C8125}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5631F79-7AFB-4705-8890-DCEAED8C8125}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCD97659-F431-4B62-BCB9-70C826A2CED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCD97659-F431-4B62-BCB9-70C826A2CED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCD97659-F431-4B62-BCB9-70C826A2CED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCD97659-F431-4B62-BCB9-70C826A2CED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40943C01-9465-42D9-A14D-95E9A1FCDAE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40943C01-9465-42D9-A14D-95E9A1FCDAE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40943C01-9465-42D9-A14D-95E9A1FCDAE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40943C01-9465-42D9-A14D-95E9A1FCDAE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05E445B6-0F64-427D-9FF2-879BB3EC9924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05E445B6-0F64-427D-9FF2-879BB3EC9924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05E445B6-0F64-427D-9FF2-879BB3EC9924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05E445B6-0F64-427D-9FF2-879BB3EC9924}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
