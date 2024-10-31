@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using iFredApps.TimeTracker.UI.Models;
-using iFredApps.TimeTracker.UI.Utils;
+using iFredApps.Lib.Wpf.Execption;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -253,6 +253,41 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
+      private async void OnSessionChange(object sender, TimeTaskSessionEditEventArgs e)
+      {
+         try
+         {
+            if (e.Session != null)
+            {
+               await DatabaseManager.UpdateSession(e.Session, OnNotificationShow);
+
+               GroupingSessionIntoTasks();
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private async void OnSessionRemove(object sender, TimeTaskSessionEditEventArgs e)
+      {
+         try
+         {
+            if (e.Session != null)
+            {
+               await DatabaseManager.DeleteSession(e.Session.session_id, OnNotificationShow);
+               m_timeManager.sessions.Remove(e.Session);
+
+               GroupingSessionIntoTasks();
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
       private async void SessionStarts(object sender, TimeRowSessionEventArgs e)
       {
          if (m_timeManager.current_session.session_id == 0) //only record if it is a new session (not a recovered session)
@@ -267,5 +302,5 @@ namespace iFredApps.TimeTracker.UI.Views
       }
 
       #endregion
-   }
+    }
 }

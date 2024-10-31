@@ -22,4 +22,9 @@ namespace iFredApps.TimeTracker.UI.Models
       public string oldDescription { get; set; }
       public TimeManagerTask TaskData { get; set; }
    }
+
+   public class TimeTaskSessionEditEventArgs : EventArgs
+   {
+      public TimeManagerTaskSession Session { get; set; }
+   }
 }

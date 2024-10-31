@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using iFredApps.TimeTracker.UI.Models;
-using iFredApps.TimeTracker.UI.Utils;
+using iFredApps.Lib.Wpf.Execption;
 
 namespace iFredApps.TimeTracker.UI.Components
 {

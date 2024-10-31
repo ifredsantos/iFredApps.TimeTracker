@@ -7,6 +7,7 @@ using System.Windows;
 using iFredApps.TimeTracker.UI.Models;
 using iFredApps.TimeTracker.UI.Utils;
 using iFredApps.TimeTracker.UI.Views;
+using iFredApps.Lib.Wpf.Execption;
 
 namespace iFredApps.TimeTracker.UI
 {

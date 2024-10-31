@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using iFredApps.TimeTracker.UI.Utils;
+using iFredApps.Lib.Wpf.Execption;
 
 namespace iFredApps.TimeTracker.UI.Models
 {
@@ -166,6 +167,7 @@ namespace iFredApps.TimeTracker.UI.Models
                   {
                      var rowEditable = storedData.sessions.Find(x => x.session_id == session.session_id);
 
+                     rowEditable.start_date = session.start_date;
                      rowEditable.end_date = session.end_date;
                      rowEditable.description = session.description;
                      rowEditable.observation = session.observation;

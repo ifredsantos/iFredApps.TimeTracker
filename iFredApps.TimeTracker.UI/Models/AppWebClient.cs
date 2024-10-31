@@ -1,7 +1,7 @@
 ﻿using iFredApps.Lib.WebApi;
 using System;
 using System.Threading.Tasks;
-using iFredApps.TimeTracker.UI.Utils;
+using iFredApps.Lib.Wpf.Execption;
 
 namespace iFredApps.TimeTracker.UI.Models
 {

@@ -2,7 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using iFredApps.Lib.Wpf.Messages;
+using iFredApps.Lib.Wpf.Execption;
 using iFredApps.TimeTracker.UI.Models;
+using iFredApps.Lib;
+using MahApps.Metro.Controls;
 
 namespace iFredApps.TimeTracker.UI.Components
 {
@@ -14,6 +17,8 @@ namespace iFredApps.TimeTracker.UI.Components
       public event EventHandler<TimeTaskContinueEventArgs> OnTaskContinue;
       public event EventHandler<TimeTaskRemoveEventArgs> OnTaskRemove;
       public event EventHandler<TimeTaskEditEventArgs> OnTaskChanged;
+      public event EventHandler<TimeTaskSessionEditEventArgs> OnSessionChanged;
+      public event EventHandler<TimeTaskSessionEditEventArgs> OnSessionRemove;
 
       public ucTimeRow()
       {
@@ -67,25 +72,119 @@ namespace iFredApps.TimeTracker.UI.Components
          }
       }
 
-      #endregion
-
       private void OnEditSessionRow(object sender, RoutedEventArgs e)
       {
-         if(e.Source is Button btn)
+         try
          {
-            if(btn.DataContext is TimeManagerTaskSession session)
+            if (e.Source is Button btn)
             {
-               session.is_editing = true;
+               if (btn.DataContext is TimeManagerTaskSession session)
+               {
+                  session.is_editing = true;
+               }
             }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 
       private void OnDeleteSessionRow(object sender, RoutedEventArgs e)
       {
-         if(Message.Confirmation("Are you sure you want to remove this session?") == MessageBoxResult.Yes)
+         try
          {
-            //TODO: Remove session
+            if (Message.Confirmation("Are you sure you want to remove this session?") == MessageBoxResult.Yes)
+            {
+               if (e.Source is Button btn)
+               {
+                  if (btn.DataContext is TimeManagerTaskSession session)
+                  {
+                     OnSessionRemove?.Invoke(this, new TimeTaskSessionEditEventArgs { Session = session });
+                  }
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
+
+      private void OnSaveSessionRowCancel(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            if (e.Source is Button btn)
+            {
+               if (btn.DataContext is TimeManagerTaskSession session)
+               {
+                  session.NotifyValue(nameof(session.is_editing), false);
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void OnSaveSessionRowChanges(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            if (e.Source is Button btn)
+            {
+               if (btn.DataContext is TimeManagerTaskSession session)
+               {
+                  SaveSessionData(session);
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void OnKeyUpDateInput(object sender, System.Windows.Input.KeyEventArgs e)
+      {
+         try
+         {
+            if (e.Key != System.Windows.Input.Key.Enter)
+               return;
+
+            if (e.Source is DateTimePicker datePicker)
+            {
+               if (datePicker.DataContext is TimeManagerTaskSession session)
+               {
+                  SaveSessionData(session);
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      #endregion
+
+      #region Private Methods
+
+      private void SaveSessionData(TimeManagerTaskSession session)
+      {
+         if (session.start_date >= session.end_date.Value)
+         {
+            Message.ShowException("The start date time cannot be greater than the end date time!");
+            return;
+         }
+
+         OnSessionChanged?.Invoke(this, new TimeTaskSessionEditEventArgs { Session = session });
+         session.NotifyValue(nameof(session.is_editing), false);
+         session.NotifyValue(nameof(session.total_time), (session.end_date.Value - session.start_date));
+      }
+
+      #endregion
    }
 }
