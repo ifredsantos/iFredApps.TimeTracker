@@ -1,5 +1,5 @@
 {
-   "database_type": 0,
+   "database_type": 1,
    "webapi_connection_config": {
       "baseaddress": "https://localhost:44381/api/"
    }

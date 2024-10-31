@@ -8,6 +8,7 @@ using iFredApps.TimeTracker.UI.Models;
 using iFredApps.TimeTracker.UI.Utils;
 using iFredApps.TimeTracker.UI.Views;
 using iFredApps.Lib.Wpf.Execption;
+using System.Windows.Controls;
 
 namespace iFredApps.TimeTracker.UI
 {
@@ -73,6 +74,8 @@ namespace iFredApps.TimeTracker.UI
 
       private void InitMenu()
       {
+         cmpMenu.Visibility = Visibility.Collapsed;
+
          List<AppMenu> menus = new List<AppMenu>
          {
             new AppMenu("Time Tracker", PackIconFontAwesomeKind.ClockRegular, GetTimeTrackerView()),
@@ -110,7 +113,10 @@ namespace iFredApps.TimeTracker.UI
 
       private void LoginView_OnLoginSuccess(object sender, LoginEventArgs e)
       {
-         GetTimeTrackerView();
+         var ucTimeTracker = GetTimeTrackerView();
+
+         cmpMenu.Visibility = Visibility.Visible;
+         contentControl.Content = ucTimeTracker;
       }
 
       #endregion

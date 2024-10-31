@@ -22,7 +22,19 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          InitializeComponent();
 
-         InitData();
+         Loaded += UcTimeManagerView_Loaded;
+      }
+
+      private void UcTimeManagerView_Loaded(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            InitData();
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private async void InitData()
