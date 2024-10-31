@@ -145,6 +145,19 @@ namespace iFredApps.TimeTracker.UI.Models
          }
       }
 
+      private bool _is_editing;
+      [JsonIgnore]
+      public bool is_editing
+      {
+         get => _is_editing;
+         set
+         {
+            if (value == _is_editing) return;
+            _is_editing = value;
+            NotifyPropertyChanged();
+         }
+      }
+
       public event PropertyChangedEventHandler PropertyChanged;
       protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
       {

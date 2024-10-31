@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using iFredApps.Lib.Wpf.Messages;
 using iFredApps.TimeTracker.UI.Models;
 
 namespace iFredApps.TimeTracker.UI.Components
@@ -70,12 +71,21 @@ namespace iFredApps.TimeTracker.UI.Components
 
       private void OnEditSessionRow(object sender, RoutedEventArgs e)
       {
-
+         if(e.Source is Button btn)
+         {
+            if(btn.DataContext is TimeManagerTaskSession session)
+            {
+               session.is_editing = true;
+            }
+         }
       }
 
       private void OnDeleteSessionRow(object sender, RoutedEventArgs e)
       {
-
+         if(Message.Confirmation("Are you sure you want to remove this session?") == MessageBoxResult.Yes)
+         {
+            //TODO: Remove session
+         }
       }
    }
 }
