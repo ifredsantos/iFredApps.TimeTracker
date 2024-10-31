@@ -37,6 +37,9 @@ namespace iFredApps.TimeTracker.UI.Components
             currentSession.is_working = true;
             timer.Start();
 
+            if (string.IsNullOrEmpty(currentSession.description))
+               currentSession.description = txtDescription.Text;
+
             OnSessionStarts?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
          }
       }
