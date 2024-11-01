@@ -82,7 +82,7 @@ namespace iFredApps.TimeTracker.UI
             new AppMenu("Projects", PackIconFontAwesomeKind.TableColumnsSolid, new ucProjectsView()),
             new AppMenu("Workspaces", PackIconFontAwesomeKind.SpaceAwesomeBrands, new ucWorkspacesView()),
             new AppMenu("Settings", PackIconFontAwesomeKind.GearSolid, new ucSettingsView()),
-            new AppMenu("Utils", PackIconFontAwesomeKind.CodeBranchSolid, null)
+            new AppMenu("Utils", PackIconFontAwesomeKind.CodeBranchSolid, new ucUtilitiesView())
          };
 
          cmpMenu.menuList.ItemsSource = menus;
