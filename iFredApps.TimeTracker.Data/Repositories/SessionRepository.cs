@@ -21,6 +21,8 @@ namespace iFredApps.TimeTracker.Data.Repositories
 
       public async Task<Session> CreateSession(Session session)
       {
+         session.session_id = null;
+
          await _context.Sessions.AddAsync(session);
          await _context.SaveChangesAsync();
 

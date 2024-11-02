@@ -178,7 +178,7 @@ namespace iFredApps.TimeTracker.UI.Components
       {
          if (session.start_date >= session.end_date.Value)
          {
-            Message.ShowException("The start date time cannot be greater than the end date time!");
+            Message.Error("The start date time cannot be greater than the end date time!");
             return;
          }
 

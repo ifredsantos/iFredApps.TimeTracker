@@ -7,15 +7,27 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="visConv" />
+    </UserControl.Resources>
     <Grid Margin="15">
         <StackPanel>
             <Label Content="Here you can import your recorded sessions as a file." FontSize="26" Padding="0"/>
             <Label Content="Choose the json file path:" FontSize="16" Padding="0" />
 
             <StackPanel Orientation="Horizontal">
-                <TextBox Width="400" Name="txtFileDirectory" />
-                <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Visibility="Visible" Name="btnChooseFileDirectory">
-                    <iconPacks:PackIconFontAwesome Kind="MagnifyingGlassSolid" Width="18" Foreground="{DynamicResource TextColorBrush}" />
+                <TextBox Width="400" Name="txtFileDirectory" Text="{Binding FileDirectory}" />
+                <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Name="btnChooseFileDirectory">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconFontAwesome Kind="MagnifyingGlassSolid" Width="18" Foreground="{DynamicResource TextColorBrush}" VerticalAlignment="Center" />
+                        <TextBlock Text="Choose file" Foreground="{DynamicResource TextColorBrush}" VerticalAlignment="Center" Margin="10,0,0,0" />
+                    </StackPanel>
+                </Button>
+                <Button  Name="btnStartProcess" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Visibility="{Binding IsReadyToImport, Converter={StaticResource visConv}}" Click="btnStartProcess_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconFontAwesome Kind="FileImportSolid" Width="18" Foreground="{DynamicResource TextColorBrush}" VerticalAlignment="Center" />
+                        <TextBlock Text="Import data" Foreground="{DynamicResource TextColorBrush}" VerticalAlignment="Center" Margin="10,0,0,0" />
+                    </StackPanel>
                 </Button>
             </StackPanel>
         </StackPanel>

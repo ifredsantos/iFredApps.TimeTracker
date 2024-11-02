@@ -19,9 +19,6 @@
     <Compile Update="Components\ucLateralMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ucLoginView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\ucProjectsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -34,12 +31,12 @@
     <Compile Update="Views\ucWorkspacesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="wLogin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Components\ucLateralMenu.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\ucLoginView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ucProjectsView.xaml">
@@ -52,6 +49,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ucWorkspacesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="wLogin.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

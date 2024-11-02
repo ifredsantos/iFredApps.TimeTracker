@@ -1,29 +1,41 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using iFredApps.TimeTracker.UI.Models;
+﻿using iFredApps.TimeTracker.UI.Models;
 using iFredApps.TimeTracker.UI.Utils;
 using iFredApps.TimeTracker.UI.ViewModels;
+using System;
+using System.Windows;
+using System.Windows.Input;
 using iFredApps.Lib.Wpf.Execption;
+using iFredApps.Lib.Wpf.Messages;
+using MahApps.Metro.Controls;
 
-namespace iFredApps.TimeTracker.UI.Views
+namespace iFredApps.TimeTracker.UI
 {
    /// <summary>
-   /// Interaction logic for ucLoginView.xaml
+   /// Lógica interna para wLogin.xaml
    /// </summary>
-   public partial class ucLoginView : UserControl
+   public partial class wLogin : MetroWindow
    {
-      public event EventHandler<LoginEventArgs> OnLoginSuccess;
+      private AppConfig appConfig;
 
-      public ucLoginView()
+      public wLogin()
       {
          InitializeComponent();
 
          PreviewKeyUp += UcLoginView_PreviewKeyUp;
 
          LoginBtn.Click += LoginBtn_Click;
+
+         appConfig = SettingsLoader<AppConfig>.Instance.Data;
+         if (appConfig.database_type == AppConfig.enDataBaseType.JSON)
+         {
+            OpenMainWindow();
+            return;
+         }
+
+         txtUser.Focus();
       }
+
+      #region Events
 
       private void UcLoginView_PreviewKeyUp(object sender, KeyEventArgs e)
       {
@@ -38,6 +50,10 @@ namespace iFredApps.TimeTracker.UI.Views
          LoginSubmit();
       }
 
+      #endregion
+
+      #region Private
+
       private async void LoginSubmit()
       {
          LoginVM loginVM = DataContext as LoginVM;
@@ -49,7 +65,7 @@ namespace iFredApps.TimeTracker.UI.Views
 
             if (string.IsNullOrEmpty(loginVM.user) || string.IsNullOrEmpty(loginVM.password))
             {
-               MessageBox.Show("Enter credentials!");
+               Message.Warning("Enter credentials!");
                return;
             }
 
@@ -57,7 +73,7 @@ namespace iFredApps.TimeTracker.UI.Views
             await AppWebClient.Instance.Login(loginVM.user, loginVM.password);
             if (AppWebClient.Instance.GetLoggedUserData() != null)
             {
-               OnLoginSuccess.Invoke(this, new LoginEventArgs { });
+               OpenMainWindow();
             }
          }
          catch (Exception ex)
@@ -69,5 +85,19 @@ namespace iFredApps.TimeTracker.UI.Views
             loginVM.isLoading = false;
          }
       }
+
+      private void OpenMainWindow()
+      {
+         this.Hide();
+
+         MainWindow mainWin = new MainWindow();
+         bool? winResult = mainWin.ShowDialog();
+         if (winResult == null || winResult.Value == false)
+         {
+            Application.Current.Shutdown();
+         }
+      }
+
+      #endregion
    }
 }

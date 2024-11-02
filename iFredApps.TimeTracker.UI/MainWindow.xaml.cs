@@ -27,41 +27,18 @@ namespace iFredApps.TimeTracker.UI
 
          InitMenu();
 
-         if (appConfig.database_type == AppConfig.enDataBaseType.WebApi)
-         {
-            SetLoginView();
-         }
-         else if (appConfig.database_type == AppConfig.enDataBaseType.JSON)
-         {
-            SetTimeTrackerView();
-         }
+         SetTimeTrackerView();
       }
 
       #region Methods
 
-      private void SetLoginView()
-      {
-         Width = 400;
-         Height = 500;
-
-         ucLoginView loginView = new ucLoginView();
-         loginView.OnLoginSuccess += LoginView_OnLoginSuccess;
-         contentControl.Content = loginView;
-      }
-
       private void SetTimeTrackerView()
       {
-         Width = 1100;
-         Height = 600;
-
          cmpMenu.menuList.SelectedIndex = 0;
       }
 
       private ucTimeManagerView GetTimeTrackerView()
       {
-         Width = 1100;
-         Height = 600;
-
          ucTimeManagerView timeManagerView = new ucTimeManagerView();
          timeManagerView.OnNotificationShow += OnNotificationShow;
 
@@ -74,8 +51,6 @@ namespace iFredApps.TimeTracker.UI
 
       private void InitMenu()
       {
-         cmpMenu.Visibility = Visibility.Collapsed;
-
          List<AppMenu> menus = new List<AppMenu>
          {
             new AppMenu("Time Tracker", PackIconFontAwesomeKind.ClockRegular, GetTimeTrackerView()),
@@ -111,14 +86,6 @@ namespace iFredApps.TimeTracker.UI
       #endregion
 
       #region Events
-
-      private void LoginView_OnLoginSuccess(object sender, LoginEventArgs e)
-      {
-         var ucTimeTracker = GetTimeTrackerView();
-
-         cmpMenu.Visibility = Visibility.Visible;
-         contentControl.Content = ucTimeTracker;
-      }
 
       #endregion
 

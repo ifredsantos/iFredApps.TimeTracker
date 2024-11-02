@@ -8,7 +8,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
         xmlns:components="clr-namespace:iFredApps.TimeTracker.UI.Components"
         mc:Ignorable="d"
-        Title="Time Tracker" Height="600" Width="1100" Icon="./Resources/logo.png">
+        Title="Time Tracker" Height="600" Width="1100" WindowStartupLocation="CenterScreen" Icon="./Resources/logo.png">
    <mah:MetroWindow.LeftWindowCommands>
       <mah:WindowCommands>
       </mah:WindowCommands>

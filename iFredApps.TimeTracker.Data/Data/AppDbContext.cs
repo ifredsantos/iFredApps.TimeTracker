@@ -14,6 +14,7 @@ namespace iFredApps.TimeTracker.Data.Data
       {
          modelBuilder.Entity<User>().ToTable("users").HasKey(t => t.user_id);
          modelBuilder.Entity<Session>().ToTable("sessions").HasKey(t => t.session_id);
+         modelBuilder.Entity<Session>().Property(s => s.session_id).ValueGeneratedOnAdd();
 
          base.OnModelCreating(modelBuilder);
       }
