@@ -48,7 +48,11 @@ namespace iFredApps.TimeTracker.UI.Components
          if (DataContext is TimeManagerTask taskData)
          {
             string oldDescription = taskData.description.ToString();
-            taskData.description = ((TextBox)e.Source).Text.Trim();
+            string newDescription = ((TextBox)e.Source).Text.Trim();
+            if (oldDescription == newDescription)
+               return;
+
+            taskData.description = newDescription;
             OnTaskChanged?.Invoke(this, new TimeTaskEditEventArgs { oldDescription = oldDescription, TaskData = taskData });
          }
       }

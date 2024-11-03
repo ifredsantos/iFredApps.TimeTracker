@@ -244,16 +244,12 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            if (e.TaskData != null)
+            if (e.TaskData != null && e.TaskData.sessions != null)
             {
-               var sessionsToChange = m_timeManager.sessions.FindAll(x => x.description == e.oldDescription);
-               if (sessionsToChange != null)
+               foreach (var session in e.TaskData.sessions)
                {
-                  foreach (var session in sessionsToChange)
-                  {
-                     session.description = e.TaskData.description;
-                     await DatabaseManager.UpdateSession(session, OnNotificationShow);
-                  }
+                  session.description = e.TaskData.description;
+                  await DatabaseManager.UpdateSession(session, OnNotificationShow);
                }
 
                GroupingSessionIntoTasks();
@@ -314,5 +310,5 @@ namespace iFredApps.TimeTracker.UI.Views
       }
 
       #endregion
-    }
+   }
 }
