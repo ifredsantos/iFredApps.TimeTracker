@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using iFredApps.TimeTracker.UI.Utils;
 using iFredApps.Lib.Wpf.Execption;
+using iFredApps.Lib;
 
 namespace iFredApps.TimeTracker.UI.Models
 {
@@ -51,6 +52,12 @@ namespace iFredApps.TimeTracker.UI.Models
                      throw new Exception("It is necessary to parameterize the webapi configuration!");
 
                   var sessions = await WebApiCall.Session.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+
+                  if(!sessions.IsNullOrEmpty())
+                  {
+                     DateTime minDateDisplay = DateTime.Now.AddDays(-7);
+                     sessions.RemoveAll(x => x.start_date < minDateDisplay);
+                  }
 
                   result = new TimeManagerDatabaseData
                   {
