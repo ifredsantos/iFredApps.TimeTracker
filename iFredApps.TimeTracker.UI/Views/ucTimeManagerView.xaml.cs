@@ -71,7 +71,7 @@ namespace iFredApps.TimeTracker.UI.Views
                         total_time = DateTime.Now - data.uncompleted_session.start_date
                      };
 
-                     timeRowEditor.StartStopSession();
+                     await timeRowEditor.StartStopSession();
                   }
                   else
                   {
@@ -169,13 +169,13 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            await DatabaseManager.UpdateSession(e.SessionData, OnNotificationShow);
+            //await DatabaseManager.UpdateSession(e.SessionData);
 
-            m_timeManager.sessions.Add(e.SessionData);
+            //m_timeManager.sessions.Add(e.SessionData);
 
             m_timeManager.current_session = new TimeManagerTaskCurrentSession();
 
-            GroupingSessionIntoTasks();
+            //GroupingSessionIntoTasks();
          }
          catch (Exception ex)
          {
@@ -231,7 +231,7 @@ namespace iFredApps.TimeTracker.UI.Views
                   }
                }
 
-               GroupingSessionIntoTasks();
+               //GroupingSessionIntoTasks();
             }
          }
          catch (Exception ex)
@@ -249,10 +249,10 @@ namespace iFredApps.TimeTracker.UI.Views
                foreach (var session in e.TaskData.sessions)
                {
                   session.description = e.TaskData.description;
-                  await DatabaseManager.UpdateSession(session, OnNotificationShow);
+                  await DatabaseManager.UpdateSession(session);
                }
 
-               GroupingSessionIntoTasks();
+               //GroupingSessionIntoTasks();
             }
          }
          catch (Exception ex)
@@ -267,9 +267,9 @@ namespace iFredApps.TimeTracker.UI.Views
          {
             if (e.Session != null)
             {
-               await DatabaseManager.UpdateSession(e.Session, OnNotificationShow);
+               await DatabaseManager.UpdateSession(e.Session);
 
-               GroupingSessionIntoTasks();
+               //GroupingSessionIntoTasks();
             }
          }
          catch (Exception ex)
@@ -287,7 +287,7 @@ namespace iFredApps.TimeTracker.UI.Views
                await DatabaseManager.DeleteSession(e.Session.session_id, OnNotificationShow);
                m_timeManager.sessions.Remove(e.Session);
 
-               GroupingSessionIntoTasks();
+               //GroupingSessionIntoTasks();
             }
          }
          catch (Exception ex)

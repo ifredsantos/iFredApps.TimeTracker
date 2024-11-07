@@ -58,13 +58,18 @@
                         </ControlTemplate>
                      </Setter.Value>
                   </Setter>
-                  <Style.Triggers>
+                  <!--<Style.Triggers>
                      <DataTrigger Binding="{Binding tasks.Count}" Value="0">
                         <Setter Property="Visibility" Value="Collapsed"/>
                      </DataTrigger>
-                  </Style.Triggers>
+                  </Style.Triggers>-->
                </Style>
             </ListView.ItemContainerStyle>
+            <ListView.ItemsPanel>
+               <ItemsPanelTemplate>
+                  <VirtualizingStackPanel />
+               </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                <DataTemplate>
                   <local:ucTimeRow OnTaskContinue="OnTaskContinueClick" OnTaskRemove="OnTaskRemoveClick" OnTaskChanged="OnTaskChange" OnSessionChanged="OnSessionChange" OnSessionRemove="OnSessionRemove" />

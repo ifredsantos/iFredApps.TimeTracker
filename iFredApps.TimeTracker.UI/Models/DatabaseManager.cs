@@ -53,9 +53,9 @@ namespace iFredApps.TimeTracker.UI.Models
 
                   var sessions = await WebApiCall.Session.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
 
-                  if(!sessions.IsNullOrEmpty())
+                  if (!sessions.IsNullOrEmpty())
                   {
-                     DateTime minDateDisplay = DateTime.Now.AddDays(-7);
+                     DateTime minDateDisplay = DateTime.Now.AddMonths(-1);
                      sessions.RemoveAll(x => x.start_date < minDateDisplay);
                   }
 
@@ -75,46 +75,6 @@ namespace iFredApps.TimeTracker.UI.Models
          return result;
       }
 
-      /// <summary>
-      /// Supported for local database only
-      /// </summary>
-      /// <param name="sessions"></param>
-      /// <param name="OnNotificationShow"></param>
-      /// <returns></returns>
-      private static Task SaveAllSessions(List<TimeManagerTaskSession> sessions, EventHandler<NotificationEventArgs> OnNotificationShow)
-      {
-         return Task.Factory.StartNew(() =>
-         {
-            try
-            {
-               AppConfig appConfig = SettingsLoader<AppConfig>.Instance.Data;
-               if (appConfig != null)
-               {
-                  if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
-                  {
-                     string directory = appConfig.json_database_config.directory;
-                     string filename = appConfig.json_database_config.filename;
-                     string databaseFileDir = Path.Combine(directory, filename);
-
-                     if (!Directory.Exists(directory))
-                        Directory.CreateDirectory(directory);
-
-                     string tasksJSON = JsonConvert.SerializeObject(sessions);
-                     File.WriteAllTextAsync(databaseFileDir, tasksJSON);
-                  }
-               }
-            }
-            catch (Exception ex)
-            {
-               ex.ShowException();
-            }
-         })
-         .ContinueWith(t =>
-         {
-            OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
-         }, TaskScheduler.FromCurrentSynchronizationContext());
-      }
-
       public static async Task<TimeManagerTaskSession> CreateSession(TimeManagerTaskSession session, EventHandler<NotificationEventArgs> OnNotificationShow)
       {
          TimeManagerTaskSession result = null;
@@ -131,16 +91,6 @@ namespace iFredApps.TimeTracker.UI.Models
 
                   OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
                }
-               else if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
-               {
-                  var storedData = await LoadData();
-
-                  session.session_id = storedData.sessions.Count > 0 ? storedData.sessions.Max(x => x.session_id) + 1 : 1;
-
-                  storedData.sessions.Add(session);
-
-                  await SaveAllSessions(storedData.sessions, OnNotificationShow);
-               }
             }
          }
          catch (Exception ex)
@@ -151,7 +101,7 @@ namespace iFredApps.TimeTracker.UI.Models
          return result;
       }
 
-      public static async Task<TimeManagerTaskSession> UpdateSession(TimeManagerTaskSession session, EventHandler<NotificationEventArgs> OnNotificationShow)
+      public static async Task<TimeManagerTaskSession> UpdateSession(TimeManagerTaskSession session)
       {
          TimeManagerTaskSession result = null;
          try
@@ -164,23 +114,6 @@ namespace iFredApps.TimeTracker.UI.Models
                   session.user_id = AppWebClient.Instance.GetLoggedUserData().user_id;
 
                   result = await WebApiCall.Session.UpdateSession(AppWebClient.Instance.GetClient(), session);
-
-                  OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
-               }
-               else if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
-               {
-                  var storedData = await LoadData();
-                  if (storedData != null)
-                  {
-                     var rowEditable = storedData.sessions.Find(x => x.session_id == session.session_id);
-
-                     rowEditable.start_date = session.start_date;
-                     rowEditable.end_date = session.end_date;
-                     rowEditable.description = session.description;
-                     rowEditable.observation = session.observation;
-
-                     await SaveAllSessions(storedData.sessions, OnNotificationShow);
-                  }
                }
             }
          }
@@ -204,13 +137,6 @@ namespace iFredApps.TimeTracker.UI.Models
                   await WebApiCall.Session.DeleteSession(AppWebClient.Instance.GetClient(), sessionID);
 
                   OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
-               }
-               else if (appConfig.database_type == AppConfig.enDataBaseType.JSON && appConfig.json_database_config != null)
-               {
-                  var storedData = await LoadData();
-                  var rowToRemove = storedData.sessions.RemoveAll(x => x.session_id == sessionID);
-
-                  await SaveAllSessions(storedData.sessions, OnNotificationShow);
                }
             }
          }

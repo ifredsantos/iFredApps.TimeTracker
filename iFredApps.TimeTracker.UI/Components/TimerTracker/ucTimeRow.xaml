@@ -112,6 +112,11 @@
                         </StackPanel>
                      </DataTemplate>
                   </ItemsControl.ItemTemplate>
+                  <ItemsControl.ItemsPanel>
+                     <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                     </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
                </ItemsControl>
             </StackPanel>
          </Grid>

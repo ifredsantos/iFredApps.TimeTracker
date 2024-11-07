@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using iFredApps.TimeTracker.UI.Models;
 using iFredApps.Lib.Wpf.Execption;
+using System.Threading.Tasks;
 
 namespace iFredApps.TimeTracker.UI.Components
 {
@@ -44,7 +45,7 @@ namespace iFredApps.TimeTracker.UI.Components
          }
       }
 
-      public void StartStopSession()
+      public async Task StartStopSession()
       {
          if (DataContext is TimeManagerTaskCurrentSession currentSession) //End session
          {
@@ -66,7 +67,12 @@ namespace iFredApps.TimeTracker.UI.Components
                currentSession.is_working = false;
                timer.Stop();
 
-               OnSessionChanged?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
+               var savedSessionData = await DatabaseManager.UpdateSession(currentSession);
+               if(savedSessionData != null)
+               {
+                  currentSession.end_date = savedSessionData.end_date;
+                  OnSessionChanged?.Invoke(this, new TimeRowSessionEventArgs { SessionData = savedSessionData });
+               }
             }
             else
             {
@@ -85,11 +91,11 @@ namespace iFredApps.TimeTracker.UI.Components
          }
       }
 
-      private void OnStartStopButton_Click(object sender, RoutedEventArgs e)
+      private async void OnStartStopButton_Click(object sender, RoutedEventArgs e)
       {
          try
          {
-            StartStopSession();
+            await StartStopSession();
          }
          catch (Exception ex)
          {
@@ -97,13 +103,13 @@ namespace iFredApps.TimeTracker.UI.Components
          }
       }
 
-      private void UcTimeRowEditor_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+      private async void UcTimeRowEditor_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
       {
          try
          {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
-               StartStopSession();
+               await StartStopSession();
             }
          }
          catch (Exception ex)
