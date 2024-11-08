@@ -227,11 +227,20 @@ namespace iFredApps.TimeTracker.UI.Views
                   foreach (var session in e.TaskData.sessions)
                   {
                      await DatabaseManager.DeleteSession(session.session_id, OnNotificationShow);
-                     m_timeManager.sessions.Remove(session);
+
+                     foreach (var group in m_timeManager.task_groups)
+                     {
+                        var tasksToRemove = group.tasks
+                            .Where(task => task.sessions.Any(session => session.session_id == e.TaskData.sessions.First().session_id))
+                            .ToList();
+
+                        foreach (var task in tasksToRemove)
+                        {
+                           group.tasks.Remove(task);
+                        }
+                     }
                   }
                }
-
-               //GroupingSessionIntoTasks();
             }
          }
          catch (Exception ex)

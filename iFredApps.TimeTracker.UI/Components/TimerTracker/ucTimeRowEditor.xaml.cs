@@ -29,22 +29,6 @@ namespace iFredApps.TimeTracker.UI.Components
          KeyUp += UcTimeRowEditor_KeyUp;
       }
 
-      private void StartSession()
-      {
-         if (DataContext is TimeManagerTaskCurrentSession currentSession)
-         {
-            if (currentSession.start_date == DateTime.MinValue)
-               currentSession.start_date = DateTime.Now;
-            currentSession.is_working = true;
-            timer.Start();
-
-            if (string.IsNullOrEmpty(currentSession.description))
-               currentSession.description = txtDescription.Text;
-
-            OnSessionStarts?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
-         }
-      }
-
       public async Task StartStopSession()
       {
          if (DataContext is TimeManagerTaskCurrentSession currentSession) //End session
@@ -68,7 +52,7 @@ namespace iFredApps.TimeTracker.UI.Components
                timer.Stop();
 
                var savedSessionData = await DatabaseManager.UpdateSession(currentSession);
-               if(savedSessionData != null)
+               if (savedSessionData != null)
                {
                   currentSession.end_date = savedSessionData.end_date;
                   OnSessionChanged?.Invoke(this, new TimeRowSessionEventArgs { SessionData = savedSessionData });
@@ -76,7 +60,15 @@ namespace iFredApps.TimeTracker.UI.Components
             }
             else
             {
-               StartSession();
+               if (currentSession.start_date == DateTime.MinValue)
+                  currentSession.start_date = DateTime.Now;
+               currentSession.is_working = true;
+               timer.Start();
+
+               if (string.IsNullOrEmpty(currentSession.description))
+                  currentSession.description = txtDescription.Text;
+
+               OnSessionStarts?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
             }
          }
       }
