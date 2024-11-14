@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using iFredApps.Lib;
 using iFredApps.Lib.Wpf.Execption;
 using iFredApps.Lib.Wpf.Messages;
 using iFredApps.TimeTracker.UI.Models;
@@ -61,6 +62,8 @@ namespace iFredApps.TimeTracker.UI.Views
                string filename = dialog.FileName;
                m_dataModel.FileDirectory = filename;
                m_dataModel.IsReadyToImport = true;
+
+               m_dataModel.NotifyAll();
             }
          }
          catch (Exception ex)
@@ -73,14 +76,14 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            if(string.IsNullOrEmpty(m_dataModel.FileDirectory) || !File.Exists(m_dataModel.FileDirectory))
+            if (string.IsNullOrEmpty(m_dataModel.FileDirectory) || !File.Exists(m_dataModel.FileDirectory))
             {
                Message.Error("The file path is not valid or does not exist.");
                return;
             }
 
             string fileContent = await File.ReadAllTextAsync(m_dataModel.FileDirectory);
-            if(string.IsNullOrEmpty(fileContent))
+            if (string.IsNullOrEmpty(fileContent))
             {
                Message.Error("The file path is not valid or does not exist.");
                return;
@@ -138,35 +141,10 @@ namespace iFredApps.TimeTracker.UI.Views
 
       private class hUtilitiesImportData : INotifyPropertyChanged
       {
-         private string _fileDirectory;
-         public string FileDirectory
-         {
-            get => _fileDirectory;
-            set
-            {
-               if (value == _fileDirectory) return;
-               _fileDirectory = value;
-               NotifyPropertyChanged(nameof(FileDirectory));
-            }
-         }
-
-         private bool _isReadyToImport;
-         public bool IsReadyToImport
-         {
-            get => _isReadyToImport;
-            set
-            {
-               if (value == _isReadyToImport) return;
-               _isReadyToImport = value;
-               NotifyPropertyChanged(nameof(IsReadyToImport));
-            }
-         }
+         public string FileDirectory { get; set; }
+         public bool IsReadyToImport { get; set; }
 
          public event PropertyChangedEventHandler PropertyChanged;
-         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
-         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-         }
       }
 
       #endregion

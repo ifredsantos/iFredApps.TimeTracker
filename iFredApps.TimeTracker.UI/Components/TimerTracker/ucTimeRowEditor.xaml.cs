@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using iFredApps.TimeTracker.UI.Models;
 using iFredApps.Lib.Wpf.Execption;
+using iFredApps.Lib;
 
 namespace iFredApps.TimeTracker.UI.Components
 {
@@ -30,11 +31,13 @@ namespace iFredApps.TimeTracker.UI.Components
 
       private void StartSession()
       {
-         if (DataContext is TimeManagerTaskCurrentSession currentSession)
+         if (DataContext is TimeManagerTaskSession currentSession)
          {
             if (currentSession.start_date == DateTime.MinValue)
                currentSession.start_date = DateTime.Now;
-            currentSession.is_working = true;
+            
+            currentSession.NotifyValue(nameof(currentSession.is_working), true);
+
             timer.Start();
 
             if (string.IsNullOrEmpty(currentSession.description))
@@ -46,7 +49,7 @@ namespace iFredApps.TimeTracker.UI.Components
 
       public void StartStopSession()
       {
-         if (DataContext is TimeManagerTaskCurrentSession currentSession) //End session
+         if (DataContext is TimeManagerTaskSession currentSession) //End session
          {
             if (currentSession.is_working)
             {
@@ -63,7 +66,9 @@ namespace iFredApps.TimeTracker.UI.Components
                }
 
                currentSession.end_date = DateTime.Now;
-               currentSession.is_working = false;
+
+               currentSession.NotifyValue(nameof(currentSession.is_working), false);
+
                timer.Stop();
 
                OnSessionChanged?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
@@ -79,9 +84,9 @@ namespace iFredApps.TimeTracker.UI.Components
 
       private void OnTimer_Tick(object sender, EventArgs e)
       {
-         if (DataContext is TimeManagerTaskCurrentSession session)
+         if (DataContext is TimeManagerTaskSession session)
          {
-            session.total_time = DateTime.Now - session.start_date;
+            session.NotifyValue(nameof(session.total_time), DateTime.Now - session.start_date);
          }
       }
 

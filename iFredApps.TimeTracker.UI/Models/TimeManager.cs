@@ -9,33 +9,17 @@ namespace iFredApps.TimeTracker.UI.Models
 {
    public class TimeManager : INotifyPropertyChanged
    {
-      private TimeManagerTaskCurrentSession _current_session;
-      [JsonIgnore]
-      public TimeManagerTaskCurrentSession current_session
-      {
-         get => _current_session;
-         set
-         {
-            if (value == _current_session) return;
-            _current_session = value;
-            NotifyPropertyChanged(nameof(current_session));
-         }
-      }
+      public TimeManagerTaskSession current_session { get; set; }
       public List<TimeManagerTaskSession> sessions { get; set; }
-      [JsonIgnore]
       public ObservableCollection<TimeManagerGroup> task_groups { get; set; }
       public TimeManager()
       {
-         current_session = new TimeManagerTaskCurrentSession();
+         current_session = new TimeManagerTaskSession();
          sessions = new List<TimeManagerTaskSession>();
          task_groups = new ObservableCollection<TimeManagerGroup>();
       }
 
       public event PropertyChangedEventHandler PropertyChanged;
-      protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
-      {
-         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-      }
    }
 
    public class TimeManagerGroup
@@ -106,79 +90,19 @@ namespace iFredApps.TimeTracker.UI.Models
             return result;
          }
       }
-      private bool _is_detail_session_open;
-      public bool is_detail_session_open
-      {
-         get => _is_detail_session_open;
-         set
-         {
-            if (value == _is_detail_session_open) return;
-            _is_detail_session_open = value;
-            NotifyPropertyChanged();
-         }
-      }
+
+      public bool is_detail_session_open { get; set; }
 
       public event PropertyChangedEventHandler PropertyChanged;
-      protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
-      {
-         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-      }
    }
 
    public class TimeManagerTaskSession : Session, INotifyPropertyChanged
    {
-      private TimeSpan _total_time;
-      [JsonIgnore]
-      public TimeSpan total_time
-      {
-         get
-         {
-            if (_total_time == TimeSpan.Zero && end_date.HasValue)
-               _total_time = end_date.Value - start_date;
-            return _total_time;
-         }
-         set
-         {
-            if (value == _total_time) return;
-            _total_time = value;
-            NotifyPropertyChanged();
-         }
-      }
-
-      private bool _is_editing;
-      [JsonIgnore]
-      public bool is_editing
-      {
-         get => _is_editing;
-         set
-         {
-            if (value == _is_editing) return;
-            _is_editing = value;
-            NotifyPropertyChanged();
-         }
-      }
+      public TimeSpan total_time { get; set; }
+      public bool is_editing { get; set; }
+      public bool is_working { get; set; }
 
       public event PropertyChangedEventHandler PropertyChanged;
-      protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
-      {
-         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-      }
-   }
-
-   public class TimeManagerTaskCurrentSession : TimeManagerTaskSession, INotifyPropertyChanged
-   {
-      private bool _is_working;
-      [JsonIgnore]
-      public bool is_working
-      {
-         get => _is_working;
-         set
-         {
-            if (value == _is_working) return;
-            _is_working = value;
-            NotifyPropertyChanged();
-         }
-      }
    }
 
    public class TimeManagerDatabaseData

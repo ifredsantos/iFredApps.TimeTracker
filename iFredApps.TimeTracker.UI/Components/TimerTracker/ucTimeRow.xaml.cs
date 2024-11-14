@@ -72,7 +72,7 @@ namespace iFredApps.TimeTracker.UI.Components
                sessionDetail.Visibility = Visibility.Visible;
             }
 
-            taskData.is_detail_session_open = !taskData.is_detail_session_open;
+            taskData.NotifyValue(nameof(taskData.is_detail_session_open), !taskData.is_detail_session_open);
          }
       }
 
@@ -189,7 +189,7 @@ namespace iFredApps.TimeTracker.UI.Components
          OnSessionChanged?.Invoke(this, new TimeTaskSessionEditEventArgs { Session = session });
          //TODO: Change this
          session.is_editing = false;
-         session.total_time = session.end_date.Value - session.start_date;
+         session.NotifyValue(nameof(session.total_time), session.end_date.Value - session.start_date);
          //session.NotifyValue(nameof(session.is_editing), false);
          //session.NotifyValue(nameof(session.total_time), (session.end_date.Value - session.start_date));
       }

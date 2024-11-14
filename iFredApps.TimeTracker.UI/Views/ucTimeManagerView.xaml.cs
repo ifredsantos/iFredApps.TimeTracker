@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using iFredApps.TimeTracker.UI.Models;
 using iFredApps.Lib.Wpf.Execption;
+using iFredApps.Lib;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -61,7 +62,7 @@ namespace iFredApps.TimeTracker.UI.Views
                           MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes
                       ) == MessageBoxResult.Yes)
                   {
-                     m_timeManager.current_session = new TimeManagerTaskCurrentSession
+                     m_timeManager.current_session = new TimeManagerTaskSession
                      {
                         session_id = data.uncompleted_session.session_id,
                         user_id = data.uncompleted_session.user_id,
@@ -75,7 +76,7 @@ namespace iFredApps.TimeTracker.UI.Views
                   }
                   else
                   {
-                     m_timeManager.current_session = new TimeManagerTaskCurrentSession();
+                     m_timeManager.current_session = new TimeManagerTaskSession();
 
                      await DatabaseManager.DeleteSession(data.uncompleted_session.session_id, OnNotificationShow);
                   }
@@ -173,7 +174,7 @@ namespace iFredApps.TimeTracker.UI.Views
 
             m_timeManager.sessions.Add(e.SessionData);
 
-            m_timeManager.current_session = new TimeManagerTaskCurrentSession();
+            m_timeManager.NotifyValue(nameof(m_timeManager.current_session), new TimeManagerTaskSession());
 
             GroupingSessionIntoTasks();
          }
@@ -196,10 +197,10 @@ namespace iFredApps.TimeTracker.UI.Views
                }
                else
                {
-                  m_timeManager.current_session = new TimeManagerTaskCurrentSession
+                  m_timeManager.NotifyValue(nameof(m_timeManager.current_session), new TimeManagerTaskSession
                   {
                      description = e.TaskData.description,
-                  };
+                  });
                }
             }
          }
