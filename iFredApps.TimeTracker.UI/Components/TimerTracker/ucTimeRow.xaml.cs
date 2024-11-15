@@ -84,7 +84,7 @@ namespace iFredApps.TimeTracker.UI.Components
             {
                if (btn.DataContext is TimeManagerTaskSession session)
                {
-                  session.is_editing = true;
+                  session.NotifyValue(nameof(session.is_editing), true);
                }
             }
          }
@@ -123,9 +123,7 @@ namespace iFredApps.TimeTracker.UI.Components
             {
                if (btn.DataContext is TimeManagerTaskSession session)
                {
-                  session.is_editing = false;
-                  //TODO: Change this
-                  //session.NotifyValue(nameof(session.is_editing), false);
+                  session.NotifyValue(nameof(session.is_editing), false);
                }
             }
          }
@@ -187,11 +185,8 @@ namespace iFredApps.TimeTracker.UI.Components
          }
 
          OnSessionChanged?.Invoke(this, new TimeTaskSessionEditEventArgs { Session = session });
-         //TODO: Change this
-         session.is_editing = false;
+         session.NotifyValue(nameof(session.is_editing), false);
          session.NotifyValue(nameof(session.total_time), session.end_date.Value - session.start_date);
-         //session.NotifyValue(nameof(session.is_editing), false);
-         //session.NotifyValue(nameof(session.total_time), (session.end_date.Value - session.start_date));
       }
 
       #endregion
