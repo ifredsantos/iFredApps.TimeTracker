@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using iFredApps.Lib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,12 +12,13 @@ namespace iFredApps.TimeTracker.UI.Models
    {
       public TimeManagerTaskSession current_session { get; set; }
       public List<TimeManagerTaskSession> sessions { get; set; }
-      public ObservableCollection<TimeManagerGroup> task_groups { get; set; }
+      public IFAObservableCollection<TimeManagerGroup> task_groups { get; set; }
+      public bool isLoading { get; set; }
       public TimeManager()
       {
          current_session = new TimeManagerTaskSession();
          sessions = new List<TimeManagerTaskSession>();
-         task_groups = new ObservableCollection<TimeManagerGroup>();
+         task_groups = new IFAObservableCollection<TimeManagerGroup>();
       }
 
       public event PropertyChangedEventHandler PropertyChanged;
@@ -44,7 +46,7 @@ namespace iFredApps.TimeTracker.UI.Models
          }
       }
       public TimeSpan total_time { get; set; }
-      public ObservableCollection<TimeManagerTask> tasks { get; set; }
+      public IFAObservableCollection<TimeManagerTask> tasks { get; set; }
       public DateTime date_group_reference { get; set; }
       public TimeSpan tasks_total_time
       {
@@ -68,7 +70,7 @@ namespace iFredApps.TimeTracker.UI.Models
    public class TimeManagerTask : INotifyPropertyChanged
    {
       public string description { get; set; }
-      public ObservableCollection<TimeManagerTaskSession> sessions { get; set; }
+      public IFAObservableCollection<TimeManagerTaskSession> sessions { get; set; }
 
       public TimeSpan session_total_time
       {

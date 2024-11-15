@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using iFredApps.TimeTracker.UI.Models;
 using iFredApps.Lib.Wpf.Execption;
 using iFredApps.Lib;
+using System.Threading.Tasks;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -18,19 +19,27 @@ namespace iFredApps.TimeTracker.UI.Views
       public event EventHandler<NotificationEventArgs> OnNotificationShow;
 
       private TimeManager m_timeManager = null;
+      private bool _isFirstLoadComplete = false;
 
       public ucTimeManagerView()
       {
          InitializeComponent();
 
+         m_timeManager = new TimeManager();
+
+         DataContext = m_timeManager;
+
          Loaded += UcTimeManagerView_Loaded;
       }
 
-      private void UcTimeManagerView_Loaded(object sender, RoutedEventArgs e)
+      private async void UcTimeManagerView_Loaded(object sender, RoutedEventArgs e)
       {
          try
          {
-            InitData();
+            if (!_isFirstLoadComplete)
+            {
+               await InitData();
+            }
          }
          catch (Exception ex)
          {
@@ -38,12 +47,11 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
-      private async void InitData()
+      private async Task InitData()
       {
          try
          {
-            m_timeManager = new TimeManager();
-            DataContext = m_timeManager;
+            m_timeManager.NotifyValue(nameof(m_timeManager.isLoading), true);
 
             var data = await DatabaseManager.LoadData();
             if (data != null)
@@ -83,15 +91,21 @@ namespace iFredApps.TimeTracker.UI.Views
                }
             }
 
-            GroupingSessionIntoTasks();
+            await GroupingSessionIntoTasks();
+
+            _isFirstLoadComplete = true;
          }
          catch (Exception ex)
          {
             ex.ShowException();
          }
+         finally
+         {
+            m_timeManager.NotifyValue(nameof(m_timeManager.isLoading), false);
+         }
       }
 
-      private void GroupingSessionIntoTasks()
+      private async Task GroupingSessionIntoTasks()
       {
          m_timeManager.task_groups.Clear();
 
@@ -111,12 +125,12 @@ namespace iFredApps.TimeTracker.UI.Views
                   if (!dicTasksByDate.ContainsKey(dateReference))
                   {
                      dicTasksByDate.Add(dateReference, new List<TimeManagerTask>()
-                            {
-                                new TimeManagerTask() {
-                                    description = session.description,
-                                    sessions = new ObservableCollection<TimeManagerTaskSession> { session },
-                                }
-                            });
+                     {
+                         new TimeManagerTask() {
+                             description = session.description,
+                             sessions = new IFAObservableCollection<TimeManagerTaskSession> { session },
+                         }
+                     });
                   }
                   else
                   {
@@ -140,7 +154,7 @@ namespace iFredApps.TimeTracker.UI.Views
                            tasks.Add(new TimeManagerTask()
                            {
                               description = session.description,
-                              sessions = new ObservableCollection<TimeManagerTaskSession> { session },
+                              sessions = new IFAObservableCollection<TimeManagerTaskSession> { session },
                            });
                         }
                      }
@@ -148,19 +162,23 @@ namespace iFredApps.TimeTracker.UI.Views
                }
             }
 
+            List<TimeManagerGroup> lstGroups = new List<TimeManagerGroup>();
             foreach (var dicRow in dicTasksByDate.OrderByDescending(x => x.Key))
             {
                TimeManagerGroup group = new TimeManagerGroup
                {
                   date_group_reference = dicRow.Key,
-                  tasks = new ObservableCollection<TimeManagerTask>(),
+                  tasks = new IFAObservableCollection<TimeManagerTask>(),
                };
                foreach (var task in dicRow.Value)
                {
                   group.tasks.Add(task);
                }
-               m_timeManager.task_groups.Add(group);
+               lstGroups.Add(group);
             }
+
+            await Task.Delay(10);
+            m_timeManager.task_groups.AddRange(lstGroups);
          }
       }
 
@@ -176,7 +194,7 @@ namespace iFredApps.TimeTracker.UI.Views
 
             m_timeManager.NotifyValue(nameof(m_timeManager.current_session), new TimeManagerTaskSession());
 
-            GroupingSessionIntoTasks();
+            await GroupingSessionIntoTasks();
          }
          catch (Exception ex)
          {
@@ -232,7 +250,7 @@ namespace iFredApps.TimeTracker.UI.Views
                   }
                }
 
-               GroupingSessionIntoTasks();
+               await GroupingSessionIntoTasks();
             }
          }
          catch (Exception ex)
@@ -253,7 +271,7 @@ namespace iFredApps.TimeTracker.UI.Views
                   await DatabaseManager.UpdateSession(session, OnNotificationShow);
                }
 
-               GroupingSessionIntoTasks();
+               await GroupingSessionIntoTasks();
             }
          }
          catch (Exception ex)
@@ -270,7 +288,7 @@ namespace iFredApps.TimeTracker.UI.Views
             {
                await DatabaseManager.UpdateSession(e.Session, OnNotificationShow);
 
-               GroupingSessionIntoTasks();
+               await GroupingSessionIntoTasks();
             }
          }
          catch (Exception ex)
@@ -288,7 +306,7 @@ namespace iFredApps.TimeTracker.UI.Views
                await DatabaseManager.DeleteSession(e.Session.session_id, OnNotificationShow);
                m_timeManager.sessions.Remove(e.Session);
 
-               GroupingSessionIntoTasks();
+               await GroupingSessionIntoTasks();
             }
          }
          catch (Exception ex)

@@ -53,11 +53,11 @@ namespace iFredApps.TimeTracker.UI.Models
 
                   var sessions = await WebApiCall.Session.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
 
-                  if(!sessions.IsNullOrEmpty())
-                  {
-                     DateTime minDateDisplay = DateTime.Now.AddDays(-7);
-                     sessions.RemoveAll(x => x.start_date < minDateDisplay);
-                  }
+                  //if(!sessions.IsNullOrEmpty())
+                  //{
+                  //   DateTime minDateDisplay = DateTime.Now.AddDays(-7);
+                  //   sessions.RemoveAll(x => x.start_date < minDateDisplay);
+                  //}
 
                   result = new TimeManagerDatabaseData
                   {
