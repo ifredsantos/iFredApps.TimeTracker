@@ -79,6 +79,7 @@ namespace iFredApps.TimeTracker.UI.Views
                         observation = data.uncompleted_session.observation,
                         total_time = DateTime.Now - data.uncompleted_session.start_date
                      };
+                     m_timeManager.NotifyValue(nameof(m_timeManager.current_session));
 
                      timeRowEditor.StartStopSession();
                   }
