@@ -20,7 +20,14 @@ namespace TimeTracker.DL
       protected override void OnModelCreating(ModelBuilder modelBuilder)
       {
          modelBuilder.Entity<sSession>()
+            .ToTable("sessions")
             .HasKey(s => s.session_id);
+
+         modelBuilder.Entity<sSession>().Property(s => s.session_id).ValueGeneratedOnAdd().IsRequired();
+         modelBuilder.Entity<sSession>().Property(s => s.user_id).IsRequired();
+         modelBuilder.Entity<sSession>().Property(s => s.start_date).IsRequired();
+         modelBuilder.Entity<sSession>().Property(s => s.description).HasMaxLength(255).IsRequired();
+         modelBuilder.Entity<sSession>().Property(s => s.observation).HasMaxLength(500);
       }
    }
 }

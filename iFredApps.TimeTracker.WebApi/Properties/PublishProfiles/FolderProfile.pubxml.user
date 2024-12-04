@@ -4,8 +4,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>Z:\Programas\DotNET\WPF-TimeTracker\TimerTracker.WebApi\bin\Release\net8.0\publish\</_PublishTargetUrl>
-    <History>True|2024-08-04T13:48:51.8144084Z;</History>
+    <_PublishTargetUrl>E:\Programas\DotNET\iFredApps.TimeTracker\iFredApps.TimeTracker.WebApi\bin\Release\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2024-11-28T17:32:53.6473941Z||;True|2024-08-04T14:48:51.8144084+01:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

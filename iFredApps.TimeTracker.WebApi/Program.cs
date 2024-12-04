@@ -11,9 +11,21 @@ using iFredApps.TimeTracker.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors();
+
 // Configure o serviço para ler a string de conexão do banco de dados
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 23)))
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 33)),
+        mySqlOptions =>
+        {
+           mySqlOptions.EnableRetryOnFailure(
+               maxRetryCount: 5,
+               maxRetryDelay: TimeSpan.FromSeconds(10),
+               errorNumbersToAdd: null);
+        }
+    )
 );
 
 // Adiciona serviços ao contêiner
@@ -89,6 +101,28 @@ builder.Services.AddSwaggerGen(c =>
 try
 {
    var app = builder.Build();
+
+   try
+   {
+      using (var scope = app.Services.CreateScope())
+      {
+         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+         // Aplica migrações pendentes
+         dbContext.Database.Migrate();
+         Console.WriteLine("Database migration applied successfully.");
+      }
+   }
+   catch (Exception ex)
+   {
+      Console.WriteLine("Database migration failed: " + ex.Message);
+      Console.WriteLine("Stack Trace: " + ex.StackTrace);
+      if (ex.InnerException != null)
+      {
+         Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+      }
+      throw;
+   }
 
    // Test the database connection
    try
