@@ -28,10 +28,10 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
       {
          if (session == null || !ModelState.IsValid)
          {
-            return BadRequest("Invalid user data.");
+            return BadRequest("Invalid session data.");
          }
 
-         var result = await _sessionService.CreateSession(session);
+         var result = await _sessionService.Create(session);
 
          return Ok(result);
       }
@@ -44,7 +44,7 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          {
             return BadRequest();
          }
-         var result = await _sessionService.UpdateSession(session);
+         var result = await _sessionService.Update(session);
          return Ok(result);
       }
 
@@ -52,7 +52,7 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
       //[Authorize]
       public async Task<ActionResult> DeleteSession(int id)
       {
-         await _sessionService.DeleteSession(id);
+         await _sessionService.Delete(id);
          return NoContent();
       }
    }

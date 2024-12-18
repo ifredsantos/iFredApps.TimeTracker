@@ -32,20 +32,7 @@ namespace iFredApps.TimeTracker.UI.Views
          Loaded += UcTimeManagerView_Loaded;
       }
 
-      private async void UcTimeManagerView_Loaded(object sender, RoutedEventArgs e)
-      {
-         try
-         {
-            if (!_isFirstLoadComplete)
-            {
-               await InitData();
-            }
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-      }
+      #region Private Methods
 
       private async Task InitData()
       {
@@ -183,7 +170,24 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
+      #endregion
+
       #region Events
+
+      private async void UcTimeManagerView_Loaded(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            if (!_isFirstLoadComplete)
+            {
+               await InitData();
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
 
       private async void OnCurrentSessionChanged(object sender, TimeRowSessionEventArgs e)
       {

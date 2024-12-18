@@ -18,19 +18,19 @@ namespace iFredApps.TimeTracker.Core.Services
          return _sessionRepository.GetUserSessions(user_id);
       }
 
-      public async Task<Session> CreateSession(Session session)
+      public async Task<Session> Create(Session session)
       {
-         return await _sessionRepository.CreateSession(session);
+         return await _sessionRepository.Create(session);
       }
 
-      public async Task<Session> UpdateSession(Session session)
+      public async Task<Session> Update(Session session)
       {
-         return await _sessionRepository.UpdateSession(session);
+         return await _sessionRepository.Update(session);
       }
 
-      public async Task DeleteSession(int session_id)
+      public async Task Delete(int session_id)
       {
-         await _sessionRepository.DeleteSession(session_id);
+         await _sessionRepository.Delete(session_id);
       }
    }
 }

@@ -7,6 +7,29 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
    <Grid Margin="10">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      
       <Label FontSize="20" Content="Workspaces" />
+
+      <ItemsControl Grid.Row="1" Margin="5,10,0,0">
+         <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+               <StackPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+         </ItemsControl.ItemsPanel>
+         <ItemsControl>
+            <StackPanel>
+               <Button Margin="0,0,15,0" Padding="15,10,15,10" Foreground="{StaticResource TextColorBrush}" Style="{StaticResource MahApps.Styles.Button}" FontSize="14" FontWeight="Regular">Teste</Button>
+            </StackPanel>
+         </ItemsControl>
+         <ItemsControl>
+            <StackPanel>
+               <Button Margin="0,0,15,0" Padding="15,10,15,10" Foreground="{StaticResource TextColorBrush}" Style="{StaticResource MahApps.Styles.Button}" FontSize="14" FontWeight="Regular">Teste</Button>
+            </StackPanel>
+         </ItemsControl>
+      </ItemsControl>
    </Grid>
 </UserControl>

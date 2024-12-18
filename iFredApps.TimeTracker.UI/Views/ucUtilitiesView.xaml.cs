@@ -125,7 +125,7 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            return WebApiCall.Session.CreateSession(AppWebClient.Instance.GetClient(), session);
+            return WebApiCall.Sessions.CreateSession(AppWebClient.Instance.GetClient(), session);
          }
          catch (Exception ex)
          {

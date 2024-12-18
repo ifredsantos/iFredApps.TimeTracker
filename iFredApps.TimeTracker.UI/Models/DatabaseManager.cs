@@ -13,12 +13,6 @@ namespace iFredApps.TimeTracker.UI.Models
 {
    public static class DatabaseManager
    {
-      private static JSONDataBaseConfig defaultJsonConfig = new JSONDataBaseConfig
-      {
-         directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "iFredApps", "TimeTracker"),
-         filename = !Debugger.IsAttached ? "db.json" : "db_test.json"
-      };
-
       public static async Task<TimeManagerDatabaseData> LoadData()
       {
          TimeManagerDatabaseData result = new TimeManagerDatabaseData();
@@ -31,7 +25,7 @@ namespace iFredApps.TimeTracker.UI.Models
                if (appConfig.webapi_connection_config == null)
                   throw new Exception("It is necessary to parameterize the webapi configuration!");
 
-               var sessions = await WebApiCall.Session.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+               var sessions = await WebApiCall.Sessions.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
 
                if (!sessions.IsNullOrEmpty())
                {
@@ -67,7 +61,7 @@ namespace iFredApps.TimeTracker.UI.Models
 
                session.user_id = AppWebClient.Instance.GetLoggedUserData().user_id;
 
-               result = await WebApiCall.Session.CreateSession(AppWebClient.Instance.GetClient(), session);
+               result = await WebApiCall.Sessions.CreateSession(AppWebClient.Instance.GetClient(), session);
 
                OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
 
@@ -94,7 +88,7 @@ namespace iFredApps.TimeTracker.UI.Models
 
                session.user_id = AppWebClient.Instance.GetLoggedUserData().user_id;
 
-               result = await WebApiCall.Session.UpdateSession(AppWebClient.Instance.GetClient(), session);
+               result = await WebApiCall.Sessions.UpdateSession(AppWebClient.Instance.GetClient(), session);
 
                OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
 
@@ -118,7 +112,7 @@ namespace iFredApps.TimeTracker.UI.Models
                if (appConfig.webapi_connection_config == null)
                   throw new Exception("It is necessary to parameterize the webapi configuration!");
 
-               await WebApiCall.Session.DeleteSession(AppWebClient.Instance.GetClient(), sessionID);
+               await WebApiCall.Sessions.DeleteSession(AppWebClient.Instance.GetClient(), sessionID);
 
                OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
             }
