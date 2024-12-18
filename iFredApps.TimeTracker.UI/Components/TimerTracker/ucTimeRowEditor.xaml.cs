@@ -35,7 +35,7 @@ namespace iFredApps.TimeTracker.UI.Components
          {
             if (currentSession.start_date == DateTime.MinValue)
                currentSession.start_date = DateTime.Now;
-            
+
             currentSession.NotifyValue(nameof(currentSession.is_working), true);
 
             timer.Start();
@@ -44,6 +44,25 @@ namespace iFredApps.TimeTracker.UI.Components
                currentSession.description = txtDescription.Text;
 
             OnSessionStarts?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
+         }
+      }
+
+      private void TriggerDetail()
+      {
+         if (DataContext is TimeManagerTaskSession currentSession)
+         {
+            if (currentSession.is_detail_open)
+            {
+               detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronDown;
+               sessionDetail.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+               detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronUp;
+               sessionDetail.Visibility = Visibility.Visible;
+            }
+
+            currentSession.NotifyValue(nameof(currentSession.is_detail_open), !currentSession.is_detail_open);
          }
       }
 
@@ -66,12 +85,14 @@ namespace iFredApps.TimeTracker.UI.Components
                }
 
                currentSession.end_date = DateTime.Now;
-
                currentSession.NotifyValue(nameof(currentSession.is_working), false);
+
 
                timer.Stop();
 
                OnSessionChanged?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
+
+               TriggerDetail();
             }
             else
             {
@@ -110,6 +131,18 @@ namespace iFredApps.TimeTracker.UI.Components
             {
                StartStopSession();
             }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void OnDetailButtonClick(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            TriggerDetail();
          }
          catch (Exception ex)
          {

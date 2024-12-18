@@ -109,6 +109,11 @@
                                  <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="CheckSolid" Foreground="Green" ToolTip="Save changes" />
                               </Button>
                            </StackPanel>
+
+                           <StackPanel Orientation="Horizontal" Margin="0,-5,0,0">
+                              <TextBlock Text="Observations: " VerticalAlignment="Center" />
+                              <TextBox Text="{Binding observation}" VerticalAlignment="Center" BorderThickness="0" />
+                           </StackPanel>
                         </StackPanel>
                      </DataTemplate>
                   </ItemsControl.ItemTemplate>

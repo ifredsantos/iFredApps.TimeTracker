@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
-             d:DesignHeight="80" d:DesignWidth="800">
+             d:DesignHeight="90" d:DesignWidth="800">
    <Grid>
       <Border BorderBrush="#cf5a07" BorderThickness="1" Padding="10">
          <Grid>
@@ -15,20 +15,47 @@
                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-               <TextBox Name="txtDescription" Text="{Binding description}" 
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition />
+               </Grid.ColumnDefinitions>
+
+               <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+               </Grid.RowDefinitions>
+
+               <Grid>
+                  <Button Click="OnDetailButtonClick" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand" 
+                          Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Transparent" Foreground="{StaticResource TextColorBrush}" 
+                          Padding="10,0,10,0" Grid.Column="0">
+                     <iconPacks:PackIconBootstrapIcons Name="detailButtonIcon" Kind="ChevronDown" Width="14" Height="14" VerticalAlignment="Center" />
+                  </Button>
+               </Grid>
+
+               <Grid Grid.Row="0" Grid.Column="1">
+                  <TextBox Name="txtDescription" Text="{Binding description}" 
                              materialDesign:HintAssist.Hint="What are you working on?" 
                              VerticalAlignment="Center" FontSize="16" />
+                  
+                  <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Visibility="Collapsed">
+                     <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                           <Setter Property="Background" Value="Transparent" />
+                           <Setter Property="BorderThickness" Value="0" />
+                        </Style>
+                     </Button.Style>
+                     <iconPacks:BootstrapIcons Width="8" Height="8" Kind="X" />
+                  </Button>
+               </Grid>
 
-               <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Visibility="Collapsed">
-                  <Button.Style>
-                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="BorderThickness" Value="0" />
-                     </Style>
-                  </Button.Style>
-                  <iconPacks:BootstrapIcons Width="8" Height="8" Kind="X" />
-               </Button>
+               <Grid Grid.Row="1" Grid.Column="1" Name="sessionDetail" Visibility="Collapsed">
+                  <TextBox Name="txtObservation" Text="{Binding observation}" 
+                             materialDesign:HintAssist.Hint="Observations of your session..." 
+                             VerticalAlignment="Center" FontSize="16" Margin="0,5,0,0" />
+               </Grid>
             </Grid>
+            
             <Grid Grid.Column="1">
                <StackPanel Orientation="Horizontal">
                   <TextBlock Text="{Binding total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />

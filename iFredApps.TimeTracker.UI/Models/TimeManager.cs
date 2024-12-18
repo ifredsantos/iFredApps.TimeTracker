@@ -103,6 +103,7 @@ namespace iFredApps.TimeTracker.UI.Models
       public TimeSpan total_time { get; set; }
       public bool is_editing { get; set; }
       public bool is_working { get; set; }
+      public bool is_detail_open { get; set; }
 
       public event PropertyChangedEventHandler PropertyChanged;
    }
