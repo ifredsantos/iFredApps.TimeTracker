@@ -11,7 +11,17 @@ using iFredApps.TimeTracker.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors();
+Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+builder.Services.AddCors(options =>
+{
+   options.AddDefaultPolicy(builder =>
+   {
+      builder.AllowAnyOrigin()
+             .AllowAnyMethod()
+             .AllowAnyHeader();
+   });
+});
 
 // Configure o serviço para ler a string de conexão do banco de dados
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -105,6 +115,8 @@ builder.Services.AddSwaggerGen(c =>
 try
 {
    var app = builder.Build();
+
+   app.Urls.Add("http://0.0.0.0:80");
 
    try
    {
