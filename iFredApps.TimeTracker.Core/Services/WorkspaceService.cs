@@ -6,9 +6,9 @@ namespace iFredApps.TimeTracker.Core.Services
 {
    public class WorkspaceService : IWorkspaceService
    {
-      private readonly IWorkspaceService _workspaceRepository;
+      private readonly IWorkspaceRepository _workspaceRepository;
 
-      public WorkspaceService(IWorkspaceService sessionRepository)
+      public WorkspaceService(IWorkspaceRepository sessionRepository)
       {
          _workspaceRepository = sessionRepository;
       }

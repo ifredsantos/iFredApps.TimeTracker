@@ -53,16 +53,34 @@ namespace iFredApps.TimeTracker.UI.Components
          {
             if (currentSession.is_detail_open)
             {
-               detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronDown;
-               sessionDetail.Visibility = Visibility.Collapsed;
+               CloseDetail();
             }
             else
             {
-               detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronUp;
-               sessionDetail.Visibility = Visibility.Visible;
+               OpenDetail();
             }
+         }
+      }
 
-            currentSession.NotifyValue(nameof(currentSession.is_detail_open), !currentSession.is_detail_open);
+      private void CloseDetail()
+      {
+         if (DataContext is TimeManagerTaskSession currentSession)
+         {
+            detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronDown;
+            sessionDetail.Visibility = Visibility.Collapsed;
+
+            currentSession.NotifyValue(nameof(currentSession.is_detail_open), false);
+         }
+      }
+
+      private void OpenDetail()
+      {
+         if (DataContext is TimeManagerTaskSession currentSession)
+         {
+            detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronUp;
+            sessionDetail.Visibility = Visibility.Visible;
+
+            currentSession.NotifyValue(nameof(currentSession.is_detail_open), true);
          }
       }
 
@@ -92,7 +110,7 @@ namespace iFredApps.TimeTracker.UI.Components
 
                OnSessionChanged?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
 
-               TriggerDetail();
+               CloseDetail();
             }
             else
             {

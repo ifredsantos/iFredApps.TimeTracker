@@ -25,5 +25,6 @@ CREATE TABLE workspaces (
     user_id INT NOT NULL,
     name VARCHAR(60) NOT NULL,
     is_default BOOLEAN NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );

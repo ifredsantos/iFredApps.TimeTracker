@@ -81,6 +81,9 @@ namespace iFredApps.TimeTracker.UI.Views
 
             await GroupingSessionIntoTasks();
 
+            m_timeManager.Workspaces = await WebApiCall.Workspaces.GetAllByUserId(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+            m_timeManager.SelectedWorkspace = m_timeManager.Workspaces?.Find(x => x.is_default);
+
             _isFirstLoadComplete = true;
          }
          catch (Exception ex)
@@ -193,6 +196,8 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
+            e.SessionData.workspace_id = m_timeManager.SelectedWorkspace?.workspace_id;
+
             await DatabaseManager.UpdateSession(e.SessionData, OnNotificationShow);
 
             m_timeManager.sessions.Add(e.SessionData);
@@ -273,6 +278,8 @@ namespace iFredApps.TimeTracker.UI.Views
                foreach (var session in e.TaskData.sessions)
                {
                   session.description = e.TaskData.description;
+                  session.workspace_id = m_timeManager.SelectedWorkspace?.workspace_id;
+
                   await DatabaseManager.UpdateSession(session, OnNotificationShow);
                }
 
@@ -291,6 +298,7 @@ namespace iFredApps.TimeTracker.UI.Views
          {
             if (e.Session != null)
             {
+               e.Session.workspace_id = m_timeManager.SelectedWorkspace?.workspace_id;
                await DatabaseManager.UpdateSession(e.Session, OnNotificationShow);
 
                await GroupingSessionIntoTasks();
@@ -324,6 +332,8 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          if (m_timeManager.current_session.session_id == 0) //only record if it is a new session (not a recovered session)
          {
+            m_timeManager.current_session.workspace_id = m_timeManager.SelectedWorkspace?.workspace_id;
+
             var sessionData = await DatabaseManager.CreateSession(m_timeManager.current_session, OnNotificationShow);
             if (sessionData != null)
             {

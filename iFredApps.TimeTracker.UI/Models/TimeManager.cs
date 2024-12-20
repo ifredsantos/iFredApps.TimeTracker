@@ -13,6 +13,8 @@ namespace iFredApps.TimeTracker.UI.Models
       public TimeManagerTaskSession current_session { get; set; }
       public List<TimeManagerTaskSession> sessions { get; set; }
       public IFAObservableCollection<TimeManagerGroup> task_groups { get; set; }
+      public List<Workspace> Workspaces { get; set; }
+      public Workspace SelectedWorkspace { get; set; }
       public bool isLoading { get; set; }
       public TimeManager()
       {

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -15,7 +17,7 @@ namespace iFredApps.TimeTracker.UI.Views
    {
       private bool _isFirstLoadComplete = false;
 
-      private List<Workspace> _workspaces = null;
+      private hWorkspaceView dataModel = new hWorkspaceView();
 
       public ucWorkspacesView()
       {
@@ -30,9 +32,15 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            _workspaces = await WebApiCall.Workspaces.GetAllByUserId(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+            var workspaces = await WebApiCall.Workspaces.GetAllByUserId(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+            if(!workspaces.IsNullOrEmpty())
+            {
+               dataModel.workspaces = workspaces
+                  .Select(w => new hWorkspace { workspace_id = w.workspace_id, user_id = w.user_id, name = w.name, is_default = w.is_default, created_at = w.created_at, is_editing = false })
+                  .ToList();
+            }
 
-            DataContext = _workspaces;
+            DataContext = dataModel;
          }
          catch (Exception ex)
          {
@@ -57,6 +65,21 @@ namespace iFredApps.TimeTracker.UI.Views
          {
             ex.ShowException();
          }
+      }
+
+      #endregion
+
+
+      #region Auxiliar Classes
+
+      private class hWorkspaceView
+      {
+         public List<hWorkspace> workspaces { get; set; }
+      }
+
+      private class hWorkspace : Workspace
+      {
+         public bool is_editing { get; set; }
       }
 
       #endregion
