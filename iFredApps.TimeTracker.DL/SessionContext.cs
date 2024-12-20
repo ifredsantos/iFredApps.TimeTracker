@@ -25,6 +25,7 @@ namespace TimeTracker.DL
 
          modelBuilder.Entity<sSession>().Property(s => s.session_id).ValueGeneratedOnAdd().IsRequired();
          modelBuilder.Entity<sSession>().Property(s => s.user_id).IsRequired();
+         modelBuilder.Entity<sSession>().Property(s => s.workspace_id).IsRequired();
          modelBuilder.Entity<sSession>().Property(s => s.start_date).IsRequired();
          modelBuilder.Entity<sSession>().Property(s => s.description).HasMaxLength(255).IsRequired();
          modelBuilder.Entity<sSession>().Property(s => s.observation).HasMaxLength(500);

@@ -9,9 +9,9 @@ namespace iFredApps.TimeTracker.UI.Models
    {
       public static class Sessions
       {
-         public static async Task<List<TimeManagerTaskSession>> GetAllSessions(WebApiClient webClient, int user_id)
+         public static async Task<List<TimeManagerTaskSession>> GetAllSessions(WebApiClient webClient, int user_id, int workspace_id)
          {
-            return await webClient.GetAsync<List<TimeManagerTaskSession>>("Session/GetSessions/{0}", user_id);
+            return await webClient.GetAsync<List<TimeManagerTaskSession>>("Session/GetSessions/{0}/{1}", user_id, workspace_id);
          }
 
          public static async Task<TimeManagerTaskSession> CreateSession(WebApiClient webClient, TimeManagerTaskSession session)

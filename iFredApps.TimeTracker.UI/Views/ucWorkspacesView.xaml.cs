@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Linq;
 
 namespace iFredApps.TimeTracker.UI.Views

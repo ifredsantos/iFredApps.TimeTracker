@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +12,7 @@ namespace iFredApps.TimeTracker.UI.Models
 {
    public static class DatabaseManager
    {
-      public static async Task<TimeManagerDatabaseData> LoadData()
+      public static async Task<TimeManagerDatabaseData> LoadData(int workspace_id)
       {
          TimeManagerDatabaseData result = new TimeManagerDatabaseData();
          try
@@ -25,7 +24,7 @@ namespace iFredApps.TimeTracker.UI.Models
                if (appConfig.webapi_connection_config == null)
                   throw new Exception("It is necessary to parameterize the webapi configuration!");
 
-               var sessions = await WebApiCall.Sessions.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+               var sessions = await WebApiCall.Sessions.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, workspace_id);
 
                if (!sessions.IsNullOrEmpty())
                {

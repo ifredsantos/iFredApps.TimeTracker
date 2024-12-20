@@ -6,65 +6,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:iFredApps.TimeTracker.UI" 
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
-        xmlns:vm="clr-namespace:iFredApps.TimeTracker.UI.ViewModels"
         mc:Ignorable="d"
         Title="Login - Time Tracker" Height="450" Width="400" WindowStartupLocation="CenterScreen" 
         Icon="./Resources/logo.png">
-    <Window.DataContext>
-        <vm:LoginVM />
-    </Window.DataContext>
-    <Grid>
-        <Border Width="300"
+   <Grid>
+      <Border Width="300"
             Height="400"
             CornerRadius="6">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="15"
+         <Border.Effect>
+            <DropShadowEffect BlurRadius="15"
                               Direction ="-90" 
                               RenderingBias ="Quality" 
                               ShadowDepth ="2" 
                               Color ="Gray" />
-            </Border.Effect>
-            <StackPanel Orientation="Vertical"
+         </Border.Effect>
+         <StackPanel Orientation="Vertical"
                     Margin="20">
-                <TextBlock Text="Login" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,30,0,0" Padding="10" />
+            <TextBlock Text="Login" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" Margin="0,30,0,0" Padding="10" />
 
-                <Grid VerticalAlignment="Center" Margin="0,25,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+            <Grid VerticalAlignment="Center" Margin="0,25,0,0">
+               <Grid.RowDefinitions>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="*"/>
+                  <RowDefinition Height="*"/>
+               </Grid.RowDefinitions>
 
-                    <TextBlock Text="Username/email" Grid.Row="0" Margin="0,0" HorizontalAlignment="Left" FontSize="14" />
-                    <TextBox Name="txtUser" Grid.Column="1" Grid.Row="1" Padding="0,5" Width="255" BorderThickness="0,0,0,1" HorizontalAlignment="Left" FontSize="14"
-                              Text="{Binding user, UpdateSourceTrigger=PropertyChanged}"/>
+               <TextBlock Text="Username/email" Grid.Row="0" Margin="0,0" HorizontalAlignment="Left" FontSize="14" />
+               <TextBox Name="txtUser" Grid.Column="1" Grid.Row="1" Padding="0,5" Width="255" BorderThickness="0,0,0,1" HorizontalAlignment="Left" FontSize="14"
+                              Text="{Binding user}"/>
 
-                    <TextBlock Text="Password" Grid.Row="2" Margin="0,15,0,0" HorizontalAlignment="Left" FontSize="14" />
-                    <PasswordBox Name="txtPassword" Grid.Row="3" Padding="0,5" Width="255" BorderThickness="0,0,0,1" HorizontalAlignment="Left" FontSize="14" />
-                </Grid>
+               <TextBlock Text="Password" Grid.Row="2" Margin="0,15,0,0" HorizontalAlignment="Left" FontSize="14" />
+               <PasswordBox Name="txtPassword" Grid.Row="3" Padding="0,5" Width="255" BorderThickness="0,0,0,1" HorizontalAlignment="Left" FontSize="14" />
 
-                <TextBlock Text="forgot password?" HorizontalAlignment="Right" Visibility="Collapsed" />
+               <CheckBox Content="Save Password" Grid.Row="4" IsChecked="{Binding savePassword}" Margin="0,15,0,0" />
+            </Grid>
 
-                <Button x:Name="LoginBtn" Foreground="{DynamicResource TextColorBrush}" Margin="0,25" Height="35" Width="120">
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconFontAwesome Name="detailButtonIcon" Kind="SpinnerSolid" Spin="True" Width="14" Height="14" 
-                                                           VerticalAlignment="Center" Visibility="{Binding isLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                            <TextBlock Text="Login" VerticalAlignment="Center" Margin="10,0,0,2" />
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
+            <TextBlock Text="forgot password?" HorizontalAlignment="Right" Visibility="Collapsed" />
 
-                <TextBlock Text="Not a member?"
+            <Button x:Name="LoginBtn" Foreground="{DynamicResource TextColorBrush}" Margin="0,25" Height="35" Width="120">
+               <Button.Content>
+                  <StackPanel Orientation="Horizontal">
+                     <iconPacks:PackIconFontAwesome Name="detailButtonIcon" Kind="SpinnerSolid" Spin="True" Width="14" Height="14" 
+                                                           VerticalAlignment="Center" Visibility="{Binding isLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,2" />
+                     <TextBlock Text="Login" VerticalAlignment="Center" Margin="0,0,0,2" />
+                  </StackPanel>
+               </Button.Content>
+            </Button>
+
+            <TextBlock Text="Not a member?"
                          Margin="0,5"
                        VerticalAlignment="Bottom"
                        HorizontalAlignment="Center" Visibility="Collapsed" />
-                <TextBlock Text="Sign Up"
+            <TextBlock Text="Sign Up"
                          Margin="0,10"
                        VerticalAlignment="Bottom"
                        HorizontalAlignment="Center" Visibility="Collapsed" />
-            </StackPanel>
-        </Border>
-    </Grid>
+         </StackPanel>
+      </Border>
+   </Grid>
 </mah:MetroWindow>

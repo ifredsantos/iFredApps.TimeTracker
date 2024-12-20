@@ -14,9 +14,9 @@ namespace iFredApps.TimeTracker.Data.Repositories
          _context = context;
       }
 
-      public async Task<IEnumerable<Session>> GetUserSessions(int user_id)
+      public async Task<IEnumerable<Session>> GetUserSessions(int user_id, int workspace_id)
       {
-         return await _context.Sessions.Where(x => x.user_id == user_id).ToListAsync();
+         return await _context.Sessions.Where(x => x.user_id == user_id && x.workspace_id == workspace_id).ToListAsync();
       }
 
       public async Task<Session> Create(Session session)

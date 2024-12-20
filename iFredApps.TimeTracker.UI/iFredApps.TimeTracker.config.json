@@ -1,6 +1,6 @@
 {
    "database_type": 1,
    "webapi_connection_config": {
-      "baseaddress": "http://vps-427c92c5.vps.ovh.net/api/"
+      "baseaddress": "https://localhost:44381/api/"
    }
 }
