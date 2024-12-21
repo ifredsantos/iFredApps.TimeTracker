@@ -4,12 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Report</title>
+    <title>20/12/2024 Daily Report - Time Tracker</title>
 
     <style>
         * {
             font-family: arial, sans-serif;
         }
+
+        a {
+            color: #cf5a07;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -17,13 +22,14 @@
 
         .task-table td,
         .task-table th {
-            border: 1px solid #dddddd;
+            border: 1px solid #cf5a07;
             text-align: left;
             padding: 8px;
         }
 
         .task-table tr.header {
-            background-color: #dddddd;
+            background-color: #cf5a07;
+            color: #ffffff;
         }
 
         /* .task-table tr:nth-child(even) {
@@ -32,6 +38,25 @@
 
         .report-header {
             width: 100%;
+        }
+
+        .report-header .header {
+            background-color: #cf5a07;
+            color: #ffffff;
+        }
+
+        .report-header td,
+        .report-header th {
+            border: 1px solid #cf5a07;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .copyright {
+            font-style: italic;
+            font-size: 10px;
+            color: gray;
+            margin-top: 15px;
         }
 
         .text-center {
@@ -47,9 +72,14 @@
 <body>
     <main style="max-width: 800px; display: block; margin-left: auto; margin-right: auto;">
         <table class="report-header">
+            <tr class="header">
+                <th>20/12/2024</th>
+                <th class="text-right">02:00:00</th>
+            </tr>
             <tr>
-                <td>20/12/2024</td>
-                <td>02:00:00</td>
+                <td colspan="2">
+                    <b>User: </b>Frederico Santos
+                </td>
             </tr>
         </table>
 
@@ -100,6 +130,7 @@
                 <td class="text-right">02:00:27</td>
             </tr>
         </table>
+        <p class="copyright text-center">© 2024 Time Tracker by <a href="https://github.com/ifredsantos" target="_blank">iFredApps</a></p>
     </main>
 </body>
 
