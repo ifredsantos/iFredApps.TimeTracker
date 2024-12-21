@@ -326,6 +326,21 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
          }
       }
 
+      private void OnSendReport(object sender, TimeTaskGroupArgs e)
+      {
+         try
+         {
+            if (e.Group != null)
+            {
+
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
       private async void SessionStarts(object sender, TimeRowSessionEventArgs e)
       {
          if (_tmByWorkspace.current_session.session_id == 0) //only record if it is a new session (not a recovered session)
@@ -342,5 +357,5 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
       }
 
       #endregion
-   }
+    }
 }

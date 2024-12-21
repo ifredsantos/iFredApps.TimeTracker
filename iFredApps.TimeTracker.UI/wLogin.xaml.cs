@@ -6,7 +6,7 @@ using System.Windows.Input;
 using iFredApps.Lib.Wpf.Execption;
 using iFredApps.Lib.Wpf.Messages;
 using MahApps.Metro.Controls;
-using iFredApps.Lib.Security;
+//using iFredApps.Lib.Security;
 using iFredApps.Lib;
 
 namespace iFredApps.TimeTracker.UI
@@ -58,24 +58,24 @@ namespace iFredApps.TimeTracker.UI
       {
          try
          {
-            SecurelyLocalData secData = new SecurelyLocalData(appConfig.SaveAppInfoDirectory);
-
-            string loginSavedData = secData.LoadDataSecurely();
-            if (!string.IsNullOrEmpty(loginSavedData))
-            {
-               string[] loginInfo = loginSavedData.Split(':');
-               if (loginInfo.Length == 2)
-               {
-                  loginViewModel.user = loginInfo[0];
-                  loginViewModel.password = loginInfo[1];
-                  txtPassword.Password = loginInfo[1];
-                  loginViewModel.savePassword = true;
-               }
-            }
-            else
-            {
+            //SecurelyLocalData secData = new SecurelyLocalData(appConfig.SaveAppInfoDirectory);
+            //
+            //string loginSavedData = secData.LoadDataSecurely();
+            //if (!string.IsNullOrEmpty(loginSavedData))
+            //{
+            //   string[] loginInfo = loginSavedData.Split(':');
+            //   if (loginInfo.Length == 2)
+            //   {
+            //      loginViewModel.user = loginInfo[0];
+            //      loginViewModel.password = loginInfo[1];
+            //      txtPassword.Password = loginInfo[1];
+            //      loginViewModel.savePassword = true;
+            //   }
+            //}
+            //else
+            //{
                txtUser.Focus();
-            }
+            //}
          }
          catch (Exception ex)
          {
@@ -104,16 +104,16 @@ namespace iFredApps.TimeTracker.UI
             await AppWebClient.Instance.Login(loginViewModel.user, loginViewModel.password);
             if (AppWebClient.Instance.GetLoggedUserData() != null)
             {
-               SecurelyLocalData secData = new SecurelyLocalData(appConfig.SaveAppInfoDirectory);
+               //SecurelyLocalData secData = new SecurelyLocalData(appConfig.SaveAppInfoDirectory);
 
-               if (loginViewModel.savePassword)
-               {
-                  secData.SaveDataSecurely(string.Format("{0}:{1}", loginViewModel.user, loginViewModel.password));
-               }
-               else
-               {
-                  secData.DeleteSecureData();
-               }
+               //if (loginViewModel.savePassword)
+               //{
+               //   secData.SaveDataSecurely(string.Format("{0}:{1}", loginViewModel.user, loginViewModel.password));
+               //}
+               //else
+               //{
+               //   secData.DeleteSecureData();
+               //}
 
                OpenMainWindow();
             }

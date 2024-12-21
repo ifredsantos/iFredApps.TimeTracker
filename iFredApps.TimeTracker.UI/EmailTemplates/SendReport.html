@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Report</title>
+
+    <style>
+        * {
+            font-family: arial, sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .task-table td,
+        .task-table th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .task-table tr.header {
+            background-color: #dddddd;
+        }
+
+        /* .task-table tr:nth-child(even) {
+            background-color: #dddddd;
+        } */
+
+        .report-header {
+            width: 100%;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+    </style>
+</head>
+
+<body>
+    <main style="max-width: 800px; display: block; margin-left: auto; margin-right: auto;">
+        <table class="report-header">
+            <tr>
+                <td>20/12/2024</td>
+                <td>02:00:00</td>
+            </tr>
+        </table>
+
+        <table class="task-table">
+            <tr class="header">
+                <th>Description</th>
+                <th class="text-right">Total Time</th>
+            </tr>
+            <tr>
+                <td>Cevadas - Configuração Saphety</td>
+                <td class="text-right">01:38:00</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table class="task-table task-table-detail">
+                        <tr class="header">
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Total Time</th>
+                        </tr>
+                        <tr>
+                            <td>20/12/2024 09:03:00</td>
+                            <td>20/12/2024 10:03:00</td>
+                            <td>01:00:00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <small>Description: </small>
+                                <small>Preparar ambiente de testes</small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>20/12/2024 09:03:00</td>
+                            <td>20/12/2024 10:03:00</td>
+                            <td>01:00:00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <small>Description: </small>
+                                <small>Preparar ambiente de testes</small>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Supermaco - Loja Online</td>
+                <td class="text-right">02:00:27</td>
+            </tr>
+        </table>
+    </main>
+</body>
+
+</html>

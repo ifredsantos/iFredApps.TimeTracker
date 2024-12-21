@@ -27,4 +27,9 @@ namespace iFredApps.TimeTracker.UI.Models
    {
       public TimeManagerTaskSession Session { get; set; }
    }
+
+   public class TimeTaskGroupArgs : EventArgs
+   {
+      public TimeManagerGroup Group { get; set; }
+   }
 }

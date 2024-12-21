@@ -28,7 +28,7 @@ namespace iFredApps.TimeTracker.UI.Models
 
                if (!sessions.IsNullOrEmpty())
                {
-                  DateTime minDateDisplay = DateTime.Now.AddDays(-7);
+                  DateTime minDateDisplay = DateTime.Now.AddDays(-30);
                   sessions.RemoveAll(x => x.start_date < minDateDisplay);
                }
 
