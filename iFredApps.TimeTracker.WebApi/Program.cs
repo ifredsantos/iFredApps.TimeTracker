@@ -128,36 +128,38 @@ builder.Services.AddControllers();
 
 // Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-   c.SwaggerDoc("v1", new OpenApiInfo
+   options.SwaggerDoc("v1", new OpenApiInfo
    {
       Title = "iFredApps TimeTracker",
       Version = "v1"
    });
 
-   c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+   options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
    {
       In = ParameterLocation.Header,
-      Description = "JWT Authorization header using the Bearer scheme.",
-      Name = "Authorization",
       Type = SecuritySchemeType.ApiKey,
-      Scheme = "Bearer"
+      Scheme = "Bearer",
+      BearerFormat = "JWT",
+      Name = "Authorization",
+      Description = "Enter 'Bearer {your JWT token}' to authenticate.",
    });
-   c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
+
+   options.AddSecurityRequirement(new OpenApiSecurityRequirement
+   {
+      {
+         new OpenApiSecurityScheme
+         {
+            Reference = new OpenApiReference
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+               Type = ReferenceType.SecurityScheme,
+               Id = "Bearer"
+            }
+         },
+         Array.Empty<string>()
+      }
+   });
 });
 
 try

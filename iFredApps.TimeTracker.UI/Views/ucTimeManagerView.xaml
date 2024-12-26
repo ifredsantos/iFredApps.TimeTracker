@@ -14,9 +14,9 @@
          <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
             <TabControl Name="tabWorkspaces" ItemsSource="{Binding workspaces}" SelectedValuePath="workspace_id" DisplayMemberPath="name">
                <TabControl.ContentTemplate>
-                  <DataTemplate>
+                  <ItemContainerTemplate>
                      <timertracker:ucTimeByWorkspace OnNotificationShow="ucTimeByWorkspace_OnNotificationShow" DataContext="{Binding time_manager}" />
-                  </DataTemplate>
+                  </ItemContainerTemplate>
                </TabControl.ContentTemplate>
             </TabControl>
          </ScrollViewer>

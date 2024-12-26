@@ -35,6 +35,14 @@ namespace iFredApps.TimeTracker.UI.Models
          }
       }
 
+      public void Logout()
+      {
+         _userData = null;
+         _user = null;
+         _password = null;
+         _client = null;
+      }
+
       public User GetLoggedUserData()
       {
          return _userData;

@@ -106,6 +106,7 @@ namespace iFredApps.TimeTracker.UI
 
          if(Window.GetWindow(App.Current.MainWindow) is wLogin loginWin)
          {
+            AppWebClient.Instance.Logout();
             loginWin.Clean();
             loginWin.Show();
          }
