@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using iFredApps.TimeTracker.Core.Interfaces.Services;
 using iFredApps.TimeTracker.Core.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using iFredApps.TimeTracker.Core;
 
 namespace iFredApps.TimeTracker.WebApi.Controllers
 {
@@ -23,86 +27,120 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          _audience = configuration["Jwt:Audience"];
       }
 
-      [HttpGet("GetUsers")]
+      // GET: api/Users
+      [HttpGet]
       [Authorize]
       public async Task<ActionResult<IEnumerable<User>>> GetUsers()
       {
          var users = await _userService.GetAllUsers();
+
+         //if (users == null || !users.Data.Any())
+         //{
+         //   return NotFound("No users found.");
+         //}
+
          return Ok(users);
       }
 
-      [HttpPost("Login")]
-      public async Task<ActionResult<User>> Login([FromBody] LoginModel model)
+      // GET: api/Users/{id}
+      [HttpGet("{id}")]
+      [Authorize]
+      public async Task<ActionResult<User>> GetUser(int id)
       {
-         var userData = await _userService.ValidateUser(model.UserSearchTerm, model.Password);
-         if (userData == null)
+         var user = await _userService.GetUser(id);
+
+         if (user == null)
          {
-            return Unauthorized();
+            return NotFound($"User with ID {id} not found.");
          }
 
-         //var tokenHandler = new JwtSecurityTokenHandler();
-         //var key = Encoding.ASCII.GetBytes(_key);
-         //
-         //var tokenDescriptor = new SecurityTokenDescriptor
-         //{
-         //   Subject = new ClaimsIdentity(new Claim[]
-         //   {
-         //      new Claim(ClaimTypes.Name, userData.username)
-         //   }),
-         //   Expires = DateTime.UtcNow.AddHours(1),
-         //   SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-         //};
-         //
-         //var token = tokenHandler.CreateToken(tokenDescriptor);
-         //var tokenString = tokenHandler.WriteToken(token);
-
-         return Ok(userData);
+         return Ok(user);
       }
 
-      //TODO: Implement auth
-      [HttpPost("CreateUser")]
-      public async Task<ActionResult> PostUser([FromBody] User user)
+      // POST: api/Users/Login
+      [HttpPost("Login")]
+      public async Task<ActionResult> Login([FromBody] LoginModel model)
       {
-         if (user == null || !ModelState.IsValid)
+         //if (!ModelState.IsValid)
+         //{
+         //   return BadRequest("Invalid login data.");
+         //}
+
+         var result = await _userService.ValidateUser(model.UserSearchTerm, model.Password);
+         if (result == null || !result.Success)
+         {
+            return Unauthorized(result);
+         }
+
+         Result<UserLoginResponse> response = new Result<UserLoginResponse>();
+         if (result.Data != null)
+         {
+            response.Data = new UserLoginResponse
+            {
+               user_id = result.Data.user_id,
+               username = result.Data.username,
+               name = result.Data.name,
+               email = result.Data.email,
+               password = result.Data.password,
+               created_at = result.Data.created_at,
+            };
+         }
+
+         // Generate JWT token
+         response.Data.token = GenerateJwtToken(result.Data);
+
+         return Ok(result);
+      }
+
+      // POST: api/Users
+      [HttpPost]
+      public async Task<IActionResult> CreateUser([FromBody] User user)
+      {
+         if (!ModelState.IsValid)
          {
             return BadRequest("Invalid user data.");
          }
 
-         //TODO: Validate if exists
-         //var existingUser = await _userService.GetUserByUsername(user.username);
-         //if (existingUser != null)
-         //{
-         //   return Conflict("User already exists.");
-         //}
+         var result = await _userService.CreateUser(user);
 
-         //var existingEmail = await _userService.GetUserByEmail(user.email);
-         //if (existingEmail != null)
-         //{
-         //   return Conflict("Email already exists.");
-         //}
+         if (!result.Success)
+         {
+            return BadRequest(new { Errors = result.Errors });
+         }
 
-         await _userService.CreateUser(user);
-
-         return Ok("User created successfully.");
+         return CreatedAtAction(nameof(GetUser), new { id = result.Data.user_id }, result);
       }
 
-      //TODO: Update user info
-      //[HttpGet("{id}")]
-      //[Authorize]
-      //public async Task<ActionResult<User>> GetUser(int id)
-      //{
-      //   var user = await _userService.GetUserById(id);
-      //   if (user == null)
-      //   {
-      //      return NotFound();
-      //   }
-      //   return Ok(user);
-      //}
+      // Método privado para gerar o token JWT
+      private string GenerateJwtToken(User user)
+      {
+         var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_key));
+         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+         var claims = new[]
+         {
+            new Claim(JwtRegisteredClaimNames.Sub, user.username),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.user_id.ToString())
+        };
+
+         var token = new JwtSecurityToken(
+             issuer: _issuer,
+             audience: _audience,
+             claims: claims,
+             expires: DateTime.Now.AddHours(1),
+             signingCredentials: credentials
+         );
+
+         return new JwtSecurityTokenHandler().WriteToken(token);
+      }
+
+      // Classe de modelo para o login
       public class LoginModel
       {
          public string UserSearchTerm { get; set; }
          public string Password { get; set; }
       }
    }
+
 }

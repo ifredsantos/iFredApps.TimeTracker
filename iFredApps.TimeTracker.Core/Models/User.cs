@@ -19,4 +19,9 @@ namespace iFredApps.TimeTracker.Core.Models
       public string? password { get; set; }
       public DateTime created_at { get; set; }
    }
+
+   public class UserLoginResponse : User
+   {
+      public string token { get; set; }
+   }
 }

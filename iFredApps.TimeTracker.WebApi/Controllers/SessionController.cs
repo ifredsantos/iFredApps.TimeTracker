@@ -19,8 +19,16 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
       //[Authorize]
       public async Task<ActionResult<IEnumerable<Session>>> GetSessions(int user_id, int workspace_id)
       {
-         var sessions = await _sessionService.GetUserSessions(user_id, workspace_id);
-         return Ok(sessions);
+         try
+         {
+            var sessions = await _sessionService.GetUserSessions(user_id, workspace_id);
+            return Ok(sessions);
+         }
+         catch (Exception ex)
+         {
+
+            throw;
+         }
       }
 
       [HttpPost("CreateSession")]

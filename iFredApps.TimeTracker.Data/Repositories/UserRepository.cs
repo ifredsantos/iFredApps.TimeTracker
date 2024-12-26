@@ -19,6 +19,11 @@ namespace iFredApps.TimeTracker.Data.Repositories
          return await _context.Users.ToListAsync();
       }
 
+      public async Task<User> GetUser(int user_id)
+      {
+         return await _context.Users.FirstOrDefaultAsync(x => x.user_id == user_id);
+      }
+
       public async Task<User> SearchUserByTerm(string term)
       {
          return await _context.Users.FirstOrDefaultAsync(x => x.username == term || x.email == term);
@@ -32,10 +37,12 @@ namespace iFredApps.TimeTracker.Data.Repositories
          return userSaved.Entity;
       }
 
-      public async Task UpdateUser(User user)
+      public async Task<User> UpdateUser(User user)
       {
-         _context.Users.Update(user);
+         var userSaved = _context.Users.Update(user);
          await _context.SaveChangesAsync();
+
+         return userSaved.Entity;
       }
 
       public async Task DeleteUser(int id)

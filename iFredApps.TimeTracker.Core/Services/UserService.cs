@@ -15,22 +15,27 @@ namespace iFredApps.TimeTracker.Core.Services
          _workspaceRepository = workspaceRepository;
       }
 
-      public async Task<IEnumerable<User>> GetAllUsers()
+      public async Task<Result<IEnumerable<User>>> GetAllUsers()
       {
-         return await _userRepository.GetAllUsers();
+         return Result<IEnumerable<User>>.Ok(await _userRepository.GetAllUsers());
       }
 
-      public async Task CreateUser(User user)
+      public async Task<Result<User>> GetUser(int user_id)
+      {
+         return Result<User>.Ok(await _userRepository.GetUser(user_id));
+      }
+
+      public async Task<Result<User>> CreateUser(User user)
       {
          //Validate
          {
             User existingUserByUsername = await _userRepository.SearchUserByTerm(user.username);
             if (existingUserByUsername != null)
-               throw new Exception("Unable to create user account as one already exists with the same username");
+               return Result<User>.Fail($"A user with the username '{user.username}' already exists.");
 
             User existingUserByEmail = await _userRepository.SearchUserByTerm(user.email);
             if (existingUserByEmail != null)
-               throw new Exception("Unable to create user account as one already exists with the same email");
+               return Result<User>.Fail($"A user with the email '{user.email}' already exists.");
          }
 
          user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
@@ -44,33 +49,37 @@ namespace iFredApps.TimeTracker.Core.Services
                is_default = true,
             });
          }
+
+         return Result<User>.Ok(userSaved);
       }
 
-      public async Task UpdateUser(User user)
+      public async Task<Result<User>> UpdateUser(User user)
       {
          if (!string.IsNullOrEmpty(user.password))
          {
             user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
          }
-         await _userRepository.UpdateUser(user);
+         var userSaved = await _userRepository.UpdateUser(user);
+         return Result<User>.Ok(userSaved);
       }
 
-      public async Task DeleteUser(int user_id)
+      public async Task<Result<bool>> DeleteUser(int user_id)
       {
          await _userRepository.DeleteUser(user_id);
+         return Result<bool>.Ok(true);
       }
 
-      public async Task<User> ValidateUser(string userSearchKey, string plainPassword)
+      public async Task<Result<User>> ValidateUser(string userSearchKey, string plainPassword)
       {
          User user = await _userRepository.SearchUserByTerm(userSearchKey);
 
          if (user != null && BCrypt.Net.BCrypt.Verify(plainPassword, user.password))
          {
-            return user;
+            return Result<User>.Ok(user);
          }
          else
          {
-            return null;
+            return Result<User>.Fail("Invalid credentials");
          }
       }
    }
