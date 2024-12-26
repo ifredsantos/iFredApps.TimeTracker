@@ -49,7 +49,7 @@ services:
 
   webapi:
     build:
-      context: E:\Programas\DotNET\iFredApps.TimeTracker
+      context: .
       dockerfile: Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Production
