@@ -45,7 +45,7 @@ services:
     networks:
       - app-network
     ports:
-      - "8080:80"
+      - "8081:80"
 
   webapi:
     build:
@@ -77,7 +77,7 @@ services:
     networks:
       - app-network
     ports:
-      - "80:80"
+      - "8082:80"
 
 networks:
   app-network:
