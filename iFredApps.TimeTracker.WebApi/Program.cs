@@ -11,6 +11,43 @@ using iFredApps.TimeTracker.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.IsProduction())
+{
+   DotNetEnv.Env.Load();
+}
+else
+{
+   string envPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", ".env");
+   DotNetEnv.Env.Load(envPath);
+}
+
+var envMySQLServer = Environment.GetEnvironmentVariable("MYSQL_SERVER");
+var envMySQLDatabase = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
+var envMySQLUser = Environment.GetEnvironmentVariable("MYSQL_USER");
+var envMySQLPassword = Environment.GetEnvironmentVariable("MYSQL_PASSWORD");
+if (!string.IsNullOrEmpty(envMySQLServer) && !string.IsNullOrEmpty(envMySQLDatabase) && !string.IsNullOrEmpty(envMySQLUser) && !string.IsNullOrEmpty(envMySQLPassword))
+{
+   builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Server={envMySQLServer};Database={envMySQLDatabase};User Id={envMySQLUser};Password={envMySQLPassword};";
+}
+
+var envJwtKey = Environment.GetEnvironmentVariable("JWT__KEY");
+if (!string.IsNullOrEmpty(envJwtKey))
+{
+   builder.Configuration["Jwt:Key"] = envJwtKey;
+}
+
+var envJwtIssuer = Environment.GetEnvironmentVariable("JWT__ISSUER");
+if (!string.IsNullOrEmpty(envJwtIssuer))
+{
+   builder.Configuration["Jwt:Issuer"] = envJwtIssuer;
+}
+
+var envJwtAudience = Environment.GetEnvironmentVariable("JWT__AUDIENCE");
+if (!string.IsNullOrEmpty(envJwtAudience))
+{
+   builder.Configuration["Jwt:Audience"] = envJwtAudience;
+}
+
 Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 builder.Services.AddCors(options =>
@@ -115,7 +152,7 @@ builder.Services.AddSwaggerGen(c =>
 try
 {
    var app = builder.Build();
-   
+
    if (app.Environment.IsProduction())
    {
       app.Urls.Add("http://0.0.0.0:80");
