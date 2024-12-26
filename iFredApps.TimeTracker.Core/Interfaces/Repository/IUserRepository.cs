@@ -6,7 +6,7 @@ namespace iFredApps.TimeTracker.Core.Interfaces.Repository
    {
       Task<IEnumerable<User>> GetAllUsers();
       Task<User> SearchUserByTerm(string term);
-      Task CreateUser(User user);
+      Task<User> CreateUser(User user);
       Task UpdateUser(User user);
       Task DeleteUser(int user_id);
    }

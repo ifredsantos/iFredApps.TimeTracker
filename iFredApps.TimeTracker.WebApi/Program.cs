@@ -11,14 +11,25 @@ using iFredApps.TimeTracker.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsProduction())
+// Identificar o ambiente (Production, Development, etc.)
+string environment = builder.Environment.EnvironmentName;
+
+// Carregar o arquivo .env correspondente ao ambiente
+if (environment == "Development")
 {
-   DotNetEnv.Env.Load();
+   string envPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", ".env.development");
+   DotNetEnv.Env.Load(envPath);
+   Console.WriteLine("Read Development Environment Variables");
+}
+else if (environment == "Production")
+{
+   DotNetEnv.Env.Load(".env.production");
+   Console.WriteLine("Read Production Environment Variables");
 }
 else
 {
-   string envPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", ".env");
-   DotNetEnv.Env.Load(envPath);
+   DotNetEnv.Env.Load(".env");
+   Console.WriteLine("Read Generic Environment Variables");
 }
 
 var envMySQLServer = Environment.GetEnvironmentVariable("MYSQL_SERVER");

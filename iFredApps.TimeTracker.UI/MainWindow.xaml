@@ -50,7 +50,7 @@
          <ColumnDefinition />
       </Grid.ColumnDefinitions>
 
-      <components:ucLateralMenu x:Name="cmpMenu" Grid.Column="0" />
+      <components:ucLateralMenu x:Name="cmpMenu" Grid.Column="0" OnLogoutButtonClick="OnLogout" />
 
       <ContentControl Name="contentControl" Grid.Column="1" />
 

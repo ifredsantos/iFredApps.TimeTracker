@@ -7,10 +7,12 @@ namespace iFredApps.TimeTracker.Core.Services
    public class UserService : IUserService
    {
       private readonly IUserRepository _userRepository;
+      private readonly IWorkspaceRepository _workspaceRepository;
 
-      public UserService(IUserRepository userRepository)
+      public UserService(IUserRepository userRepository, IWorkspaceRepository workspaceRepository)
       {
          _userRepository = userRepository;
+         _workspaceRepository = workspaceRepository;
       }
 
       public async Task<IEnumerable<User>> GetAllUsers()
@@ -20,8 +22,28 @@ namespace iFredApps.TimeTracker.Core.Services
 
       public async Task CreateUser(User user)
       {
+         //Validate
+         {
+            User existingUserByUsername = await _userRepository.SearchUserByTerm(user.username);
+            if (existingUserByUsername != null)
+               throw new Exception("Unable to create user account as one already exists with the same username");
+
+            User existingUserByEmail = await _userRepository.SearchUserByTerm(user.email);
+            if (existingUserByEmail != null)
+               throw new Exception("Unable to create user account as one already exists with the same email");
+         }
+
          user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
-         await _userRepository.CreateUser(user);
+         var userSaved = await _userRepository.CreateUser(user);
+         if (userSaved != null)
+         {
+            await _workspaceRepository.Create(new Workspace
+            {
+               user_id = userSaved.user_id,
+               name = "My Workspace",
+               is_default = true,
+            });
+         }
       }
 
       public async Task UpdateUser(User user)

@@ -18,16 +18,27 @@ namespace iFredApps.TimeTracker.UI
    public partial class MainWindow : MetroWindow
    {
       private AppConfig appConfig;
+      private bool isLogoutWorking;
 
       public MainWindow()
       {
          InitializeComponent();
+
+         isLogoutWorking = false;
 
          appConfig = SettingsLoader<AppConfig>.Instance.Data;
 
          InitMenu();
 
          SetTimeTrackerView();
+
+         Closed += MainWindow_Closed;
+      }
+
+      private void MainWindow_Closed(object sender, EventArgs e)
+      {
+         if (!isLogoutWorking)
+            Application.Current.Shutdown();
       }
 
       #region Methods
@@ -45,31 +56,36 @@ namespace iFredApps.TimeTracker.UI
          return timeManagerView;
       }
 
-      #endregion
-
-      #region Menu
-
       private void InitMenu()
       {
-         List<AppMenu> menus = new List<AppMenu>
+         AppMenu menu = new AppMenu();
+
+         List<AppMenuItem> menuItemsList = new List<AppMenuItem>
          {
-            new AppMenu("Time Tracker", PackIconFontAwesomeKind.ClockRegular, GetTimeTrackerView()),
-            new AppMenu("Projects", PackIconFontAwesomeKind.TableColumnsSolid, new ucProjectsView()),
-            new AppMenu("Workspaces", PackIconFontAwesomeKind.SpaceAwesomeBrands, new ucWorkspacesView()),
-            new AppMenu("Settings", PackIconFontAwesomeKind.GearSolid, new ucSettingsView()),
+            new AppMenuItem("Time Tracker", PackIconFontAwesomeKind.ClockRegular, GetTimeTrackerView()),
+            new AppMenuItem("Projects", PackIconFontAwesomeKind.TableColumnsSolid, new ucProjectsView()),
+            new AppMenuItem("Workspaces", PackIconFontAwesomeKind.SpaceAwesomeBrands, new ucWorkspacesView()),
+            new AppMenuItem("Settings", PackIconFontAwesomeKind.GearSolid, new ucSettingsView()),
             //new AppMenu("Utils", PackIconFontAwesomeKind.CodeBranchSolid, new ucUtilitiesView())
          };
 
-         cmpMenu.menuList.ItemsSource = menus;
+         menu.MenuList.AddRange(menuItemsList);
+         menu.UserData = AppWebClient.Instance.GetLoggedUserData();
+
+         cmpMenu.DataContext = menu;
 
          cmpMenu.menuList.SelectionChanged += MenuList_SelectionChanged;
       }
+
+      #endregion
+
+      #region Events
 
       private void MenuList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
       {
          try
          {
-            if (e.AddedItems[0] is AppMenu menu)
+            if (e.AddedItems[0] is AppMenuItem menu)
             {
                if (menu.screen != null)
                {
@@ -83,13 +99,17 @@ namespace iFredApps.TimeTracker.UI
          }
       }
 
-      #endregion
+      private void OnLogout(object sender, EventArgs e)
+      {
+         isLogoutWorking = true;
+         this.Close();
 
-      #region Events
-
-      #endregion
-
-      #region Buttons
+         if(Window.GetWindow(App.Current.MainWindow) is wLogin loginWin)
+         {
+            loginWin.Clean();
+            loginWin.Show();
+         }
+      }
 
       private void LaunchGitHubSite(object sender, RoutedEventArgs e)
       {
@@ -118,10 +138,6 @@ namespace iFredApps.TimeTracker.UI
             ex.ShowException();
          }
       }
-
-      #endregion
-
-      #region Notification
 
       public void ShowNotification(string message, TimeSpan? duration = null)
       {

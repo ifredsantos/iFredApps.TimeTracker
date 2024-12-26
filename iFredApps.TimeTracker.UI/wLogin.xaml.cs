@@ -8,6 +8,7 @@ using iFredApps.Lib.Wpf.Messages;
 using MahApps.Metro.Controls;
 using iFredApps.Lib.Security;
 using iFredApps.Lib;
+using System.Diagnostics;
 
 namespace iFredApps.TimeTracker.UI
 {
@@ -29,8 +30,7 @@ namespace iFredApps.TimeTracker.UI
 
          appConfig = SettingsLoader<AppConfig>.Instance.Data;
 
-         loginViewModel = new LoginViewModel();
-         DataContext = loginViewModel;
+         Clean();
 
          LoadData();
       }
@@ -48,6 +48,19 @@ namespace iFredApps.TimeTracker.UI
       private void LoginBtn_Click(object sender, RoutedEventArgs e)
       {
          LoginSubmit();
+      }
+
+      #endregion
+
+      #region Public Methods
+
+      public void Clean()
+      {
+         loginViewModel = new LoginViewModel();
+         DataContext = loginViewModel;
+         txtPassword.Password = null;
+
+         txtUser.Focus();
       }
 
       #endregion
@@ -115,6 +128,7 @@ namespace iFredApps.TimeTracker.UI
                   secData.DeleteSecureData();
                }
 
+               this.Hide();
                OpenMainWindow();
             }
          }
@@ -130,13 +144,23 @@ namespace iFredApps.TimeTracker.UI
 
       private void OpenMainWindow()
       {
-         this.Hide();
-
          MainWindow mainWin = new MainWindow();
-         bool? winResult = mainWin.ShowDialog();
-         if (winResult == null || winResult.Value == false)
+         mainWin.Show();
+      }
+
+      private void OnLaunchGitHubSite(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+      {
+         try
          {
-            Application.Current.Shutdown();
+            Process.Start(new ProcessStartInfo
+            {
+               FileName = "https://github.com/ifredsantos",
+               UseShellExecute = true,
+            });
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 

@@ -60,6 +60,15 @@ namespace iFredApps.TimeTracker.UI.Views
                _tmBase.selected_workspace = _tmBase.workspaces.Where(x => x.is_default)?.FirstOrDefault();
             }
 
+            if(_tmBase.selected_workspace != null)
+            {
+               tabWorkspaces.SelectedItem = _tmBase.selected_workspace;
+            }
+            else if(_tmBase.selected_workspace == null && !_tmBase.workspaces.IsNullOrEmpty())
+            {
+               tabWorkspaces.SelectedItem = _tmBase.workspaces.FirstOrDefault();
+            }
+
             _isFirstLoadComplete = true;
          }
          catch (Exception ex)

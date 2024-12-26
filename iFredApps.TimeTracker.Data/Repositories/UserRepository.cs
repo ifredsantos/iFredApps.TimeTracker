@@ -24,10 +24,12 @@ namespace iFredApps.TimeTracker.Data.Repositories
          return await _context.Users.FirstOrDefaultAsync(x => x.username == term || x.email == term);
       }
 
-      public async Task CreateUser(User user)
+      public async Task<User> CreateUser(User user)
       {
-         await _context.Users.AddAsync(user);
+         var userSaved = await _context.Users.AddAsync(user);
          await _context.SaveChangesAsync();
+
+         return userSaved.Entity;
       }
 
       public async Task UpdateUser(User user)

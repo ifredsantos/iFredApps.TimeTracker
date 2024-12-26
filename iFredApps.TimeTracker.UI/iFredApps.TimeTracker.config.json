@@ -1,6 +1,6 @@
 {
    "database_type": 1,
    "webapi_connection_config": {
-      "baseaddress": "http://localhost/api/"
+      "baseaddress": "https://timetracker.ifredapps.ligrow.agency/api/"
    }
 }
