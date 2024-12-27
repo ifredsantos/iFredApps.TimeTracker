@@ -31,8 +31,9 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            var workspaces = await WebApiCall.Workspaces.GetAllByUserId(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
-            if(!workspaces.IsNullOrEmpty())
+            var resultWorkspaces = await WebApiCall.Workspaces.GetAllByUserId(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+            var workspaces = resultWorkspaces?.TrataResposta();
+            if (!workspaces.IsNullOrEmpty() && resultWorkspaces?.Success == true)
             {
                dataModel.workspaces = workspaces
                   .Select(w => new hWorkspace { workspace_id = w.workspace_id, user_id = w.user_id, name = w.name, is_default = w.is_default, created_at = w.created_at, is_editing = false })

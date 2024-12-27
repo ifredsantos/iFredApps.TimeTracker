@@ -9,47 +9,47 @@ namespace iFredApps.TimeTracker.UI.Models
    {
       public static class Sessions
       {
-         public static async Task<List<TimeManagerTaskSession>> GetAllSessions(WebApiClient webClient, int user_id, int workspace_id)
+         public static async Task<ApiResponse<List<TimeManagerTaskSession>>> GetAllSessions(WebApiClient webClient, int user_id, int workspace_id)
          {
-            return await webClient.GetAsync<List<TimeManagerTaskSession>>("Session/GetSessions/{0}/{1}", user_id, workspace_id);
+            return await webClient.GetAsync< ApiResponse<List<TimeManagerTaskSession>>>("Session/GetSessions/{0}/{1}", user_id, workspace_id);
          }
 
-         public static async Task<TimeManagerTaskSession> CreateSession(WebApiClient webClient, TimeManagerTaskSession session)
+         public static async Task<ApiResponse<TimeManagerTaskSession>> CreateSession(WebApiClient webClient, TimeManagerTaskSession session)
          {
-            return await webClient.PostAsync<TimeManagerTaskSession>("Session/CreateSession", session);
+            return await webClient.PostAsync<ApiResponse<TimeManagerTaskSession>>("Session/CreateSession", session);
          }
 
-         public static async Task<TimeManagerTaskSession> UpdateSession(WebApiClient webClient, TimeManagerTaskSession session)
+         public static async Task<ApiResponse<TimeManagerTaskSession>> UpdateSession(WebApiClient webClient, TimeManagerTaskSession session)
          {
-            return await webClient.PutAsync<TimeManagerTaskSession>("Session/UpdateSession/{0}", session, session.session_id);
+            return await webClient.PutAsync<ApiResponse<TimeManagerTaskSession>>("Session/UpdateSession/{0}", session, session.session_id);
          }
 
-         public static async Task DeleteSession(WebApiClient webClient, int sessionID)
+         public static async Task<ApiResponse<bool>> DeleteSession(WebApiClient webClient, int sessionID)
          {
-            await webClient.DeleteAsync<DBNull>("Session/DeleteSession/{0}", sessionID);
+            return await webClient.DeleteAsync<ApiResponse<bool>>("Session/DeleteSession/{0}", sessionID);
          }
       }
 
       public static class Workspaces
       {
-         public static async Task<List<Workspace>> GetAllByUserId(WebApiClient webClient, int user_id)
+         public static async Task<ApiResponse<List<Workspace>>> GetAllByUserId(WebApiClient webClient, int user_id)
          {
-            return await webClient.GetAsync<List<Workspace>>("Workspace/GetAllByUserId/{0}", user_id);
+            return await webClient.GetAsync<ApiResponse<List<Workspace>>>("Workspace/GetAllByUserId/{0}", user_id);
          }
 
-         public static async Task<Workspace> Create(WebApiClient webClient, Workspace workspace)
+         public static async Task<ApiResponse<Workspace>> Create(WebApiClient webClient, Workspace workspace)
          {
-            return await webClient.PostAsync<Workspace>("Workspace/Create", workspace);
+            return await webClient.PostAsync<ApiResponse<Workspace>>("Workspace/Create", workspace);
          }
 
-         public static async Task<Workspace> Update(WebApiClient webClient, Workspace workspace)
+         public static async Task<ApiResponse<Workspace>> Update(WebApiClient webClient, Workspace workspace)
          {
-            return await webClient.PutAsync<Workspace>("Workspace/Update/{0}", workspace, workspace.workspace_id);
+            return await webClient.PutAsync<ApiResponse<Workspace>>("Workspace/Update/{0}", workspace, workspace.workspace_id);
          }
 
-         public static async Task Delete(WebApiClient webClient, int workspaceID)
+         public static async Task<ApiResponse<bool>> Delete(WebApiClient webClient, int workspaceID)
          {
-            await webClient.DeleteAsync<DBNull>("Workspace/Delete/{0}", workspaceID);
+            return await webClient.DeleteAsync<ApiResponse<bool>>("Workspace/Delete/{0}", workspaceID);
          }
       }
    }

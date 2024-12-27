@@ -27,7 +27,8 @@ namespace iFredApps.TimeTracker.UI.Models
          {
             _client = new WebApiClient(Address);
 
-            _userData = await _client.PostAsync<User>("Users/Login", new LoginModel { UserSearchTerm = user, Password = password });
+            var loginResponse = await _client.PostAsync<ApiResponse<User>>("Users/Login", new LoginModel { UserSearchTerm = user, Password = password });
+            _userData = loginResponse?.TrataResposta();
          }
          catch (Exception ex)
          {

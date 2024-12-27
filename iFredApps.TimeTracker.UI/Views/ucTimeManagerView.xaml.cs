@@ -40,8 +40,9 @@ namespace iFredApps.TimeTracker.UI.Views
          {
             _tmBase.NotifyValue(nameof(_tmBase.isLoading), true);
 
-            var lstWorkspaces = await WebApiCall.Workspaces.GetAllByUserId(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
-            if (!lstWorkspaces.IsNullOrEmpty())
+            var resultLstWorkspaces = await WebApiCall.Workspaces.GetAllByUserId(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+            var lstWorkspaces = resultLstWorkspaces?.TrataResposta();
+            if (!lstWorkspaces.IsNullOrEmpty() && resultLstWorkspaces?.Success == true)
             {
                foreach (var workspace in lstWorkspaces)
                {

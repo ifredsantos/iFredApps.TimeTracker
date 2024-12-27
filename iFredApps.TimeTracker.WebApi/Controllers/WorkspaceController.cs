@@ -36,6 +36,7 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          var result = await _workspaceService.Create(workspace);
 
          return Ok(result);
+         //return CreatedAtAction(nameof(GetWorkspace), new { id = result.Data.workspace_id }, result);
       }
 
       [HttpPut("Update/{id}")]

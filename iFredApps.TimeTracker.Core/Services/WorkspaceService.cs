@@ -13,24 +13,25 @@ namespace iFredApps.TimeTracker.Core.Services
          _workspaceRepository = sessionRepository;
       }
 
-      public Task<IEnumerable<Workspace>> GetAllByUserId(int user_id)
+      public async Task<Result<IEnumerable<Workspace>>> GetAllByUserId(int user_id)
       {
-         return _workspaceRepository.GetAllByUserId(user_id);
+         return Result<IEnumerable<Workspace>>.Ok(await _workspaceRepository.GetAllByUserId(user_id));
       }
 
-      public async Task<Workspace> Create(Workspace workspace)
+      public async Task<Result<Workspace>> Create(Workspace workspace)
       {
-         return await _workspaceRepository.Create(workspace);
+         return Result<Workspace>.Ok(await _workspaceRepository.Create(workspace));
       }
 
-      public async Task<Workspace> Update(Workspace workspace)
+      public async Task<Result<Workspace>> Update(Workspace workspace)
       {
-         return await _workspaceRepository.Update(workspace);
+         return Result<Workspace>.Ok(await _workspaceRepository.Update(workspace));
       }
 
-      public async Task Delete(int workspace_id)
+      public async Task<Result<bool>> Delete(int workspace_id)
       {
          await _workspaceRepository.Delete(workspace_id);
+         return Result<bool>.Ok(true);
       }
    }
 }
