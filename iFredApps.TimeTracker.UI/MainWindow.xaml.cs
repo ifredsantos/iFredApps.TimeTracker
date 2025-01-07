@@ -50,10 +50,18 @@ namespace iFredApps.TimeTracker.UI
 
       private ucTimeManagerView GetTimeTrackerView()
       {
-         ucTimeManagerView timeManagerView = new ucTimeManagerView();
-         timeManagerView.OnNotificationShow += OnNotificationShow;
+         ucTimeManagerView view = new ucTimeManagerView();
+         view.OnNotificationShow += OnNotificationShow;
 
-         return timeManagerView;
+         return view;
+      }
+
+      private ucWorkspacesView GetWorkspaceView()
+      {
+         ucWorkspacesView view = new ucWorkspacesView();
+         view.OnNotificationShow += OnNotificationShow;
+
+         return view;
       }
 
       private void InitMenu()
@@ -64,7 +72,7 @@ namespace iFredApps.TimeTracker.UI
          {
             new AppMenuItem("Time Tracker", PackIconFontAwesomeKind.ClockRegular, GetTimeTrackerView()),
             new AppMenuItem("Projects", PackIconFontAwesomeKind.TableColumnsSolid, new ucProjectsView()),
-            new AppMenuItem("Workspaces", PackIconFontAwesomeKind.SpaceAwesomeBrands, new ucWorkspacesView()),
+            new AppMenuItem("Workspaces", PackIconFontAwesomeKind.SpaceAwesomeBrands, GetWorkspaceView()),
             new AppMenuItem("Settings", PackIconFontAwesomeKind.GearSolid, new ucSettingsView()),
             //new AppMenu("Utils", PackIconFontAwesomeKind.CodeBranchSolid, new ucUtilitiesView())
          };

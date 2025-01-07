@@ -53,10 +53,10 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
 
       [HttpDelete("Delete/{id}")]
       //[Authorize]
-      public async Task<ActionResult> Delete(int id)
+      public async Task<ActionResult<bool>> Delete(int id)
       {
-         await _workspaceService.Delete(id);
-         return NoContent();
+         var result = await _workspaceService.Delete(id);
+         return Ok(result);
       }
    }
 }

@@ -28,7 +28,6 @@ namespace iFredApps.TimeTracker.UI.Models
          }
          else
          {
-            // Constrói a string de erros caso existam
             var errorStr = new StringBuilder();
             if (response.Errors != null && response.Errors.Count > 0)
             {
@@ -42,10 +41,8 @@ namespace iFredApps.TimeTracker.UI.Models
                errorStr.AppendLine("An unknown error has occurred.");
             }
 
-            // Exibe a mensagem de erro para o usuário (presumindo que Message.Error é válido)
             Message.Error(errorStr.ToString());
 
-            // Retorna o dado, mesmo em caso de falha, conforme o comportamento original
             return response.Data;
          }
       }

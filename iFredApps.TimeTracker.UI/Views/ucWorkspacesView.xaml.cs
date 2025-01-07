@@ -9,6 +9,7 @@ using System.Linq;
 using iFredApps.Lib.Wpf.Messages;
 using System.Windows;
 using System.ComponentModel;
+using System.Net.WebSockets;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -40,9 +41,9 @@ namespace iFredApps.TimeTracker.UI.Views
             var workspaces = resultWorkspaces?.TrataResposta();
             if (!workspaces.IsNullOrEmpty() && resultWorkspaces?.Success == true)
             {
-               dataModel.workspaces = workspaces
+               dataModel.workspaces.AddRange(workspaces
                   .Select(w => new hWorkspace { workspace_id = w.workspace_id, user_id = w.user_id, name = w.name, is_default = w.is_default, created_at = w.created_at, is_editing = false })
-                  .ToList();
+                  .ToList());
             }
 
             DataContext = dataModel;
@@ -53,9 +54,17 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
-      private void SaveWorkspaceData(hWorkspace workspace)
+      private async void SaveWorkspaceData(hWorkspace workspace)
       {
+         var apiResponse = await WebApiCall.Workspaces.Update(AppWebClient.Instance.GetClient(), workspace);
+         var updatedWorkspace = apiResponse?.TrataResposta();
+         if (apiResponse.Success && updatedWorkspace != null)
+         {
+            OnNotificationShow?.Invoke(this, new NotificationEventArgs("Workspace changed successfully!"));
 
+            workspace.is_editing = false;
+            workspace.NotifyAll();
+         }
       }
 
       #endregion
@@ -95,7 +104,7 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
-      private void OnDeleteWorkspace(object sender, System.Windows.RoutedEventArgs e)
+      private async void OnDeleteWorkspace(object sender, System.Windows.RoutedEventArgs e)
       {
          try
          {
@@ -105,8 +114,13 @@ namespace iFredApps.TimeTracker.UI.Views
                {
                   if (btn.DataContext is hWorkspace workspace)
                   {
-                     //WebApiCall.Workspaces
-                     //Notificação?
+                     var apiResponse = await WebApiCall.Workspaces.Delete(AppWebClient.Instance.GetClient(), workspace.workspace_id);
+                     var sucesso = apiResponse?.TrataResposta();
+                     if(sucesso.HasValue && sucesso.Value)
+                     {
+                        OnNotificationShow?.Invoke(this, new NotificationEventArgs("Workspace removed successfully!"));
+                        dataModel.workspaces.Remove(workspace);
+                     }
                   }
                }
             }
@@ -153,6 +167,26 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
+      private void OnFavouriteWorkspaceChanged(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            if (e.Source is Button btn)
+            {
+               if (btn.DataContext is hWorkspace workspace)
+               {
+                  workspace.is_default = !workspace.is_default;
+
+                  SaveWorkspaceData(workspace);
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
       #endregion
 
 
@@ -160,7 +194,12 @@ namespace iFredApps.TimeTracker.UI.Views
 
       private class hWorkspaceView
       {
-         public List<hWorkspace> workspaces { get; set; }
+         public IFAObservableCollection<hWorkspace> workspaces { get; set; }
+
+         public hWorkspaceView()
+         {
+            workspaces = new IFAObservableCollection<hWorkspace>();
+         }
       }
 
       private class hWorkspace : Workspace, INotifyPropertyChanged
