@@ -87,7 +87,7 @@
 
          <Border Grid.Row="2" Margin="5,15,5,15" Padding="15,10,15,10" BorderBrush="#cf5a07" BorderThickness="1" CornerRadius="0">
             <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnEditWorkspace">
-               <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PlusSolid" Foreground="#cf5a07" ToolTip="Edit workspace" />
+               <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PlusSolid" Foreground="#cf5a07" ToolTip="Add workspace" />
             </Button>
          </Border>
       </Grid>
