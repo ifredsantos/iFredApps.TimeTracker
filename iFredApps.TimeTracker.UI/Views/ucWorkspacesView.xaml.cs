@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Threading.Tasks;
 using System.Linq;
+using iFredApps.Lib.Wpf.Messages;
+using System.Windows;
+using System.ComponentModel;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -14,6 +17,8 @@ namespace iFredApps.TimeTracker.UI.Views
    /// </summary>
    public partial class ucWorkspacesView : UserControl
    {
+      public event EventHandler<NotificationEventArgs> OnNotificationShow;
+
       private bool _isFirstLoadComplete = false;
 
       private hWorkspaceView dataModel = new hWorkspaceView();
@@ -48,6 +53,11 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
+      private void SaveWorkspaceData(hWorkspace workspace)
+      {
+
+      }
+
       #endregion
 
       #region Events
@@ -67,6 +77,82 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
+      private void OnEditWorkspace(object sender, System.Windows.RoutedEventArgs e)
+      {
+         try
+         {
+            if (e.Source is Button btn)
+            {
+               if (btn.DataContext is hWorkspace workspace)
+               {
+                  workspace.NotifyValue(nameof(workspace.is_editing), true);
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void OnDeleteWorkspace(object sender, System.Windows.RoutedEventArgs e)
+      {
+         try
+         {
+            if (Message.Confirmation("Are you sure you want to remove this workspace and all related sessions??") == MessageBoxResult.Yes)
+            {
+               if (e.Source is Button btn)
+               {
+                  if (btn.DataContext is hWorkspace workspace)
+                  {
+                     //WebApiCall.Workspaces
+                     //Notificação?
+                  }
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void OnSaveWorkspaceCancel(object sender, System.Windows.RoutedEventArgs e)
+      {
+         try
+         {
+            if (e.Source is Button btn)
+            {
+               if (btn.DataContext is hWorkspace workspace)
+               {
+                  workspace.NotifyValue(nameof(workspace.is_editing), false);
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void OnSaveWorkspaceChanges(object sender, System.Windows.RoutedEventArgs e)
+      {
+         try
+         {
+            if (e.Source is Button btn)
+            {
+               if (btn.DataContext is hWorkspace workspace)
+               {
+                  SaveWorkspaceData(workspace);
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
       #endregion
 
 
@@ -77,9 +163,11 @@ namespace iFredApps.TimeTracker.UI.Views
          public List<hWorkspace> workspaces { get; set; }
       }
 
-      private class hWorkspace : Workspace
+      private class hWorkspace : Workspace, INotifyPropertyChanged
       {
          public bool is_editing { get; set; }
+
+         public event PropertyChangedEventHandler PropertyChanged;
       }
 
       #endregion
