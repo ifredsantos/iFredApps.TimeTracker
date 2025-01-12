@@ -26,13 +26,13 @@
          <ItemsControl Grid.Row="1" Margin="5,10,0,0" ItemsSource="{Binding workspaces}">
             <ItemsControl.ItemsPanel>
                <ItemsPanelTemplate>
-                  <StackPanel Orientation="Horizontal" />
+                  <WrapPanel Orientation="Horizontal" />
                </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                <DataTemplate>
                   <StackPanel>
-                     <Border Margin="0,0,15,0" Padding="15,10,15,10" BorderBrush="#cf5a07" BorderThickness="1" CornerRadius="0">
+                     <Border Margin="0,0,15,15" Padding="15,10,15,10" BorderBrush="#cf5a07" BorderThickness="1" CornerRadius="0">
                         <Grid>
                            <Grid.RowDefinitions>
                               <RowDefinition Height="Auto" />
