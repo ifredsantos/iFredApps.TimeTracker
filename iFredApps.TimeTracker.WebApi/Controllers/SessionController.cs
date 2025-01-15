@@ -15,12 +15,20 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          _sessionService = sessionService;
       }
 
-      [HttpGet("GetSessions/{user_id}")]
+      [HttpGet("GetSessions/{user_id}/{workspace_id}")]
       //[Authorize]
-      public async Task<ActionResult<IEnumerable<Session>>> GetSessions(int user_id)
+      public async Task<ActionResult<IEnumerable<Session>>> GetSessions(int user_id, int workspace_id)
       {
-         var users = await _sessionService.GetUserSessions(user_id);
-         return Ok(users);
+         try
+         {
+            var sessions = await _sessionService.GetUserSessions(user_id, workspace_id);
+            return Ok(sessions);
+         }
+         catch (Exception ex)
+         {
+
+            throw;
+         }
       }
 
       [HttpPost("CreateSession")]

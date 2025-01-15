@@ -4,10 +4,11 @@ namespace iFredApps.TimeTracker.Core.Interfaces.Services
 {
    public interface IUserService
    {
-      Task<IEnumerable<User>> GetAllUsers();
-      Task CreateUser(User user);
-      Task UpdateUser(User user);
-      Task DeleteUser(int user_id);
-      Task<User> ValidateUser(string userSearchKey, string plainPassword);
+      Task<Result<IEnumerable<User>>> GetAllUsers();
+      Task<Result<User>> GetUser(int user_id);
+      Task<Result<User>> CreateUser(User user);
+      Task<Result<User>> UpdateUser(User user);
+      Task<Result<bool>> DeleteUser(int user_id);
+      Task<Result<User>> ValidateUser(string userSearchKey, string plainPassword);
    }
 }

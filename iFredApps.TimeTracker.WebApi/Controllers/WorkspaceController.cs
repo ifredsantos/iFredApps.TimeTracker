@@ -36,6 +36,7 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          var result = await _workspaceService.Create(workspace);
 
          return Ok(result);
+         //return CreatedAtAction(nameof(GetWorkspace), new { id = result.Data.workspace_id }, result);
       }
 
       [HttpPut("Update/{id}")]
@@ -52,10 +53,10 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
 
       [HttpDelete("Delete/{id}")]
       //[Authorize]
-      public async Task<ActionResult> Delete(int id)
+      public async Task<ActionResult<bool>> Delete(int id)
       {
-         await _workspaceService.Delete(id);
-         return NoContent();
+         var result = await _workspaceService.Delete(id);
+         return Ok(result);
       }
    }
 }

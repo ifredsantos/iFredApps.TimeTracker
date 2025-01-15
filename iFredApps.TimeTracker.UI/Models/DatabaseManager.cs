@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +12,7 @@ namespace iFredApps.TimeTracker.UI.Models
 {
    public static class DatabaseManager
    {
-      public static async Task<TimeManagerDatabaseData> LoadData()
+      public static async Task<TimeManagerDatabaseData> LoadData(int workspace_id)
       {
          TimeManagerDatabaseData result = new TimeManagerDatabaseData();
          try
@@ -25,11 +24,12 @@ namespace iFredApps.TimeTracker.UI.Models
                if (appConfig.webapi_connection_config == null)
                   throw new Exception("It is necessary to parameterize the webapi configuration!");
 
-               var sessions = await WebApiCall.Sessions.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
+               var sessionsResult = await WebApiCall.Sessions.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, workspace_id);
 
+               var sessions = sessionsResult.TrataResposta();
                if (!sessions.IsNullOrEmpty())
                {
-                  DateTime minDateDisplay = DateTime.Now.AddDays(-7);
+                  DateTime minDateDisplay = DateTime.Now.AddDays(-30);
                   sessions.RemoveAll(x => x.start_date < minDateDisplay);
                }
 
@@ -61,10 +61,12 @@ namespace iFredApps.TimeTracker.UI.Models
 
                session.user_id = AppWebClient.Instance.GetLoggedUserData().user_id;
 
-               result = await WebApiCall.Sessions.CreateSession(AppWebClient.Instance.GetClient(), session);
-
-               OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
-
+               var createResult = await WebApiCall.Sessions.CreateSession(AppWebClient.Instance.GetClient(), session);
+               result = createResult?.TrataResposta();
+               if (createResult != null && createResult.Success)
+               {
+                  OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
+               }
             }
          }
          catch (Exception ex)
@@ -88,10 +90,13 @@ namespace iFredApps.TimeTracker.UI.Models
 
                session.user_id = AppWebClient.Instance.GetLoggedUserData().user_id;
 
-               result = await WebApiCall.Sessions.UpdateSession(AppWebClient.Instance.GetClient(), session);
+               var updateResult = await WebApiCall.Sessions.UpdateSession(AppWebClient.Instance.GetClient(), session);
+               result = updateResult?.TrataResposta();
 
-               OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
-
+               if (updateResult != null && updateResult.Success)
+               {
+                  OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
+               }
             }
          }
          catch (Exception ex)

@@ -1,12 +1,14 @@
 ﻿using iFredApps.TimeTracker.UI.Models;
 using iFredApps.TimeTracker.UI.Utils;
-using iFredApps.TimeTracker.UI.ViewModels;
 using System;
 using System.Windows;
 using System.Windows.Input;
 using iFredApps.Lib.Wpf.Execption;
 using iFredApps.Lib.Wpf.Messages;
 using MahApps.Metro.Controls;
+using iFredApps.Lib.Security;
+using iFredApps.Lib;
+using System.Diagnostics;
 
 namespace iFredApps.TimeTracker.UI
 {
@@ -16,6 +18,7 @@ namespace iFredApps.TimeTracker.UI
    public partial class wLogin : MetroWindow
    {
       private AppConfig appConfig;
+      private LoginViewModel loginViewModel;
 
       public wLogin()
       {
@@ -26,13 +29,10 @@ namespace iFredApps.TimeTracker.UI
          LoginBtn.Click += LoginBtn_Click;
 
          appConfig = SettingsLoader<AppConfig>.Instance.Data;
-         if (appConfig.database_type == AppConfig.enDataBaseType.JSON)
-         {
-            OpenMainWindow();
-            return;
-         }
 
-         txtUser.Focus();
+         Clean();
+
+         LoadData();
       }
 
       #region Events
@@ -52,27 +52,83 @@ namespace iFredApps.TimeTracker.UI
 
       #endregion
 
+      #region Public Methods
+
+      public void Clean()
+      {
+         loginViewModel = new LoginViewModel();
+         DataContext = loginViewModel;
+         txtPassword.Password = null;
+
+         txtUser.Focus();
+      }
+
+      #endregion
+
       #region Private
+
+      private void LoadData()
+      {
+         try
+         {
+            SecurelyLocalData secData = new SecurelyLocalData(appConfig.SaveAppInfoDirectory);
+
+            string loginSavedData = secData.LoadDataSecurely();
+            if (!string.IsNullOrEmpty(loginSavedData))
+            {
+               string[] loginInfo = loginSavedData.Split(':');
+               if (loginInfo.Length == 2)
+               {
+                  loginViewModel.user = loginInfo[0];
+                  loginViewModel.password = loginInfo[1];
+                  txtPassword.Password = loginInfo[1];
+                  loginViewModel.savePassword = true;
+               }
+            }
+            else
+            {
+               txtUser.Focus();
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
 
       private async void LoginSubmit()
       {
-         LoginVM loginVM = DataContext as LoginVM;
          try
          {
-            loginVM.isLoading = true;
+            if (loginViewModel.isLoading)
+               return;
 
-            loginVM.password = txtPassword.Password;
+            loginViewModel.NotifyValue(nameof(loginViewModel.isLoading), true);
 
-            if (string.IsNullOrEmpty(loginVM.user) || string.IsNullOrEmpty(loginVM.password))
+            loginViewModel.password = txtPassword.Password;
+
+            if (string.IsNullOrEmpty(loginViewModel.user) || string.IsNullOrEmpty(loginViewModel.password))
             {
                Message.Warning("Enter credentials!");
                return;
             }
 
             AppWebClient.Instance.Address = SettingsLoader<AppConfig>.Instance.Data?.webapi_connection_config?.baseaddress;
-            await AppWebClient.Instance.Login(loginVM.user, loginVM.password);
+            await AppWebClient.Instance.Login(loginViewModel.user, loginViewModel.password);
             if (AppWebClient.Instance.GetLoggedUserData() != null)
             {
+               SecurelyLocalData secData = new SecurelyLocalData(appConfig.SaveAppInfoDirectory);
+
+               if (loginViewModel.savePassword)
+               {
+                  secData.SaveDataSecurely(string.Format("{0}:{1}", loginViewModel.user, loginViewModel.password));
+               }
+               else
+               {
+                  secData.DeleteSecureData();
+               }
+
+               this.Hide();
                OpenMainWindow();
             }
          }
@@ -82,19 +138,29 @@ namespace iFredApps.TimeTracker.UI
          }
          finally
          {
-            loginVM.isLoading = false;
+            loginViewModel.NotifyValue(nameof(loginViewModel.isLoading), false);
          }
       }
 
       private void OpenMainWindow()
       {
-         this.Hide();
-
          MainWindow mainWin = new MainWindow();
-         bool? winResult = mainWin.ShowDialog();
-         if (winResult == null || winResult.Value == false)
+         mainWin.Show();
+      }
+
+      private void OnLaunchGitHubSite(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+      {
+         try
          {
-            Application.Current.Shutdown();
+            Process.Start(new ProcessStartInfo
+            {
+               FileName = "https://github.com/ifredsantos",
+               UseShellExecute = true,
+            });
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 

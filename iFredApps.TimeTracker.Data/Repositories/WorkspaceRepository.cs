@@ -31,6 +31,19 @@ namespace iFredApps.TimeTracker.Data.Repositories
 
       public async Task<Workspace> Update(Workspace workspace)
       {
+         if(workspace.is_default)
+         {
+            var defaultWorkspaces = await _context.Workspaces.Where(x => x.is_default).ToListAsync();
+            if(defaultWorkspaces != null && defaultWorkspaces.Count > 0)
+            {
+               foreach (var workspaceDefault in defaultWorkspaces)
+               {
+                  workspaceDefault.is_default = false;
+               }
+
+               _context.Workspaces.UpdateRange(defaultWorkspaces);
+            }
+         }
          _context.Workspaces.Update(workspace);
          await _context.SaveChangesAsync();
 

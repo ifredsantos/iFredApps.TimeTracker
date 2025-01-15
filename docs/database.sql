@@ -1,4 +1,6 @@
-CREATE DATABASE timetracker_app;
+CREATE DATABASE IF NOT EXISTS db_time_tracker;
+
+USE db_time_tracker;
 
 CREATE TABLE users (
     user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

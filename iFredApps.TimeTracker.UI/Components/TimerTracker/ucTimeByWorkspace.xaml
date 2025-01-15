@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="iFredApps.TimeTracker.UI.Components.TimerTracker.ucTimeByWorkspace"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:iFredApps.TimeTracker.UI.Components.TimerTracker" 
+             xmlns:components="clr-namespace:iFredApps.TimeTracker.UI.Components" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+   <Grid>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <Grid Grid.Row="0">
+         <components:ucTimeRowEditor x:Name="timeRowEditor" DataContext="{Binding current_session, Mode=TwoWay}" OnSessionStarts="SessionStarts" OnSessionChanged="OnCurrentSessionChanged" />
+      </Grid>
+
+      <ListView Name="lstView" Margin="0,15,0,0" HorizontalContentAlignment="Stretch" Grid.Row="1" ItemsSource="{Binding task_groups}">
+         <ListView.ItemContainerStyle>
+            <Style TargetType="{x:Type ListViewItem}">
+               <Setter Property="Padding" Value="0"/>
+               <Setter Property="Margin" Value="0,0,0,15"/>
+               <Setter Property="BorderThickness" Value="0"/>
+               <Setter Property="Background" Value="Transparent" />
+               <Setter Property="Template">
+                  <Setter.Value>
+                     <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <ContentPresenter />
+                     </ControlTemplate>
+                  </Setter.Value>
+               </Setter>
+            </Style>
+         </ListView.ItemContainerStyle>
+         <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+               <StackPanel />
+            </ItemsPanelTemplate>
+         </ListView.ItemsPanel>
+         <ListView.ItemTemplate>
+            <DataTemplate>
+               <components:ucTimeGroup OnTaskContinue="OnTaskContinueClick" OnTaskRemove="OnTaskRemoveClick" OnTaskChanged="OnTaskChange" 
+                                       OnSessionChanged="OnSessionChange" OnSessionRemoved="OnSessionRemove" OnSendReportRequest="OnSendReport" />
+            </DataTemplate>
+         </ListView.ItemTemplate>
+      </ListView>
+
+      <iconPacks:PackIconFontAwesome Grid.Row="1" Name="iconIsLoading" Kind="SpinnerSolid" Spin="True" Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                        Visibility="{Binding isLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+   </Grid>
+</UserControl>

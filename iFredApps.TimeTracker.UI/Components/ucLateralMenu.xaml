@@ -6,34 +6,64 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="250">
-   <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource MahApps.Brushes.Gray.SemiTransparent}">
-      <Grid>
-         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-         </Grid.RowDefinitions>
+    <Border BorderThickness="0,0,1,0" BorderBrush="{StaticResource MahApps.Brushes.Gray.SemiTransparent}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-         <ListView Grid.Row="0" x:Name="menuList" Margin="0,15,0,0" Width="200">
-            <ListView.ItemsPanel>
-               <ItemsPanelTemplate>
-                  <StackPanel Orientation="Vertical" />
-               </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-               <DataTemplate>
-                  <StackPanel Orientation="Horizontal">
-                     <Grid HorizontalAlignment="Center" Margin="5,5,6,0">
-                        <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="{Binding icon}" />
-                     </Grid>
-                     <Label Content="{Binding description}" HorizontalAlignment="Center" />
-                  </StackPanel>
-               </DataTemplate>
-            </ListView.ItemTemplate>
-         </ListView>
+            <ListView Grid.Row="0" x:Name="menuList" Margin="0,15,0,0" Width="200" ItemsSource="{Binding MenuList}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="{Binding icon}" HorizontalAlignment="Center" Margin="5,5,6,0" />
+                            <Label Content="{Binding description}" HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-         <StackPanel Grid.Row="1" Visibility="Collapsed">
-            <Label Content="Frederico Santos" />
-         </StackPanel>
-      </Grid>
-   </Border>
+            <Border Grid.Row="1" BorderBrush="{StaticResource MahApps.Brushes.Gray.SemiTransparent}" BorderThickness="0,1,0,1">
+                <Grid Grid.Row="1" Margin="15,0,5,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="UserNinjaSolid" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock x:Name="txtName" Text="{Binding UserData.name, FallbackValue=Name}" Margin="10,0,0,0" 
+                                   VerticalAlignment="Center" TextWrapping="Wrap" Width="100" />
+                            <TextBlock Text="Basic Plan" Margin="11,0,0,0" VerticalAlignment="Center" Foreground="Gray" FontSize="11" />
+                        </StackPanel>
+                    </Grid>
+                    <Button Grid.Column="2" Style="{StaticResource MaterialDesignIconForegroundButton}" Click="OnLogoutButton_Click">
+                        <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PowerOffSolid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                    </Button>
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5">
+                <TextBlock Text="Made with" Foreground="Gray" FontStyle="Italic" FontSize="10" />
+                <iconPacks:PackIconFontAwesome Kind="HeartSolid" Width="10" Height="10" VerticalAlignment="Center" Foreground="Gray" FontStyle="Italic" Margin="5,0,5,0"/>
+                <TextBlock Text="by " Foreground="Gray" FontStyle="Italic" FontSize="10" />
+                <TextBlock>
+               <Hyperlink NavigateUri="https://github.com/ifredsantos" RequestNavigate="OnLaunchGitHubSite" Foreground="Gray" FontStyle="Italic" FontSize="10">
+                  iFredApps
+               </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>

@@ -1,0 +1,86 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_SERVER: ${MYSQL_SERVER}
+    volumes:
+      - timetracker-db-data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - -h
+        - localhost
+        - -u
+        - ${MYSQL_USER}
+        - -p${MYSQL_PASSWORD}
+      timeout: 10s
+      interval: 30s
+      retries: 5
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: "3306"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:80
+      timeout: 10s
+      interval: 30s
+      retries: 3
+    depends_on:
+      db:
+        condition: service_started
+    networks:
+      - app-network
+    ports:
+      - "8081:80"
+
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      JWT__AUDIENCE: ${JWT__AUDIENCE}
+      JWT__ISSUER: ${JWT__ISSUER}
+      JWT__KEY: ${JWT__KEY}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_SERVER: ${MYSQL_SERVER}
+      MYSQL_USER: ${MYSQL_USER}
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:80/health
+      timeout: 10s
+      interval: 30s
+      retries: 5
+    depends_on:
+      db:
+        condition: service_started
+    networks:
+      - app-network
+    ports:
+      - "8082:80"
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  timetracker-db-data:

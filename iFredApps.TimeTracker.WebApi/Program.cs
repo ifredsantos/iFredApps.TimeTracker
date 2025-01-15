@@ -11,6 +11,54 @@ using iFredApps.TimeTracker.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Identificar o ambiente (Production, Development, etc.)
+string environment = builder.Environment.EnvironmentName;
+
+// Carregar o arquivo .env correspondente ao ambiente
+if (environment == "Development")
+{
+   string envPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", ".env.development");
+   DotNetEnv.Env.Load(envPath);
+   Console.WriteLine("Read Development Environment Variables");
+}
+else if (environment == "Production")
+{
+   DotNetEnv.Env.Load(".env.production");
+   Console.WriteLine("Read Production Environment Variables");
+}
+else
+{
+   DotNetEnv.Env.Load(".env");
+   Console.WriteLine("Read Generic Environment Variables");
+}
+
+var envMySQLServer = Environment.GetEnvironmentVariable("MYSQL_SERVER");
+var envMySQLDatabase = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
+var envMySQLUser = Environment.GetEnvironmentVariable("MYSQL_USER");
+var envMySQLPassword = Environment.GetEnvironmentVariable("MYSQL_PASSWORD");
+if (!string.IsNullOrEmpty(envMySQLServer) && !string.IsNullOrEmpty(envMySQLDatabase) && !string.IsNullOrEmpty(envMySQLUser) && !string.IsNullOrEmpty(envMySQLPassword))
+{
+   builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Server={envMySQLServer};Database={envMySQLDatabase};User Id={envMySQLUser};Password={envMySQLPassword};";
+}
+
+var envJwtKey = Environment.GetEnvironmentVariable("JWT__KEY");
+if (!string.IsNullOrEmpty(envJwtKey))
+{
+   builder.Configuration["Jwt:Key"] = envJwtKey;
+}
+
+var envJwtIssuer = Environment.GetEnvironmentVariable("JWT__ISSUER");
+if (!string.IsNullOrEmpty(envJwtIssuer))
+{
+   builder.Configuration["Jwt:Issuer"] = envJwtIssuer;
+}
+
+var envJwtAudience = Environment.GetEnvironmentVariable("JWT__AUDIENCE");
+if (!string.IsNullOrEmpty(envJwtAudience))
+{
+   builder.Configuration["Jwt:Audience"] = envJwtAudience;
+}
+
 Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 builder.Services.AddCors(options =>
@@ -80,43 +128,48 @@ builder.Services.AddControllers();
 
 // Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-   c.SwaggerDoc("v1", new OpenApiInfo
+   options.SwaggerDoc("v1", new OpenApiInfo
    {
       Title = "iFredApps TimeTracker",
       Version = "v1"
    });
 
-   c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+   options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
    {
       In = ParameterLocation.Header,
-      Description = "JWT Authorization header using the Bearer scheme.",
-      Name = "Authorization",
       Type = SecuritySchemeType.ApiKey,
-      Scheme = "Bearer"
+      Scheme = "Bearer",
+      BearerFormat = "JWT",
+      Name = "Authorization",
+      Description = "Enter 'Bearer {your JWT token}' to authenticate.",
    });
-   c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
+
+   options.AddSecurityRequirement(new OpenApiSecurityRequirement
+   {
+      {
+         new OpenApiSecurityScheme
+         {
+            Reference = new OpenApiReference
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+               Type = ReferenceType.SecurityScheme,
+               Id = "Bearer"
+            }
+         },
+         Array.Empty<string>()
+      }
+   });
 });
 
 try
 {
    var app = builder.Build();
 
-   app.Urls.Add("http://0.0.0.0:80");
+   if (app.Environment.IsProduction())
+   {
+      app.Urls.Add("http://0.0.0.0:80");
+   }
 
    try
    {

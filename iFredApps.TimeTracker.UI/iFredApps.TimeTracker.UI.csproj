@@ -21,12 +21,16 @@
   <ItemGroup>
     <Compile Remove="bin\**" />
     <Compile Remove="publish\**" />
+    <Compile Remove="ViewModels\**" />
     <EmbeddedResource Remove="bin\**" />
     <EmbeddedResource Remove="publish\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
     <None Remove="bin\**" />
     <None Remove="publish\**" />
+    <None Remove="ViewModels\**" />
     <Page Remove="bin\**" />
     <Page Remove="publish\**" />
+    <Page Remove="ViewModels\**" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\logo.png" />
@@ -64,5 +68,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\iFredApps.Lib.WPF\iFredApps.Lib.WPF.csproj" />
     <ProjectReference Include="..\..\iFredApps.Lib\iFredApps.Lib.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Components\Workspace\" />
   </ItemGroup>
 </Project>

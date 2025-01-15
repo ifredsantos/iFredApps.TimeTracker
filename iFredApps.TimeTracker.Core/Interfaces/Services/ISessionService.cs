@@ -4,9 +4,9 @@ namespace iFredApps.TimeTracker.Core.Interfaces.Services
 {
    public interface ISessionService
    {
-      Task<IEnumerable<Session>> GetUserSessions(int user_id);
-      Task<Session> Create(Session session);
-      Task<Session> Update(Session session);
-      Task Delete(int session_id);
+      Task<Result<IEnumerable<Session>>> GetUserSessions(int user_id, int workspace_id);
+      Task<Result<Session>> Create(Session session);
+      Task<Result<Session>> Update(Session session);
+      Task<Result<bool>> Delete(int session_id);
    }
 }

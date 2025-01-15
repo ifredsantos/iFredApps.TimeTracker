@@ -1,5 +1,4 @@
 ﻿using iFredApps.Lib;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,16 +7,39 @@ using System.Runtime.CompilerServices;
 
 namespace iFredApps.TimeTracker.UI.Models
 {
+   public class TimeManagerBase : INotifyPropertyChanged
+   {
+      public IFAObservableCollection<TimeManagerWorkspace> workspaces { get; set; }
+      public TimeManagerWorkspace selected_workspace { get; set; }
+      public bool isLoading { get; set; }
+
+      public TimeManagerBase()
+      {
+         workspaces = new IFAObservableCollection<TimeManagerWorkspace>();
+      }
+
+      public event PropertyChangedEventHandler PropertyChanged;
+   }
+
+   public class TimeManagerWorkspace : Workspace
+   {
+      public TimeManager time_manager { get; set; }
+      public TimeManagerWorkspace()
+      {
+         time_manager = new TimeManager(this);
+      }
+   }
+
    public class TimeManager : INotifyPropertyChanged
    {
+      public Workspace workspace { get; set; }
       public TimeManagerTaskSession current_session { get; set; }
       public List<TimeManagerTaskSession> sessions { get; set; }
       public IFAObservableCollection<TimeManagerGroup> task_groups { get; set; }
-      public List<Workspace> Workspaces { get; set; }
-      public Workspace SelectedWorkspace { get; set; }
       public bool isLoading { get; set; }
-      public TimeManager()
+      public TimeManager(Workspace workspace)
       {
+         this.workspace = workspace;
          current_session = new TimeManagerTaskSession();
          sessions = new List<TimeManagerTaskSession>();
          task_groups = new IFAObservableCollection<TimeManagerGroup>();

@@ -12,68 +12,87 @@
       <materialDesign:BooleanToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="visConv" />
       <materialDesign:BooleanToVisibilityConverter TrueValue="Collapsed" FalseValue="Visible" x:Key="visConvInverted" />
    </UserControl.Resources>
-   
+
    <Grid Margin="10">
-      <Grid.RowDefinitions>
-         <RowDefinition Height="Auto" />
-         <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
+      <Grid>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+         </Grid.RowDefinitions>
 
-      <Label FontSize="20" Content="Workspaces" />
+         <Label FontSize="20" Content="Workspaces" />
 
-      <ItemsControl Grid.Row="1" Margin="5,10,0,0" ItemsSource="{Binding workspaces}">
-         <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-               <StackPanel Orientation="Horizontal" />
-            </ItemsPanelTemplate>
-         </ItemsControl.ItemsPanel>
-         <ItemsControl.ItemTemplate>
-            <DataTemplate>
-               <StackPanel>
-                  <Border Margin="0,0,15,0" Padding="15,10,15,10" BorderBrush="#cf5a07" BorderThickness="1" CornerRadius="0">
-                     <StackPanel>
-                        <TextBlock Text="{Binding name}" HorizontalAlignment="Center" FontSize="16" FontWeight="Regular" />
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                           <iconPacks:PackIconBootstrapIcons
+         <ItemsControl Grid.Row="1" Margin="5,10,0,0" ItemsSource="{Binding workspaces}">
+            <ItemsControl.ItemsPanel>
+               <ItemsPanelTemplate>
+                  <WrapPanel Orientation="Horizontal" />
+               </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+               <DataTemplate>
+                  <StackPanel>
+                     <Border Margin="0,0,15,15" Padding="15,10,15,10" BorderBrush="#cf5a07" BorderThickness="1" CornerRadius="0">
+                        <Grid>
+                           <Grid.RowDefinitions>
+                              <RowDefinition Height="Auto" />
+                              <RowDefinition Height="*" />
+                           </Grid.RowDefinitions>
+                           <Grid>
+                              <TextBlock Text="{Binding name}" HorizontalAlignment="Center" FontSize="16" FontWeight="Regular" Visibility="{Binding is_editing, Converter={StaticResource visConvInverted}}" />
+                              <TextBox Text="{Binding name}" HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="16" FontWeight="Regular" Visibility="{Binding is_editing, Converter={StaticResource visConv}}" 
+                                       Padding="0" />
+                           </Grid>
+                           <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                              <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnFavouriteWorkspaceChanged">
+                                 <iconPacks:PackIconBootstrapIcons
                               Foreground="DarkOrange"
                               Width="20" Height="20"
                               VerticalAlignment="Center"
                               HorizontalAlignment="Center">
-                              <iconPacks:PackIconBootstrapIcons.Style>
-                                 <Style TargetType="iconPacks:PackIconBootstrapIcons">
-                                    <Setter Property="Kind" Value="Star" />
-                                    <Style.Triggers>
-                                       <DataTrigger Binding="{Binding is_default}" Value="true">
-                                          <Setter Property="Kind" Value="StarFill" />
-                                       </DataTrigger>
-                                    </Style.Triggers>
-                                 </Style>
-                              </iconPacks:PackIconBootstrapIcons.Style>
-                           </iconPacks:PackIconBootstrapIcons>
+                                    <iconPacks:PackIconBootstrapIcons.Style>
+                                       <Style TargetType="iconPacks:PackIconBootstrapIcons">
+                                          <Setter Property="Kind" Value="Star" />
+                                          <Style.Triggers>
+                                             <DataTrigger Binding="{Binding is_default}" Value="true">
+                                                <Setter Property="Kind" Value="StarFill" />
+                                             </DataTrigger>
+                                          </Style.Triggers>
+                                       </Style>
+                                    </iconPacks:PackIconBootstrapIcons.Style>
+                                 </iconPacks:PackIconBootstrapIcons>
+                              </Button>
 
-                           <StackPanel Orientation="Horizontal" Visibility="{Binding is_editing, Converter={StaticResource visConvInverted}}">
-                              <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center">
-                                 <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PencilSolid" Foreground="CornflowerBlue" ToolTip="Edit session" />
-                              </Button>
-                              <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="7,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center">
-                                 <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="TrashSolid" Foreground="IndianRed" ToolTip="Delete session" />
-                              </Button>
+                              <StackPanel Orientation="Horizontal" Visibility="{Binding is_editing, Converter={StaticResource visConvInverted}}">
+                                 <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnEditWorkspace">
+                                    <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PencilSolid" Foreground="CornflowerBlue" ToolTip="Edit workspace" />
+                                 </Button>
+                                 <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="7,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnDeleteWorkspace">
+                                    <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="TrashSolid" Foreground="IndianRed" ToolTip="Delete workspace" />
+                                 </Button>
+                              </StackPanel>
+                              <StackPanel Orientation="Horizontal" Visibility="{Binding is_editing, Converter={StaticResource visConv}}">
+                                 <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnSaveWorkspaceCancel">
+                                    <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="XSolid" Foreground="IndianRed" ToolTip="Save changes" />
+                                 </Button>
+                                 <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="7,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnSaveWorkspaceChanges">
+                                    <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="CheckSolid" Foreground="Green" ToolTip="Save changes" />
+                                 </Button>
+                              </StackPanel>
                            </StackPanel>
-                           <StackPanel Orientation="Horizontal" Visibility="{Binding is_editing, Converter={StaticResource visConv}}">
+                        </Grid>
+                     </Border>
+                  </StackPanel>
+               </DataTemplate>
+            </ItemsControl.ItemTemplate>
+         </ItemsControl>
 
-                              <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center">
-                                 <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="XSolid" Foreground="IndianRed" ToolTip="Save changes" />
-                              </Button>
-                              <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="7,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center">
-                                 <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="CheckSolid" Foreground="Green" ToolTip="Save changes" />
-                              </Button>
-                           </StackPanel>
-                        </StackPanel>
-                     </StackPanel>
-                  </Border>
-               </StackPanel>
-            </DataTemplate>
-         </ItemsControl.ItemTemplate>
-      </ItemsControl>
+
+         <Border Grid.Row="2" Margin="5,0,5,15" Padding="15,10,15,10" BorderBrush="#cf5a07" BorderThickness="1" CornerRadius="0">
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnAddNewWorkspace">
+               <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PlusSolid" Foreground="#cf5a07" ToolTip="Add workspace" />
+            </Button>
+         </Border>
+      </Grid>
    </Grid>
 </UserControl>

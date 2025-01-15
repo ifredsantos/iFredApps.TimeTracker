@@ -16,6 +16,7 @@ namespace iFredApps.TimeTracker.UI.Components
       public event EventHandler<TimeTaskEditEventArgs> OnTaskChanged;
       public event EventHandler<TimeTaskSessionEditEventArgs> OnSessionChanged;
       public event EventHandler<TimeTaskSessionEditEventArgs> OnSessionRemoved;
+      public event EventHandler<TimeTaskGroupArgs> OnSendReportRequest;
 
       public ucTimeGroup()
       {
@@ -55,6 +56,14 @@ namespace iFredApps.TimeTracker.UI.Components
       private void OnSessionRemove(object sender, TimeTaskSessionEditEventArgs e)
       {
          OnSessionRemoved?.Invoke(this, e);
+      }
+
+      private void OnSendReport(object sender, RoutedEventArgs e)
+      {
+         if (DataContext is TimeManagerGroup group)
+         {
+            OnSendReportRequest?.Invoke(this, new TimeTaskGroupArgs { Group = group });
+         }
       }
 
       #endregion
