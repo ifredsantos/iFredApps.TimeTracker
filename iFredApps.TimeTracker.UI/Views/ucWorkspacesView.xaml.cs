@@ -58,12 +58,26 @@ namespace iFredApps.TimeTracker.UI.Views
 
       private async void SaveWorkspaceData(hWorkspace workspace)
       {
-         var apiResponse = await WebApiCall.Workspaces.Update(AppWebClient.Instance.GetClient(), workspace);
+         bool isNew = workspace.workspace_id == 0;
+
+         ApiResponse<Workspace> apiResponse = null;
+         if(isNew)
+         {
+            apiResponse = await WebApiCall.Workspaces.Create(AppWebClient.Instance.GetClient(), workspace);
+         }
+         else
+         {
+            apiResponse = await WebApiCall.Workspaces.Update(AppWebClient.Instance.GetClient(), workspace);
+         }
          var updatedWorkspace = apiResponse?.TrataResposta();
          if (apiResponse.Success && updatedWorkspace != null)
          {
-            OnNotificationShow?.Invoke(this, new NotificationEventArgs("Workspace changed successfully!"));
+            if(isNew)
+               OnNotificationShow?.Invoke(this, new NotificationEventArgs("Workspace created successfully!"));
+            else
+               OnNotificationShow?.Invoke(this, new NotificationEventArgs("Workspace changed successfully!"));
 
+            workspace.workspace_id = updatedWorkspace.workspace_id;
             workspace.is_editing = false;
             workspace.NotifyAll();
          }
@@ -180,6 +194,14 @@ namespace iFredApps.TimeTracker.UI.Views
                   workspace.is_default = !workspace.is_default;
 
                   SaveWorkspaceData(workspace);
+
+                  if (workspace.is_default)
+                  {
+                     foreach (var otherWorkspace in dataModel.workspaces.Where(x => x.workspace_id != workspace.workspace_id))
+                     {
+                        otherWorkspace.NotifyValue(nameof(otherWorkspace.is_default), false);
+                     }
+                  }
                }
             }
          }
@@ -189,8 +211,23 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
-      #endregion
+      private void OnAddNewWorkspace(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            dataModel.workspaces.Add(new hWorkspace
+            {
+               user_id = AppWebClient.Instance.GetLoggedUserData().user_id,
+               is_editing = true,
+            });
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
 
+      #endregion
 
       #region Auxiliar Classes
 

@@ -69,4 +69,7 @@
     <ProjectReference Include="..\..\iFredApps.Lib.WPF\iFredApps.Lib.WPF.csproj" />
     <ProjectReference Include="..\..\iFredApps.Lib\iFredApps.Lib.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Components\Workspace\" />
+  </ItemGroup>
 </Project>

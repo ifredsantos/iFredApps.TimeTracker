@@ -40,7 +40,8 @@
                            </Grid.RowDefinitions>
                            <Grid>
                               <TextBlock Text="{Binding name}" HorizontalAlignment="Center" FontSize="16" FontWeight="Regular" Visibility="{Binding is_editing, Converter={StaticResource visConvInverted}}" />
-                              <TextBox Text="{Binding name}" HorizontalAlignment="Center" FontSize="16" FontWeight="Regular" Visibility="{Binding is_editing, Converter={StaticResource visConv}}" Padding="0" />
+                              <TextBox Text="{Binding name}" HorizontalAlignment="Stretch" TextAlignment="Center" FontSize="16" FontWeight="Regular" Visibility="{Binding is_editing, Converter={StaticResource visConv}}" 
+                                       Padding="0" />
                            </Grid>
                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                               <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnFavouriteWorkspaceChanged">
@@ -87,8 +88,8 @@
          </ItemsControl>
 
 
-         <Border Grid.Row="2" Margin="5,15,5,15" Padding="15,10,15,10" BorderBrush="#cf5a07" BorderThickness="1" CornerRadius="0">
-            <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnEditWorkspace">
+         <Border Grid.Row="2" Margin="5,0,5,15" Padding="15,10,15,10" BorderBrush="#cf5a07" BorderThickness="1" CornerRadius="0">
+            <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="10,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnAddNewWorkspace">
                <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PlusSolid" Foreground="#cf5a07" ToolTip="Add workspace" />
             </Button>
          </Border>
