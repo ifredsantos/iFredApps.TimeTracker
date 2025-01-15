@@ -55,6 +55,9 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                {
                   foreach (var session in data.sessions)
                   {
+                     if(session.end_date.HasValue)
+                        session.total_time = session.end_date.Value - session.start_date;
+
                      _tmByWorkspace.sessions.Add(session);
                   }
                }
