@@ -23,7 +23,7 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
       {
          try
          {
-            var sessions = await _sessionService.GetUserSessions(user_id, workspace_id);
+            var sessions = await _sessionService.GetUserSessions(user_id, workspace_id, start_date, end_date);
             return Ok(sessions);
          }
          catch (Exception ex)
