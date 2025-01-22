@@ -16,8 +16,10 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
       }
 
       [HttpGet("GetSessions/{user_id}/{workspace_id}")]
+      [HttpGet("GetSessions/{user_id}/{workspace_id}/{start_date}")]
+      [HttpGet("GetSessions/{user_id}/{workspace_id}/{start_date}/{end_date}")]
       //[Authorize]
-      public async Task<ActionResult<IEnumerable<Session>>> GetSessions(int user_id, int workspace_id)
+      public async Task<ActionResult<IEnumerable<Session>>> GetSessions(int user_id, int workspace_id, DateTime? start_date = null, DateTime? end_date = null)
       {
          try
          {

@@ -13,9 +13,9 @@ namespace iFredApps.TimeTracker.Core.Services
          _sessionRepository = sessionRepository;
       }
 
-      public async Task<Result<IEnumerable<Session>>> GetUserSessions(int user_id, int workspace_id)
+      public async Task<Result<IEnumerable<Session>>> GetUserSessions(int user_id, int workspace_id, DateTime? start_date = null, DateTime? end_date = null)
       {
-         return Result<IEnumerable<Session>>.Ok(await _sessionRepository.GetUserSessions(user_id, workspace_id));
+         return Result<IEnumerable<Session>>.Ok(await _sessionRepository.GetUserSessions(user_id, workspace_id, start_date, end_date));
       }
 
       public async Task<Result<Session>> Create(Session session)
