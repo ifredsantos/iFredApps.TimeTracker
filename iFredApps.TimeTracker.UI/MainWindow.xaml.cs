@@ -17,7 +17,7 @@ namespace iFredApps.TimeTracker.UI
    /// </summary>
    public partial class MainWindow : MetroWindow
    {
-      private AppConfig appConfig;
+      private AppConfig appConfig = null;
       private bool isLogoutWorking;
 
       public MainWindow()

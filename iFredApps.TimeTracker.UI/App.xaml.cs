@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using iFredApps.TimeTracker.UI.Models;
+using System.Windows;
 
 namespace iFredApps.TimeTracker.UI
 {
@@ -10,6 +11,22 @@ namespace iFredApps.TimeTracker.UI
       public App()
       {
          InitializeComponent();
+      }
+
+      protected override void OnStartup(StartupEventArgs e)
+      {
+         base.OnStartup(e);
+
+         if (AppWebClient.Instance.GetLoggedUserData() != null)
+         {
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
+         }
+         else
+         {
+            wLogin loginWindow = new wLogin();
+            loginWindow.Show();
+         }
       }
    }
 }

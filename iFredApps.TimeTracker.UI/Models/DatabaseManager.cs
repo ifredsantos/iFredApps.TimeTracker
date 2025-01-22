@@ -12,42 +12,6 @@ namespace iFredApps.TimeTracker.UI.Models
 {
    public static class DatabaseManager
    {
-      public static async Task<TimeManagerDatabaseData> LoadData(int workspace_id)
-      {
-         TimeManagerDatabaseData result = new TimeManagerDatabaseData();
-         try
-         {
-            AppConfig appConfig = SettingsLoader<AppConfig>.Instance.Data;
-
-            if (appConfig != null)
-            {
-               if (appConfig.webapi_connection_config == null)
-                  throw new Exception("It is necessary to parameterize the webapi configuration!");
-
-               var sessionsResult = await WebApiCall.Sessions.GetAllSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, workspace_id);
-
-               var sessions = sessionsResult.TrataResposta();
-               if (!sessions.IsNullOrEmpty())
-               {
-                  DateTime minDateDisplay = DateTime.Now.AddDays(-30);
-                  sessions.RemoveAll(x => x.start_date < minDateDisplay);
-               }
-
-               result = new TimeManagerDatabaseData
-               {
-                  sessions = sessions,
-                  uncompleted_session = sessions?.Find(x => x.end_date == null)
-               };
-            }
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-
-         return result;
-      }
-
       public static async Task<TimeManagerTaskSession> CreateSession(TimeManagerTaskSession session, EventHandler<NotificationEventArgs> OnNotificationShow)
       {
          TimeManagerTaskSession result = null;

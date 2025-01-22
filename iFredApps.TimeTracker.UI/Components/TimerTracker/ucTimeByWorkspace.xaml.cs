@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using iFredApps.Lib.Wpf.Execption;
+using ControlzEx.Standard;
 
 namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 {
@@ -48,7 +49,23 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 
             _tmByWorkspace.NotifyValue(nameof(_tmByWorkspace.isLoading), true);
 
-            var data = await DatabaseManager.LoadData(_tmByWorkspace.workspace.workspace_id);
+            DateTime startDate = DateTime.Now.AddDays(-7);
+            DateTime? endDate = null;
+            var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, _tmByWorkspace.workspace.workspace_id, startDate, endDate);
+
+            var sessions = sessionsResult.TrataResposta();
+            if (!sessions.IsNullOrEmpty())
+            {
+               DateTime minDateDisplay = DateTime.Now.AddDays(-30);
+               sessions.RemoveAll(x => x.start_date < minDateDisplay);
+            }
+
+            var data = new TimeManagerDatabaseData
+            {
+               sessions = sessions,
+               uncompleted_session = sessions?.Find(x => x.end_date == null)
+            };
+
             if (data != null)
             {
                if (data.sessions != null && data.sessions.Count > 0)
