@@ -54,11 +54,6 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
             var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, _tmByWorkspace.workspace.workspace_id, startDate, endDate);
 
             var sessions = sessionsResult.TrataResposta();
-            if (!sessions.IsNullOrEmpty())
-            {
-               DateTime minDateDisplay = DateTime.Now.AddDays(-30);
-               sessions.RemoveAll(x => x.start_date < minDateDisplay);
-            }
 
             var data = new TimeManagerDatabaseData
             {
