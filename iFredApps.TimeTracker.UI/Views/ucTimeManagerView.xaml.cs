@@ -30,6 +30,14 @@ namespace iFredApps.TimeTracker.UI.Views
          DataContext = _tmBase;
 
          Loaded += UcTimeManagerView_Loaded;
+
+         tabWorkspaces.SelectionChanged += TabWorkspaces_SelectionChanged;
+      }
+
+      private void TabWorkspaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+         _tmBase.selected_workspace = (TimeManagerWorkspace)e.AddedItems[0];
+         _tmBase.NotifyValue(nameof(_tmBase.selected_workspace));
       }
 
       #region Private Methods
