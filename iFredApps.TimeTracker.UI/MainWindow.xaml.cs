@@ -17,36 +17,22 @@ namespace iFredApps.TimeTracker.UI
    /// </summary>
    public partial class MainWindow : MetroWindow
    {
-      private AppConfig appConfig = null;
-      private bool isLogoutWorking;
+      private bool _isLogoutWorking;
 
       public MainWindow()
       {
          InitializeComponent();
 
-         isLogoutWorking = false;
-
-         appConfig = SettingsLoader<AppConfig>.Instance.Data;
+         _isLogoutWorking = false;
 
          InitMenu();
 
-         SetTimeTrackerView();
+         cmpMenu.menuList.SelectedIndex = 0;
 
          Closed += MainWindow_Closed;
       }
 
-      private void MainWindow_Closed(object sender, EventArgs e)
-      {
-         if (!isLogoutWorking)
-            Application.Current.Shutdown();
-      }
-
       #region Methods
-
-      private void SetTimeTrackerView()
-      {
-         cmpMenu.menuList.SelectedIndex = 0;
-      }
 
       private ucTimeManagerView GetTimeTrackerView()
       {
@@ -85,9 +71,27 @@ namespace iFredApps.TimeTracker.UI
          cmpMenu.menuList.SelectionChanged += MenuList_SelectionChanged;
       }
 
+      public void ShowNotification(string message, TimeSpan? duration = null)
+      {
+         snackBar.MessageQueue.Enqueue(message, null, null, null, false, true, duration ?? TimeSpan.FromSeconds(5));
+      }
+
       #endregion
 
       #region Events
+
+      private void MainWindow_Closed(object sender, EventArgs e)
+      {
+         try
+         {
+            if (!_isLogoutWorking)
+               Application.Current.Shutdown();
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
 
       private void MenuList_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
       {
@@ -109,14 +113,21 @@ namespace iFredApps.TimeTracker.UI
 
       private void OnLogout(object sender, EventArgs e)
       {
-         isLogoutWorking = true;
-         this.Close();
-
-         if(Window.GetWindow(App.Current.MainWindow) is wLogin loginWin)
+         try
          {
-            AppWebClient.Instance.Logout();
-            loginWin.Clean();
-            loginWin.Show();
+            _isLogoutWorking = true;
+            this.Close();
+
+            if (Window.GetWindow(App.Current.MainWindow) is wLogin loginWin)
+            {
+               AppWebClient.Instance.Logout();
+               loginWin.Clean();
+               loginWin.Show();
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 
@@ -141,18 +152,6 @@ namespace iFredApps.TimeTracker.UI
          try
          {
             ShowNotification("Available soon!");
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-      }
-
-      public void ShowNotification(string message, TimeSpan? duration = null)
-      {
-         try
-         {
-            snackBar.MessageQueue.Enqueue(message, null, null, null, false, true, duration ?? TimeSpan.FromSeconds(5));
          }
          catch (Exception ex)
          {

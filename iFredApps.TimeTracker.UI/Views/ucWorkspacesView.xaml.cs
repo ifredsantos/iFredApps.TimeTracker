@@ -22,8 +22,7 @@ namespace iFredApps.TimeTracker.UI.Views
       public event EventHandler<NotificationEventArgs> OnNotificationShow;
 
       private bool _isFirstLoadComplete = false;
-
-      private hWorkspaceView dataModel = new hWorkspaceView();
+      private hWorkspaceView _dataModel = new hWorkspaceView();
 
       public ucWorkspacesView()
       {
@@ -38,18 +37,27 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            dataModel.workspaces.Clear();
+            _dataModel.workspaces.Clear();
 
             var resultWorkspaces = await WebApiCall.Workspaces.GetAllByUserId(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id);
             var workspaces = resultWorkspaces?.TrataResposta();
             if (!workspaces.IsNullOrEmpty() && resultWorkspaces?.Success == true)
             {
-               dataModel.workspaces.AddRange(workspaces
-                  .Select(w => new hWorkspace { workspace_id = w.workspace_id, user_id = w.user_id, name = w.name, is_default = w.is_default, created_at = w.created_at, is_editing = false })
+               _dataModel.workspaces.AddRange(workspaces
+                  .Select(w =>
+                     new hWorkspace
+                     {
+                        workspace_id = w.workspace_id,
+                        user_id = w.user_id,
+                        name = w.name,
+                        is_default = w.is_default,
+                        created_at = w.created_at,
+                        is_editing = false
+                     })
                   .ToList());
             }
 
-            DataContext = dataModel;
+            DataContext = _dataModel;
          }
          catch (Exception ex)
          {
@@ -62,7 +70,7 @@ namespace iFredApps.TimeTracker.UI.Views
          bool isNew = workspace.workspace_id == 0;
 
          ApiResponse<sWorkspace> apiResponse = null;
-         if(isNew)
+         if (isNew)
          {
             apiResponse = await WebApiCall.Workspaces.Create(AppWebClient.Instance.GetClient(), workspace);
          }
@@ -70,10 +78,11 @@ namespace iFredApps.TimeTracker.UI.Views
          {
             apiResponse = await WebApiCall.Workspaces.Update(AppWebClient.Instance.GetClient(), workspace);
          }
+
          var updatedWorkspace = apiResponse?.TrataResposta();
          if (apiResponse.Success && updatedWorkspace != null)
          {
-            if(isNew)
+            if (isNew)
                OnNotificationShow?.Invoke(this, new NotificationEventArgs("Workspace created successfully!"));
             else
                OnNotificationShow?.Invoke(this, new NotificationEventArgs("Workspace changed successfully!"));
@@ -125,7 +134,7 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            if (Message.Confirmation("Are you sure you want to remove this workspace and all related sessions??") == MessageBoxResult.Yes)
+            if (Message.Confirmation("Are you sure you want to remove this workspace and all related sessions?") == MessageBoxResult.Yes)
             {
                if (e.Source is Button btn)
                {
@@ -133,10 +142,10 @@ namespace iFredApps.TimeTracker.UI.Views
                   {
                      var apiResponse = await WebApiCall.Workspaces.Delete(AppWebClient.Instance.GetClient(), workspace.workspace_id.Value);
                      var sucesso = apiResponse?.TrataResposta();
-                     if(sucesso.HasValue && sucesso.Value)
+                     if (sucesso.HasValue && sucesso.Value)
                      {
                         OnNotificationShow?.Invoke(this, new NotificationEventArgs("Workspace removed successfully!"));
-                        dataModel.workspaces.Remove(workspace);
+                        _dataModel.workspaces.Remove(workspace);
                      }
                   }
                }
@@ -198,7 +207,7 @@ namespace iFredApps.TimeTracker.UI.Views
 
                   if (workspace.is_default)
                   {
-                     foreach (var otherWorkspace in dataModel.workspaces.Where(x => x.workspace_id != workspace.workspace_id))
+                     foreach (var otherWorkspace in _dataModel.workspaces.Where(x => x.workspace_id != workspace.workspace_id))
                      {
                         otherWorkspace.NotifyValue(nameof(otherWorkspace.is_default), false);
                      }
@@ -216,7 +225,7 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            dataModel.workspaces.Add(new hWorkspace
+            _dataModel.workspaces.Add(new hWorkspace
             {
                user_id = AppWebClient.Instance.GetLoggedUserData().user_id,
                is_editing = true,

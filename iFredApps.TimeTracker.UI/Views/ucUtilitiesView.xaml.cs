@@ -28,7 +28,9 @@ namespace iFredApps.TimeTracker.UI.Views
    /// </summary>
    public partial class ucUtilitiesView : UserControl
    {
-      private hUtilitiesImportData m_dataModel = null;
+      public event EventHandler<NotificationEventArgs> OnNotificationShow;
+
+      private hUtilitiesImportData _dataModel = null;
 
       public ucUtilitiesView()
       {
@@ -36,9 +38,9 @@ namespace iFredApps.TimeTracker.UI.Views
 
          btnChooseFileDirectory.Click += BtnChooseFileDirectory_Click;
 
-         m_dataModel = new hUtilitiesImportData();
+         _dataModel = new hUtilitiesImportData();
 
-         DataContext = m_dataModel;
+         DataContext = _dataModel;
       }
 
       #region Events
@@ -47,23 +49,19 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            // Configure open file dialog box
             var dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.DefaultExt = ".json"; // Default file extension
-            dialog.Filter = "JSON (.json)|*.json"; // Filter files by extension
+            dialog.DefaultExt = ".json";
+            dialog.Filter = "JSON (.json)|*.json";
 
-            // Show open file dialog box
             bool? result = dialog.ShowDialog();
 
-            // Process open file dialog box results
             if (result == true)
             {
-               // Open document
                string filename = dialog.FileName;
-               m_dataModel.FileDirectory = filename;
-               m_dataModel.IsReadyToImport = true;
+               _dataModel.FileDirectory = filename;
+               _dataModel.IsReadyToImport = true;
 
-               m_dataModel.NotifyAll();
+               _dataModel.NotifyAll();
             }
          }
          catch (Exception ex)
@@ -76,13 +74,13 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          try
          {
-            if (string.IsNullOrEmpty(m_dataModel.FileDirectory) || !File.Exists(m_dataModel.FileDirectory))
+            if (string.IsNullOrEmpty(_dataModel.FileDirectory) || !File.Exists(_dataModel.FileDirectory))
             {
                Message.Error("The file path is not valid or does not exist.");
                return;
             }
 
-            string fileContent = await File.ReadAllTextAsync(m_dataModel.FileDirectory);
+            string fileContent = await File.ReadAllTextAsync(_dataModel.FileDirectory);
             if (string.IsNullOrEmpty(fileContent))
             {
                Message.Error("The file path is not valid or does not exist.");
@@ -98,6 +96,7 @@ namespace iFredApps.TimeTracker.UI.Views
 
             if (sessionList != null)
             {
+               //TODO: This process should be improved to sent a list
                foreach (var session in sessionList)
                {
                   try
@@ -108,11 +107,11 @@ namespace iFredApps.TimeTracker.UI.Views
                   }
                   catch (Exception ex)
                   {
-                     //TODO: Work show errors system
+                     ex.ShowException();
                   }
                }
 
-               Message.Success("Data imported successfully!");
+               OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data imported successfully!"));
             }
          }
          catch (Exception ex)

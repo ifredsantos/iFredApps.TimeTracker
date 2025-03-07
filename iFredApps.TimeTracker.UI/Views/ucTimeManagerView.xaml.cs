@@ -34,22 +34,6 @@ namespace iFredApps.TimeTracker.UI.Views
          tabWorkspaces.SelectionChanged += TabWorkspaces_SelectionChanged;
       }
 
-      private void TabWorkspaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
-      {
-         try
-         {
-            if (e.AddedItems[0] is TimeManagerWorkspace workSpace)
-            {
-               _tmBase.selected_workspace = workSpace;
-               _tmBase.NotifyValue(nameof(_tmBase.selected_workspace));
-            }
-         }
-         catch (Exception ex)
-         {
-            Console.WriteLine(ex);
-         }
-      }
-
       #region Private Methods
 
       private async Task InitData()
@@ -122,6 +106,22 @@ namespace iFredApps.TimeTracker.UI.Views
       private void ucTimeByWorkspace_OnNotificationShow(object sender, NotificationEventArgs e)
       {
          OnNotificationShow?.Invoke(this, e);
+      }
+
+      private void TabWorkspaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+         try
+         {
+            if (e.AddedItems[0] is TimeManagerWorkspace workSpace)
+            {
+               _tmBase.selected_workspace = workSpace;
+               _tmBase.NotifyValue(nameof(_tmBase.selected_workspace));
+            }
+         }
+         catch (Exception ex)
+         {
+            Console.WriteLine(ex);
+         }
       }
 
       #endregion
