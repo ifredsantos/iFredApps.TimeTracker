@@ -36,8 +36,18 @@ namespace iFredApps.TimeTracker.UI.Views
 
       private void TabWorkspaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
       {
-         _tmBase.selected_workspace = (TimeManagerWorkspace)e.AddedItems[0];
-         _tmBase.NotifyValue(nameof(_tmBase.selected_workspace));
+         try
+         {
+            if (e.AddedItems[0] is TimeManagerWorkspace workSpace)
+            {
+               _tmBase.selected_workspace = workSpace;
+               _tmBase.NotifyValue(nameof(_tmBase.selected_workspace));
+            }
+         }
+         catch (Exception ex)
+         {
+            Console.WriteLine(ex);
+         }
       }
 
       #region Private Methods

@@ -1,17 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+   <PropertyGroup>
+      <TargetFramework>net8.0</TargetFramework>
+      <ImplicitUsings>enable</ImplicitUsings>
+      <Nullable>enable</Nullable>
+      <AssemblyVersion>1.2503.6.1</AssemblyVersion>
+      <FileVersion>1.2503.6.1</FileVersion>
+   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
-  </ItemGroup>
+   <ItemGroup>
+      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\iFredApps.TimeTracker.SL\iFredApps.TimeTracker.SL.csproj" />
-  </ItemGroup>
+   <ItemGroup>
+      <ProjectReference Include="..\iFredApps.TimeTracker.SL\iFredApps.TimeTracker.SL.csproj" />
+   </ItemGroup>
 
 </Project>

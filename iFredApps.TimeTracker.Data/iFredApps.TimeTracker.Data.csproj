@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+   <PropertyGroup>
+      <TargetFramework>net8.0</TargetFramework>
+      <ImplicitUsings>enable</ImplicitUsings>
+      <Nullable>enable</Nullable>
+      <AssemblyVersion>1.2503.6.1</AssemblyVersion>
+      <FileVersion>1.2503.6.1</FileVersion>
+   </PropertyGroup>
 
    <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
@@ -13,14 +15,14 @@
          <PrivateAssets>all</PrivateAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        <PrivateAssets>all</PrivateAssets>
+         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
       <PackageReference Include="Pomelo.EntityFrameworkCore.Mysql" Version="8.0.2" />
    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\iFredApps.TimeTracker.Core\iFredApps.TimeTracker.Core.csproj" />
-  </ItemGroup>
+   <ItemGroup>
+      <ProjectReference Include="..\iFredApps.TimeTracker.Core\iFredApps.TimeTracker.Core.csproj" />
+   </ItemGroup>
 
 </Project>
