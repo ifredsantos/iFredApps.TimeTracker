@@ -1,9 +1,9 @@
-﻿using System;
+﻿using iFredApps.Lib.Wpf.Execption;
+using iFredApps.TimeTracker.UI.Models;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using iFredApps.Lib.Wpf.Execption;
-using iFredApps.TimeTracker.UI.Models;
 
 namespace iFredApps.TimeTracker.UI.Components
 {

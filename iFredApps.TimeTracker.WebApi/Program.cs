@@ -1,13 +1,13 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
 using iFredApps.TimeTracker.Core.Interfaces.Repository;
 using iFredApps.TimeTracker.Core.Interfaces.Services;
 using iFredApps.TimeTracker.Core.Services;
 using iFredApps.TimeTracker.Data.Data;
 using iFredApps.TimeTracker.Data.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 

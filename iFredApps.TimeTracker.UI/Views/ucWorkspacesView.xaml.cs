@@ -1,16 +1,14 @@
-﻿using iFredApps.TimeTracker.UI.Models;
+﻿using iFredApps.Lib;
 using iFredApps.Lib.Wpf.Execption;
-using iFredApps.Lib;
-using System;
-using System.Collections.Generic;
-using System.Windows.Controls;
-using System.Threading.Tasks;
-using System.Linq;
 using iFredApps.Lib.Wpf.Messages;
-using System.Windows;
-using System.ComponentModel;
-using System.Net.WebSockets;
 using iFredApps.TimeTracker.SL;
+using iFredApps.TimeTracker.UI.Models;
+using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace iFredApps.TimeTracker.UI.Views
 {

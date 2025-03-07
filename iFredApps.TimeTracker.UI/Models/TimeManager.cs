@@ -2,9 +2,7 @@
 using iFredApps.TimeTracker.SL;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Models

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TimeTracker.SL
+﻿namespace TimeTracker.SL
 {
    public class sSession
    {

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using iFredApps.Lib;
+using iFredApps.Lib.Wpf.Execption;
+using iFredApps.TimeTracker.UI.Models;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using iFredApps.TimeTracker.UI.Models;
-using iFredApps.Lib.Wpf.Execption;
-using iFredApps.Lib;
-using System.Threading.Tasks;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -63,11 +61,11 @@ namespace iFredApps.TimeTracker.UI.Views
                _tmBase.selected_workspace = _tmBase.workspaces.Where(x => x.is_default)?.FirstOrDefault();
             }
 
-            if(_tmBase.selected_workspace != null)
+            if (_tmBase.selected_workspace != null)
             {
                tabWorkspaces.SelectedItem = _tmBase.selected_workspace;
             }
-            else if(_tmBase.selected_workspace == null && !_tmBase.workspaces.IsNullOrEmpty())
+            else if (_tmBase.selected_workspace == null && !_tmBase.workspaces.IsNullOrEmpty())
             {
                tabWorkspaces.SelectedItem = _tmBase.workspaces.FirstOrDefault();
             }

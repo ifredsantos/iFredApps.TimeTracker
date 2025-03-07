@@ -1,11 +1,11 @@
-﻿using System;
+﻿using iFredApps.Lib;
+using iFredApps.Lib.Wpf.Execption;
+using iFredApps.Lib.Wpf.Messages;
+using iFredApps.TimeTracker.UI.Models;
+using MahApps.Metro.Controls;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using iFredApps.Lib.Wpf.Messages;
-using iFredApps.Lib.Wpf.Execption;
-using iFredApps.TimeTracker.UI.Models;
-using iFredApps.Lib;
-using MahApps.Metro.Controls;
 
 namespace iFredApps.TimeTracker.UI.Components
 {

@@ -1,14 +1,12 @@
-﻿using MahApps.Metro.Controls;
+﻿using iFredApps.Lib.Wpf.Execption;
+using iFredApps.TimeTracker.UI.Models;
+using iFredApps.TimeTracker.UI.Views;
+using MahApps.Metro.Controls;
 using MahApps.Metro.IconPacks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
-using iFredApps.TimeTracker.UI.Models;
-using iFredApps.TimeTracker.UI.Utils;
-using iFredApps.TimeTracker.UI.Views;
-using iFredApps.Lib.Wpf.Execption;
-using System.Windows.Controls;
 
 namespace iFredApps.TimeTracker.UI
 {
@@ -42,9 +40,33 @@ namespace iFredApps.TimeTracker.UI
          return view;
       }
 
+      private ucProjectsView GetProjectsView()
+      {
+         ucProjectsView view = new ucProjectsView();
+         view.OnNotificationShow += OnNotificationShow;
+
+         return view;
+      }
+
       private ucWorkspacesView GetWorkspaceView()
       {
          ucWorkspacesView view = new ucWorkspacesView();
+         view.OnNotificationShow += OnNotificationShow;
+
+         return view;
+      }
+
+      private ucSettingsView GetSettingsView()
+      {
+         ucSettingsView view = new ucSettingsView();
+         view.OnNotificationShow += OnNotificationShow;
+
+         return view;
+      }
+
+      private ucUtilitiesView GetUtilitiesView()
+      {
+         ucUtilitiesView view = new ucUtilitiesView();
          view.OnNotificationShow += OnNotificationShow;
 
          return view;
@@ -57,10 +79,10 @@ namespace iFredApps.TimeTracker.UI
          List<AppMenuItem> menuItemsList = new List<AppMenuItem>
          {
             new AppMenuItem("Time Tracker", PackIconFontAwesomeKind.ClockRegular, GetTimeTrackerView()),
-            new AppMenuItem("Projects", PackIconFontAwesomeKind.TableColumnsSolid, new ucProjectsView()),
+            new AppMenuItem("Projects", PackIconFontAwesomeKind.TableColumnsSolid, GetProjectsView()),
             new AppMenuItem("Workspaces", PackIconFontAwesomeKind.SpaceAwesomeBrands, GetWorkspaceView()),
-            new AppMenuItem("Settings", PackIconFontAwesomeKind.GearSolid, new ucSettingsView()),
-            //new AppMenu("Utils", PackIconFontAwesomeKind.CodeBranchSolid, new ucUtilitiesView())
+            new AppMenuItem("Settings", PackIconFontAwesomeKind.GearSolid, GetSettingsView()),
+            new AppMenuItem("Utils", PackIconFontAwesomeKind.CodeBranchSolid, GetUtilitiesView())
          };
 
          menu.MenuList.AddRange(menuItemsList);

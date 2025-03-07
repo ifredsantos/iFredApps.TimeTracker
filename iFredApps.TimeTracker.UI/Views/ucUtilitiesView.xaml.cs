@@ -1,25 +1,15 @@
-﻿using System;
+﻿using iFredApps.Lib;
+using iFredApps.Lib.Wpf.Execption;
+using iFredApps.Lib.Wpf.Messages;
+using iFredApps.TimeTracker.UI.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using iFredApps.Lib;
-using iFredApps.Lib.Wpf.Execption;
-using iFredApps.Lib.Wpf.Messages;
-using iFredApps.TimeTracker.UI.Models;
 
 namespace iFredApps.TimeTracker.UI.Views
 {

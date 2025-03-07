@@ -1,15 +1,12 @@
 ﻿using iFredApps.Lib;
+using iFredApps.Lib.Wpf.Execption;
 using iFredApps.TimeTracker.UI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using iFredApps.Lib.Wpf.Execption;
-using ControlzEx.Standard;
-using iFredApps.TimeTracker.UI.Utils;
 
 namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 {

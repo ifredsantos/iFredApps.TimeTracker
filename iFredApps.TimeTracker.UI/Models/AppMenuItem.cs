@@ -1,7 +1,6 @@
 ﻿using MahApps.Metro.IconPacks;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Documents;
 using TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Models

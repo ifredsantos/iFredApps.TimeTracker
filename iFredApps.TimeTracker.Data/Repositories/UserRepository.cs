@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using iFredApps.TimeTracker.Core.Interfaces.Repository;
+﻿using iFredApps.TimeTracker.Core.Interfaces.Repository;
 using iFredApps.TimeTracker.Core.Models;
 using iFredApps.TimeTracker.Data.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace iFredApps.TimeTracker.Data.Repositories
 {

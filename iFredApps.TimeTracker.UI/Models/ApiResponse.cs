@@ -1,10 +1,7 @@
-﻿using iFredApps.Lib;
-using iFredApps.Lib.Wpf.Messages;
+﻿using iFredApps.Lib.Wpf.Messages;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace iFredApps.TimeTracker.UI.Models
 {
