@@ -388,7 +388,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
          {
             if (e.Group != null)
             {
-
+               //TODO: Send report to someone
             }
          }
          catch (Exception ex)

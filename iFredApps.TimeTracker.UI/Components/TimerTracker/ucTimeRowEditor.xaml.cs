@@ -160,9 +160,16 @@ namespace iFredApps.TimeTracker.UI.Components
 
       private void UserControl_Unloaded(object sender, RoutedEventArgs e)
       {
-         StopTimer();
-         KeyUp -= UcTimeRowEditor_KeyUp;
-         Unloaded -= UserControl_Unloaded;
+         try
+         {
+            StopTimer();
+            KeyUp -= UcTimeRowEditor_KeyUp;
+            Unloaded -= UserControl_Unloaded;
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void OnStartStopButton_Click(object sender, RoutedEventArgs e)
