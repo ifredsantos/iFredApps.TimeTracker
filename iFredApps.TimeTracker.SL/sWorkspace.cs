@@ -1,11 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace iFredApps.TimeTracker.UI.Models
+﻿namespace iFredApps.TimeTracker.SL
 {
-   public class Workspace
+   public class sWorkspace
    {
-      public int workspace_id { get; set; }
+      public int? workspace_id { get; set; }
       public string? name { get; set; }
       public int user_id { get; set; }
       public bool is_default { get; set; }

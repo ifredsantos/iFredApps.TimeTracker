@@ -1,14 +1,14 @@
-﻿using iFredApps.TimeTracker.UI.Models;
-using iFredApps.TimeTracker.UI.Utils;
-using System;
-using System.Windows;
-using System.Windows.Input;
+﻿using iFredApps.Lib;
+using iFredApps.Lib.Security;
 using iFredApps.Lib.Wpf.Execption;
 using iFredApps.Lib.Wpf.Messages;
+using iFredApps.TimeTracker.UI.Models;
+using iFredApps.TimeTracker.UI.Utils;
 using MahApps.Metro.Controls;
-using iFredApps.Lib.Security;
-using iFredApps.Lib;
+using System;
 using System.Diagnostics;
+using System.Windows;
+using System.Windows.Input;
 
 namespace iFredApps.TimeTracker.UI
 {
@@ -17,8 +17,8 @@ namespace iFredApps.TimeTracker.UI
    /// </summary>
    public partial class wLogin : MetroWindow
    {
-      private AppConfig appConfig;
-      private LoginViewModel loginViewModel;
+      private AppConfig _appConfig;
+      private LoginViewModel _loginViewModel;
 
       public wLogin()
       {
@@ -28,26 +28,56 @@ namespace iFredApps.TimeTracker.UI
 
          LoginBtn.Click += LoginBtn_Click;
 
-         appConfig = SettingsLoader<AppConfig>.Instance.Data;
+         _appConfig = SettingsLoader<AppConfig>.Instance.Data;
 
          Clean();
 
-         LoadData();
+         LoadInitialData();
       }
 
       #region Events
 
       private void UcLoginView_PreviewKeyUp(object sender, KeyEventArgs e)
       {
-         if (e.Key == Key.Enter)
+         try
          {
-            LoginSubmit();
+            if (e.Key == Key.Enter)
+            {
+               LoginSubmit();
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 
       private void LoginBtn_Click(object sender, RoutedEventArgs e)
       {
-         LoginSubmit();
+         try
+         {
+            LoginSubmit();
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void OnLaunchGitHubSite(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+      {
+         try
+         {
+            Process.Start(new ProcessStartInfo
+            {
+               FileName = "https://github.com/ifredsantos",
+               UseShellExecute = true,
+            });
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       #endregion
@@ -56,8 +86,8 @@ namespace iFredApps.TimeTracker.UI
 
       public void Clean()
       {
-         loginViewModel = new LoginViewModel();
-         DataContext = loginViewModel;
+         _loginViewModel = new LoginViewModel();
+         DataContext = _loginViewModel;
          txtPassword.Password = null;
 
          txtUser.Focus();
@@ -67,11 +97,11 @@ namespace iFredApps.TimeTracker.UI
 
       #region Private
 
-      private void LoadData()
+      private void LoadInitialData()
       {
          try
          {
-            SecurelyLocalData secData = new SecurelyLocalData(appConfig.SaveAppInfoDirectory);
+            SecurelyLocalData secData = new SecurelyLocalData(_appConfig.SaveAppInfoDirectory);
 
             string loginSavedData = secData.LoadDataSecurely();
             if (!string.IsNullOrEmpty(loginSavedData))
@@ -79,10 +109,10 @@ namespace iFredApps.TimeTracker.UI
                string[] loginInfo = loginSavedData.Split(':');
                if (loginInfo.Length == 2)
                {
-                  loginViewModel.user = loginInfo[0];
-                  loginViewModel.password = loginInfo[1];
+                  _loginViewModel.user = loginInfo[0];
+                  _loginViewModel.password = loginInfo[1];
                   txtPassword.Password = loginInfo[1];
-                  loginViewModel.savePassword = true;
+                  _loginViewModel.savePassword = true;
                }
             }
             else
@@ -100,28 +130,28 @@ namespace iFredApps.TimeTracker.UI
       {
          try
          {
-            if (loginViewModel.isLoading)
+            if (_loginViewModel.isLoading)
                return;
 
-            loginViewModel.NotifyValue(nameof(loginViewModel.isLoading), true);
+            _loginViewModel.NotifyValue(nameof(_loginViewModel.isLoading), true);
 
-            loginViewModel.password = txtPassword.Password;
+            _loginViewModel.password = txtPassword.Password;
 
-            if (string.IsNullOrEmpty(loginViewModel.user) || string.IsNullOrEmpty(loginViewModel.password))
+            if (string.IsNullOrEmpty(_loginViewModel.user) || string.IsNullOrEmpty(_loginViewModel.password))
             {
                Message.Warning("Enter credentials!");
                return;
             }
 
             AppWebClient.Instance.Address = SettingsLoader<AppConfig>.Instance.Data?.webapi_connection_config?.baseaddress;
-            await AppWebClient.Instance.Login(loginViewModel.user, loginViewModel.password);
+            await AppWebClient.Instance.Login(_loginViewModel.user, _loginViewModel.password);
             if (AppWebClient.Instance.GetLoggedUserData() != null)
             {
-               SecurelyLocalData secData = new SecurelyLocalData(appConfig.SaveAppInfoDirectory);
+               SecurelyLocalData secData = new SecurelyLocalData(_appConfig.SaveAppInfoDirectory);
 
-               if (loginViewModel.savePassword)
+               if (_loginViewModel.savePassword)
                {
-                  secData.SaveDataSecurely(string.Format("{0}:{1}", loginViewModel.user, loginViewModel.password));
+                  secData.SaveDataSecurely(string.Format("{0}:{1}", _loginViewModel.user, _loginViewModel.password));
                }
                else
                {
@@ -138,7 +168,7 @@ namespace iFredApps.TimeTracker.UI
          }
          finally
          {
-            loginViewModel.NotifyValue(nameof(loginViewModel.isLoading), false);
+            _loginViewModel.NotifyValue(nameof(_loginViewModel.isLoading), false);
          }
       }
 
@@ -146,22 +176,6 @@ namespace iFredApps.TimeTracker.UI
       {
          MainWindow mainWin = new MainWindow();
          mainWin.Show();
-      }
-
-      private void OnLaunchGitHubSite(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
-      {
-         try
-         {
-            Process.Start(new ProcessStartInfo
-            {
-               FileName = "https://github.com/ifredsantos",
-               UseShellExecute = true,
-            });
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
       }
 
       #endregion

@@ -1,14 +1,12 @@
 ﻿using iFredApps.Lib;
+using iFredApps.Lib.Wpf.Execption;
 using iFredApps.TimeTracker.UI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using iFredApps.Lib.Wpf.Execption;
-using ControlzEx.Standard;
 
 namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 {
@@ -21,13 +19,6 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 
       private TimeManager _tmByWorkspace = null;
       private bool _isFirstLoadComplete = false;
-
-      //public int? SelectedWorkspace
-      //{
-      //   get { return (int?)GetValue(SelectedWorkspaceProperty); }
-      //   set { SetValue(SelectedWorkspaceProperty, value); }
-      //}
-      //public static readonly DependencyProperty SelectedWorkspaceProperty = DependencyProperty.Register("SelectedWorkspace", typeof(int?), typeof(ucTimeByWorkspace), new PropertyMetadata(null));
 
       public ucTimeByWorkspace()
       {
@@ -51,7 +42,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 
             DateTime startDate = DateTime.Now.AddDays(-7);
             DateTime? endDate = null;
-            var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, _tmByWorkspace.workspace.workspace_id, startDate, endDate);
+            var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, _tmByWorkspace.workspace.workspace_id.Value, startDate, endDate);
 
             var sessions = sessionsResult.TrataResposta();
 
@@ -67,7 +58,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                {
                   foreach (var session in data.sessions)
                   {
-                     if(session.end_date.HasValue)
+                     if (session.end_date.HasValue)
                         session.total_time = session.end_date.Value - session.start_date;
 
                      _tmByWorkspace.sessions.Add(session);
@@ -97,7 +88,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                   {
                      _tmByWorkspace.current_session = new TimeManagerTaskSession();
 
-                     await DatabaseManager.DeleteSession(data.uncompleted_session.session_id, OnNotificationShow);
+                     await DeleteSession(data.uncompleted_session.session_id.Value);
                   }
                }
             }
@@ -193,6 +184,46 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
          }
       }
 
+      private async Task<TimeManagerTaskSession> CreateSession(TimeManagerTaskSession session)
+      {
+         TimeManagerTaskSession result = null;
+
+         session.user_id = AppWebClient.Instance.GetLoggedUserData().user_id;
+
+         var createResult = await WebApiCall.Sessions.CreateSession(AppWebClient.Instance.GetClient(), session);
+         result = createResult?.TrataResposta();
+         if (createResult != null && createResult.Success)
+         {
+            OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
+         }
+
+         return result;
+      }
+
+      public async Task<TimeManagerTaskSession> UpdateSession(TimeManagerTaskSession session)
+      {
+         TimeManagerTaskSession result = null;
+
+         session.user_id = AppWebClient.Instance.GetLoggedUserData().user_id;
+
+         var updateResult = await WebApiCall.Sessions.UpdateSession(AppWebClient.Instance.GetClient(), session);
+         result = updateResult?.TrataResposta();
+
+         if (updateResult != null && updateResult.Success)
+         {
+            OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
+         }
+
+         return result;
+      }
+
+      public async Task DeleteSession(int sessionID)
+      {
+         await WebApiCall.Sessions.DeleteSession(AppWebClient.Instance.GetClient(), sessionID);
+
+         OnNotificationShow?.Invoke(null, new NotificationEventArgs("Data synchronized successfully!", 3));
+      }
+
       #endregion
 
       #region Events
@@ -218,7 +249,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
          {
             e.SessionData.workspace_id = _tmByWorkspace.workspace.workspace_id;
 
-            await DatabaseManager.UpdateSession(e.SessionData, OnNotificationShow);
+            await UpdateSession(e.SessionData);
 
             _tmByWorkspace.sessions.Add(e.SessionData);
 
@@ -275,7 +306,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                {
                   foreach (var session in e.TaskData.sessions)
                   {
-                     await DatabaseManager.DeleteSession(session.session_id, OnNotificationShow);
+                     await DeleteSession(session.session_id.Value);
                      _tmByWorkspace.sessions.Remove(session);
                   }
                }
@@ -300,7 +331,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                   session.description = e.TaskData.description;
                   session.workspace_id = _tmByWorkspace.workspace.workspace_id;
 
-                  await DatabaseManager.UpdateSession(session, OnNotificationShow);
+                  await UpdateSession(session);
                }
 
                await GroupingSessionIntoTasks();
@@ -319,7 +350,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
             if (e.Session != null)
             {
                e.Session.workspace_id = _tmByWorkspace.workspace.workspace_id;
-               await DatabaseManager.UpdateSession(e.Session, OnNotificationShow);
+               await UpdateSession(e.Session);
 
                await GroupingSessionIntoTasks();
             }
@@ -336,7 +367,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
          {
             if (e.Session != null)
             {
-               await DatabaseManager.DeleteSession(e.Session.session_id, OnNotificationShow);
+               await DeleteSession(e.Session.session_id.Value);
                _tmByWorkspace.sessions.Remove(e.Session);
 
                await GroupingSessionIntoTasks();
@@ -354,7 +385,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
          {
             if (e.Group != null)
             {
-
+               //TODO: Send report to someone
             }
          }
          catch (Exception ex)
@@ -365,21 +396,28 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 
       private async void SessionStarts(object sender, TimeRowSessionEventArgs e)
       {
-         _tmByWorkspace = DataContext as TimeManager;
-
-         if (_tmByWorkspace.current_session.session_id == 0) //only record if it is a new session (not a recovered session)
+         try
          {
-            _tmByWorkspace.current_session.workspace_id = _tmByWorkspace.workspace.workspace_id;
+            _tmByWorkspace = DataContext as TimeManager;
 
-            var sessionData = await DatabaseManager.CreateSession(_tmByWorkspace.current_session, OnNotificationShow);
-            if (sessionData != null)
+            if (_tmByWorkspace.current_session.session_id == 0) //only record if it is a new session (not a recovered session)
             {
-               _tmByWorkspace.current_session.session_id = sessionData.session_id;
-               _tmByWorkspace.current_session.user_id = sessionData.user_id;
+               _tmByWorkspace.current_session.workspace_id = _tmByWorkspace.workspace.workspace_id;
+
+               var sessionData = await CreateSession(_tmByWorkspace.current_session);
+               if (sessionData != null)
+               {
+                  _tmByWorkspace.current_session.session_id = sessionData.session_id;
+                  _tmByWorkspace.current_session.user_id = sessionData.user_id;
+               }
             }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 
       #endregion
-    }
+   }
 }

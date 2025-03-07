@@ -1,4 +1,5 @@
 ﻿using iFredApps.Lib.WebApi;
+using iFredApps.TimeTracker.SL;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -32,19 +33,19 @@ namespace iFredApps.TimeTracker.UI.Models
 
       public static class Workspaces
       {
-         public static async Task<ApiResponse<List<Workspace>>> GetAllByUserId(WebApiClient webClient, int user_id)
+         public static async Task<ApiResponse<List<sWorkspace>>> GetAllByUserId(WebApiClient webClient, int user_id)
          {
-            return await webClient.GetAsync<ApiResponse<List<Workspace>>>("Workspace/GetAllByUserId/{0}", user_id);
+            return await webClient.GetAsync<ApiResponse<List<sWorkspace>>>("Workspace/GetAllByUserId/{0}", user_id);
          }
 
-         public static async Task<ApiResponse<Workspace>> Create(WebApiClient webClient, Workspace workspace)
+         public static async Task<ApiResponse<sWorkspace>> Create(WebApiClient webClient, sWorkspace workspace)
          {
-            return await webClient.PostAsync<ApiResponse<Workspace>>("Workspace/Create", workspace);
+            return await webClient.PostAsync<ApiResponse<sWorkspace>>("Workspace/Create", workspace);
          }
 
-         public static async Task<ApiResponse<Workspace>> Update(WebApiClient webClient, Workspace workspace)
+         public static async Task<ApiResponse<sWorkspace>> Update(WebApiClient webClient, sWorkspace workspace)
          {
-            return await webClient.PutAsync<ApiResponse<Workspace>>("Workspace/Update/{0}", workspace, workspace.workspace_id);
+            return await webClient.PutAsync<ApiResponse<sWorkspace>>("Workspace/Update/{0}", workspace, workspace.workspace_id);
          }
 
          public static async Task<ApiResponse<bool>> Delete(WebApiClient webClient, int workspaceID)

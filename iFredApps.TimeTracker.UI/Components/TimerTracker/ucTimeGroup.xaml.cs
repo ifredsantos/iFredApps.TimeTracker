@@ -1,8 +1,9 @@
-﻿using System;
+﻿using iFredApps.Lib.Wpf.Execption;
+using iFredApps.TimeTracker.UI.Models;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using iFredApps.TimeTracker.UI.Models;
 
 namespace iFredApps.TimeTracker.UI.Components
 {
@@ -27,42 +28,91 @@ namespace iFredApps.TimeTracker.UI.Components
 
       private void lstView_PreviewMouseWheel(object sender, MouseWheelEventArgs e) //Disable scroll on list view
       {
-         e.Handled = true;
-         MouseWheelEventArgs e2 = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
-         e2.RoutedEvent = UIElement.MouseWheelEvent;
-         lstView.RaiseEvent(e2);
+         try
+         {
+            e.Handled = true;
+            MouseWheelEventArgs e2 = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+            e2.RoutedEvent = UIElement.MouseWheelEvent;
+            lstView.RaiseEvent(e2);
+         }
+         catch (Exception ex)
+         {
+            Console.WriteLine(ex);
+         }
       }
 
       private void OnTaskContinueClick(object sender, TimeTaskContinueEventArgs e)
       {
-         OnTaskContinue?.Invoke(this, e);
+         try
+         {
+            OnTaskContinue?.Invoke(this, e);
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void OnTaskRemoveClick(object sender, TimeTaskRemoveEventArgs e)
       {
-         OnTaskRemove?.Invoke(this, e);
+         try
+         {
+            OnTaskRemove?.Invoke(this, e);
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void OnTaskChange(object sender, TimeTaskEditEventArgs e)
       {
-         OnTaskChanged?.Invoke(this, e);
+         try
+         {
+            OnTaskChanged?.Invoke(this, e);
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void OnSessionChange(object sender, TimeTaskSessionEditEventArgs e)
       {
-         OnSessionChanged?.Invoke(this, e);
+         try
+         {
+            OnSessionChanged?.Invoke(this, e);
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void OnSessionRemove(object sender, TimeTaskSessionEditEventArgs e)
       {
-         OnSessionRemoved?.Invoke(this, e);
+         try
+         {
+            OnSessionRemoved?.Invoke(this, e);
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void OnSendReport(object sender, RoutedEventArgs e)
       {
-         if (DataContext is TimeManagerGroup group)
+         try
          {
-            OnSendReportRequest?.Invoke(this, new TimeTaskGroupArgs { Group = group });
+            if (DataContext is TimeManagerGroup group)
+            {
+               OnSendReportRequest?.Invoke(this, new TimeTaskGroupArgs { Group = group });
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 

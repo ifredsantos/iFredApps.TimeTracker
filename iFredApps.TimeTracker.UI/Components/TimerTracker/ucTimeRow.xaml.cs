@@ -1,11 +1,11 @@
-﻿using System;
+﻿using iFredApps.Lib;
+using iFredApps.Lib.Wpf.Execption;
+using iFredApps.Lib.Wpf.Messages;
+using iFredApps.TimeTracker.UI.Models;
+using MahApps.Metro.Controls;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using iFredApps.Lib.Wpf.Messages;
-using iFredApps.Lib.Wpf.Execption;
-using iFredApps.TimeTracker.UI.Models;
-using iFredApps.Lib;
-using MahApps.Metro.Controls;
 
 namespace iFredApps.TimeTracker.UI.Components
 {
@@ -29,50 +29,78 @@ namespace iFredApps.TimeTracker.UI.Components
 
       private void OnTaskContinueClick(object sender, RoutedEventArgs e)
       {
-         if (DataContext is TimeManagerTask taskData)
+         try
          {
-            OnTaskContinue?.Invoke(this, new TimeTaskContinueEventArgs { TaskData = taskData });
+            if (DataContext is TimeManagerTask taskData)
+            {
+               OnTaskContinue?.Invoke(this, new TimeTaskContinueEventArgs { TaskData = taskData });
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 
       private void OnTaskRemoveClick(object sender, RoutedEventArgs e)
       {
-         if (DataContext is TimeManagerTask taskData)
+         try
          {
-            OnTaskRemove?.Invoke(this, new TimeTaskRemoveEventArgs { TaskData = taskData });
+            if (DataContext is TimeManagerTask taskData)
+            {
+               OnTaskRemove?.Invoke(this, new TimeTaskRemoveEventArgs { TaskData = taskData });
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 
       private void OnDescriptionLostFocus(object sender, RoutedEventArgs e)
       {
-         if (DataContext is TimeManagerTask taskData)
+         try
          {
-            string oldDescription = taskData.description.ToString();
-            string newDescription = ((TextBox)e.Source).Text.Trim();
-            if (oldDescription == newDescription)
-               return;
+            if (DataContext is TimeManagerTask taskData)
+            {
+               string oldDescription = taskData.description.ToString();
+               string newDescription = ((TextBox)e.Source).Text.Trim();
+               if (oldDescription == newDescription)
+                  return;
 
-            taskData.description = newDescription;
-            OnTaskChanged?.Invoke(this, new TimeTaskEditEventArgs { oldDescription = oldDescription, TaskData = taskData });
+               taskData.description = newDescription;
+               OnTaskChanged?.Invoke(this, new TimeTaskEditEventArgs { oldDescription = oldDescription, TaskData = taskData });
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 
       private void OnDetailButtonClick(object sender, RoutedEventArgs e)
       {
-         if (DataContext is TimeManagerTask taskData)
+         try
          {
-            if (taskData.is_detail_session_open) //Close
+            if (DataContext is TimeManagerTask taskData)
             {
-               detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronDown;
-               sessionDetail.Visibility = Visibility.Collapsed;
-            }
-            else //Open
-            {
-               detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronUp;
-               sessionDetail.Visibility = Visibility.Visible;
-            }
+               if (taskData.is_detail_session_open) //Close
+               {
+                  detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronDown;
+                  sessionDetail.Visibility = Visibility.Collapsed;
+               }
+               else //Open
+               {
+                  detailButtonIcon.Kind = MahApps.Metro.IconPacks.PackIconBootstrapIconsKind.ChevronUp;
+                  sessionDetail.Visibility = Visibility.Visible;
+               }
 
-            taskData.NotifyValue(nameof(taskData.is_detail_session_open), !taskData.is_detail_session_open);
+               taskData.NotifyValue(nameof(taskData.is_detail_session_open), !taskData.is_detail_session_open);
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
          }
       }
 

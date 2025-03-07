@@ -1,7 +1,7 @@
-﻿using System;
+﻿using iFredApps.Lib.Wpf.Execption;
+using System;
 using System.Diagnostics;
 using System.Windows.Controls;
-using iFredApps.Lib.Wpf.Execption;
 
 namespace iFredApps.TimeTracker.UI.Components
 {
@@ -15,15 +15,20 @@ namespace iFredApps.TimeTracker.UI.Components
       public ucLateralMenu()
       {
          InitializeComponent();
-
-
       }
 
       #region Events
 
       private void OnLogoutButton_Click(object sender, System.Windows.RoutedEventArgs e)
       {
-         OnLogoutButtonClick?.Invoke(this, e);
+         try
+         {
+            OnLogoutButtonClick?.Invoke(this, e);
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void OnLaunchGitHubSite(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)

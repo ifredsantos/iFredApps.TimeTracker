@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace iFredApps.TimeTracker.Core
+﻿namespace iFredApps.TimeTracker.Core
 {
    public class Result<T>
    {

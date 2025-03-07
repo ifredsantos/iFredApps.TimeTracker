@@ -1,7 +1,8 @@
 ﻿using iFredApps.Lib.WebApi;
+using iFredApps.Lib.Wpf.Execption;
 using System;
 using System.Threading.Tasks;
-using iFredApps.Lib.Wpf.Execption;
+using TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Models
 {
@@ -11,7 +12,7 @@ namespace iFredApps.TimeTracker.UI.Models
 
       private string _user = "";
       private string _password = "";
-      private User _userData;
+      private sUser _userData;
 
       public AppWebClient()
       {
@@ -27,7 +28,7 @@ namespace iFredApps.TimeTracker.UI.Models
          {
             _client = new WebApiClient(Address);
 
-            var loginResponse = await _client.PostAsync<ApiResponse<User>>("Users/Login", new LoginModel { UserSearchTerm = user, Password = password });
+            var loginResponse = await _client.PostAsync<ApiResponse<sUser>>("Users/Login", new LoginModel { UserSearchTerm = user, Password = password });
             _userData = loginResponse?.TrataResposta();
          }
          catch (Exception ex)
@@ -44,7 +45,7 @@ namespace iFredApps.TimeTracker.UI.Models
          _client = null;
       }
 
-      public User GetLoggedUserData()
+      public sUser GetLoggedUserData()
       {
          return _userData;
       }

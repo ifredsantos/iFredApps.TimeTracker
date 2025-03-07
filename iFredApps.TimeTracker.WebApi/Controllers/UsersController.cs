@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using iFredApps.TimeTracker.Core;
 using iFredApps.TimeTracker.Core.Interfaces.Services;
 using iFredApps.TimeTracker.Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using iFredApps.TimeTracker.Core;
 
 namespace iFredApps.TimeTracker.WebApi.Controllers
 {

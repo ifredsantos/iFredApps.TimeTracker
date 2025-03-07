@@ -36,7 +36,6 @@ namespace iFredApps.TimeTracker.UI.Utils
       {
          T data = default;
 
-         //TODO: Confirmar se AppContext.BaseDirectory está correcto
          string _fileXML = Path.Combine(AppContext.BaseDirectory, SettingsFileName);
          if (File.Exists(_fileXML))
          {

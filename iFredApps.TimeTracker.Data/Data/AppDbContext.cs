@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using iFredApps.TimeTracker.Core.Models;
+﻿using iFredApps.TimeTracker.Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace iFredApps.TimeTracker.Data.Data
 {

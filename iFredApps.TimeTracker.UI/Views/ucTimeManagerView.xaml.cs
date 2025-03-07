@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using iFredApps.Lib;
+using iFredApps.Lib.Wpf.Execption;
+using iFredApps.TimeTracker.UI.Models;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using iFredApps.TimeTracker.UI.Models;
-using iFredApps.Lib.Wpf.Execption;
-using iFredApps.Lib;
-using System.Threading.Tasks;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -32,22 +30,6 @@ namespace iFredApps.TimeTracker.UI.Views
          Loaded += UcTimeManagerView_Loaded;
 
          tabWorkspaces.SelectionChanged += TabWorkspaces_SelectionChanged;
-      }
-
-      private void TabWorkspaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
-      {
-         try
-         {
-            if (e.AddedItems[0] is TimeManagerWorkspace workSpace)
-            {
-               _tmBase.selected_workspace = workSpace;
-               _tmBase.NotifyValue(nameof(_tmBase.selected_workspace));
-            }
-         }
-         catch (Exception ex)
-         {
-            Console.WriteLine(ex);
-         }
       }
 
       #region Private Methods
@@ -79,11 +61,11 @@ namespace iFredApps.TimeTracker.UI.Views
                _tmBase.selected_workspace = _tmBase.workspaces.Where(x => x.is_default)?.FirstOrDefault();
             }
 
-            if(_tmBase.selected_workspace != null)
+            if (_tmBase.selected_workspace != null)
             {
                tabWorkspaces.SelectedItem = _tmBase.selected_workspace;
             }
-            else if(_tmBase.selected_workspace == null && !_tmBase.workspaces.IsNullOrEmpty())
+            else if (_tmBase.selected_workspace == null && !_tmBase.workspaces.IsNullOrEmpty())
             {
                tabWorkspaces.SelectedItem = _tmBase.workspaces.FirstOrDefault();
             }
@@ -122,6 +104,22 @@ namespace iFredApps.TimeTracker.UI.Views
       private void ucTimeByWorkspace_OnNotificationShow(object sender, NotificationEventArgs e)
       {
          OnNotificationShow?.Invoke(this, e);
+      }
+
+      private void TabWorkspaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+         try
+         {
+            if (e.AddedItems[0] is TimeManagerWorkspace workSpace)
+            {
+               _tmBase.selected_workspace = workSpace;
+               _tmBase.NotifyValue(nameof(_tmBase.selected_workspace));
+            }
+         }
+         catch (Exception ex)
+         {
+            Console.WriteLine(ex);
+         }
       }
 
       #endregion

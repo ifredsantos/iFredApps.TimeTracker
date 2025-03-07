@@ -1,6 +1,4 @@
 ﻿using iFredApps.TimeTracker.UI.Utils;
-using Microsoft.VisualBasic.FileIO;
-using System.IO;
 
 namespace iFredApps.TimeTracker.UI.Models
 {

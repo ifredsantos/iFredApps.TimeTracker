@@ -1,11 +1,3 @@
-using iFredApps.TimeTracker.Core.Interfaces.Repository;
-using iFredApps.TimeTracker.Core.Interfaces.Services;
-using iFredApps.TimeTracker.Core.Services;
-using iFredApps.TimeTracker.Core.Models;
-using Moq;
-using Microsoft.EntityFrameworkCore;
-using iFredApps.TimeTracker.Data.Data;
-
 namespace iFredApps.TimeTracker.Tests
 {
    //public class ImportData : IClassFixture<DatabaseTestFixture>

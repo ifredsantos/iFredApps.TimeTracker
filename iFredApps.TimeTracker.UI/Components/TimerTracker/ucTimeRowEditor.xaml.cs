@@ -1,12 +1,12 @@
-﻿using System;
+﻿using iFredApps.Lib;
+using iFredApps.Lib.Wpf.Execption;
+using iFredApps.TimeTracker.UI.Models;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using iFredApps.TimeTracker.UI.Models;
-using iFredApps.Lib.Wpf.Execption;
-using iFredApps.Lib;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace iFredApps.TimeTracker.UI.Components
 {
@@ -143,19 +143,33 @@ namespace iFredApps.TimeTracker.UI.Components
 
       private void UcTimeRowEditor_Loaded(object sender, RoutedEventArgs e)
       {
-         if (DataContext is TimeManagerTaskSession currentSession && currentSession.is_working)
+         try
          {
-            StartTimerAsync(currentSession);
+            if (DataContext is TimeManagerTaskSession currentSession && currentSession.is_working)
+            {
+               StartTimerAsync(currentSession);
+            }
+            KeyUp += UcTimeRowEditor_KeyUp;
+            Unloaded += UserControl_Unloaded;
          }
-         KeyUp += UcTimeRowEditor_KeyUp;
-         Unloaded += UserControl_Unloaded;
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void UserControl_Unloaded(object sender, RoutedEventArgs e)
       {
-         StopTimer();
-         KeyUp -= UcTimeRowEditor_KeyUp;
-         Unloaded -= UserControl_Unloaded;
+         try
+         {
+            StopTimer();
+            KeyUp -= UcTimeRowEditor_KeyUp;
+            Unloaded -= UserControl_Unloaded;
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void OnStartStopButton_Click(object sender, RoutedEventArgs e)
