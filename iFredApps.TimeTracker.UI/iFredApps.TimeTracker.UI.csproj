@@ -68,6 +68,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\iFredApps.Lib.WPF\iFredApps.Lib.WPF.csproj" />
     <ProjectReference Include="..\..\iFredApps.Lib\iFredApps.Lib.csproj" />
+    <ProjectReference Include="..\iFredApps.TimeTracker.SL\iFredApps.TimeTracker.SL.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\Workspace\" />

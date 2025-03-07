@@ -1,9 +1,11 @@
 ﻿using iFredApps.Lib;
+using iFredApps.TimeTracker.SL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Models
 {
@@ -21,7 +23,7 @@ namespace iFredApps.TimeTracker.UI.Models
       public event PropertyChangedEventHandler PropertyChanged;
    }
 
-   public class TimeManagerWorkspace : Workspace
+   public class TimeManagerWorkspace : sWorkspace
    {
       public TimeManager time_manager { get; set; }
       public TimeManagerWorkspace()
@@ -32,12 +34,12 @@ namespace iFredApps.TimeTracker.UI.Models
 
    public class TimeManager : INotifyPropertyChanged
    {
-      public Workspace workspace { get; set; }
+      public sWorkspace workspace { get; set; }
       public TimeManagerTaskSession current_session { get; set; }
       public List<TimeManagerTaskSession> sessions { get; set; }
       public IFAObservableCollection<TimeManagerGroup> task_groups { get; set; }
       public bool isLoading { get; set; }
-      public TimeManager(Workspace workspace)
+      public TimeManager(sWorkspace workspace)
       {
          this.workspace = workspace;
          current_session = new TimeManagerTaskSession();
@@ -122,7 +124,7 @@ namespace iFredApps.TimeTracker.UI.Models
       public event PropertyChangedEventHandler PropertyChanged;
    }
 
-   public class TimeManagerTaskSession : Session, INotifyPropertyChanged
+   public class TimeManagerTaskSession : sSession, INotifyPropertyChanged
    {
       public TimeSpan total_time { get; set; }
       public bool is_editing { get; set; }

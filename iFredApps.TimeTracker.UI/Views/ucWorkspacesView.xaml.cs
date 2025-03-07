@@ -10,6 +10,7 @@ using iFredApps.Lib.Wpf.Messages;
 using System.Windows;
 using System.ComponentModel;
 using System.Net.WebSockets;
+using iFredApps.TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -60,7 +61,7 @@ namespace iFredApps.TimeTracker.UI.Views
       {
          bool isNew = workspace.workspace_id == 0;
 
-         ApiResponse<Workspace> apiResponse = null;
+         ApiResponse<sWorkspace> apiResponse = null;
          if(isNew)
          {
             apiResponse = await WebApiCall.Workspaces.Create(AppWebClient.Instance.GetClient(), workspace);
@@ -130,7 +131,7 @@ namespace iFredApps.TimeTracker.UI.Views
                {
                   if (btn.DataContext is hWorkspace workspace)
                   {
-                     var apiResponse = await WebApiCall.Workspaces.Delete(AppWebClient.Instance.GetClient(), workspace.workspace_id);
+                     var apiResponse = await WebApiCall.Workspaces.Delete(AppWebClient.Instance.GetClient(), workspace.workspace_id.Value);
                      var sucesso = apiResponse?.TrataResposta();
                      if(sucesso.HasValue && sucesso.Value)
                      {
@@ -241,7 +242,7 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
-      private class hWorkspace : Workspace, INotifyPropertyChanged
+      private class hWorkspace : sWorkspace, INotifyPropertyChanged
       {
          public bool is_editing { get; set; }
 

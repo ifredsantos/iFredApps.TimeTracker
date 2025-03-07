@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
+using TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Models
 {
@@ -28,7 +29,7 @@ namespace iFredApps.TimeTracker.UI.Models
    public class AppMenu
    {
       public List<AppMenuItem> MenuList { get; set; }
-      public User UserData { get; set; }
+      public sUser UserData { get; set; }
 
       public AppMenu()
       {

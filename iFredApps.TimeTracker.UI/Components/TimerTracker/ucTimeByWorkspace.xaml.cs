@@ -52,7 +52,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 
             DateTime startDate = DateTime.Now.AddDays(-7);
             DateTime? endDate = null;
-            var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, _tmByWorkspace.workspace.workspace_id, startDate, endDate);
+            var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, _tmByWorkspace.workspace.workspace_id.Value, startDate, endDate);
 
             var sessions = sessionsResult.TrataResposta();
 
@@ -98,7 +98,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                   {
                      _tmByWorkspace.current_session = new TimeManagerTaskSession();
 
-                     await DeleteSession(data.uncompleted_session.session_id);
+                     await DeleteSession(data.uncompleted_session.session_id.Value);
                   }
                }
             }
@@ -316,7 +316,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                {
                   foreach (var session in e.TaskData.sessions)
                   {
-                     await DeleteSession(session.session_id);
+                     await DeleteSession(session.session_id.Value);
                      _tmByWorkspace.sessions.Remove(session);
                   }
                }
@@ -377,7 +377,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
          {
             if (e.Session != null)
             {
-               await DeleteSession(e.Session.session_id);
+               await DeleteSession(e.Session.session_id.Value);
                _tmByWorkspace.sessions.Remove(e.Session);
 
                await GroupingSessionIntoTasks();
