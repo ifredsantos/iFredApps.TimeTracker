@@ -23,13 +23,6 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
       private TimeManager _tmByWorkspace = null;
       private bool _isFirstLoadComplete = false;
 
-      //public int? SelectedWorkspace
-      //{
-      //   get { return (int?)GetValue(SelectedWorkspaceProperty); }
-      //   set { SetValue(SelectedWorkspaceProperty, value); }
-      //}
-      //public static readonly DependencyProperty SelectedWorkspaceProperty = DependencyProperty.Register("SelectedWorkspace", typeof(int?), typeof(ucTimeByWorkspace), new PropertyMetadata(null));
-
       public ucTimeByWorkspace()
       {
          InitializeComponent();

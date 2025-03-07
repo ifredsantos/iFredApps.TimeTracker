@@ -143,12 +143,19 @@ namespace iFredApps.TimeTracker.UI.Components
 
       private void UcTimeRowEditor_Loaded(object sender, RoutedEventArgs e)
       {
-         if (DataContext is TimeManagerTaskSession currentSession && currentSession.is_working)
+         try
          {
-            StartTimerAsync(currentSession);
+            if (DataContext is TimeManagerTaskSession currentSession && currentSession.is_working)
+            {
+               StartTimerAsync(currentSession);
+            }
+            KeyUp += UcTimeRowEditor_KeyUp;
+            Unloaded += UserControl_Unloaded;
          }
-         KeyUp += UcTimeRowEditor_KeyUp;
-         Unloaded += UserControl_Unloaded;
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       private void UserControl_Unloaded(object sender, RoutedEventArgs e)
