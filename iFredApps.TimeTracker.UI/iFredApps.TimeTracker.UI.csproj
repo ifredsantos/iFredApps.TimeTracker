@@ -33,6 +33,9 @@
     <Page Remove="ViewModels\**" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="HTMLTemplates\DailyReport.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Resource Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>

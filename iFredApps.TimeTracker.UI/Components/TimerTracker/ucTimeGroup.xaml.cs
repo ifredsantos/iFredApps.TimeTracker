@@ -18,6 +18,7 @@ namespace iFredApps.TimeTracker.UI.Components
       public event EventHandler<TimeTaskSessionEditEventArgs> OnSessionChanged;
       public event EventHandler<TimeTaskSessionEditEventArgs> OnSessionRemoved;
       public event EventHandler<TimeTaskGroupArgs> OnSendReportRequest;
+      public event EventHandler<TimeTaskGroupArgs> OnDownloadReportRequest;
 
       public ucTimeGroup()
       {
@@ -117,5 +118,20 @@ namespace iFredApps.TimeTracker.UI.Components
       }
 
       #endregion
+
+      private void OnDownloadReport(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            if (DataContext is TimeManagerGroup group)
+            {
+               OnDownloadReportRequest?.Invoke(this, new TimeTaskGroupArgs { Group = group });
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
    }
 }

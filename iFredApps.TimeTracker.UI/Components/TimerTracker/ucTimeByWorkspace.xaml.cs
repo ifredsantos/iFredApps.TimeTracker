@@ -1,8 +1,10 @@
 ﻿using iFredApps.Lib;
 using iFredApps.Lib.Wpf.Execption;
 using iFredApps.TimeTracker.UI.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -379,13 +381,49 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
          }
       }
 
-      private void OnSendReport(object sender, TimeTaskGroupArgs e)
+      private async void OnSendReport(object sender, TimeTaskGroupArgs e)
       {
          try
          {
             if (e.Group != null)
             {
+               string reportContent = await ReportBuilder.GenerateDailyReport(e.Group);
                //TODO: Send report to someone
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private async void OnDownloadReport(object sender, TimeTaskGroupArgs e)
+      {
+         try
+         {
+            if (e.Group != null)
+            {
+               string reportContent = await ReportBuilder.GenerateDailyReport(e.Group);
+
+               SaveFileDialog saveFileDialog = new SaveFileDialog
+               {
+                  FileName = $"{e.Group.date_group_reference:dd-MM-yyyy} Daily Report - Time Tracker.html",
+                  Filter = "HTML Files (*.html)|*.html|All Files (*.*)|*.*",
+                  DefaultExt = "html"
+               };
+
+               if (saveFileDialog.ShowDialog() == true)
+               {
+                  try
+                  {
+                     await File.WriteAllTextAsync(saveFileDialog.FileName, reportContent);
+                     MessageBox.Show("Report saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                  }
+                  catch (Exception ex)
+                  {
+                     MessageBox.Show($"Error saving report: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                  }
+               }
             }
          }
          catch (Exception ex)

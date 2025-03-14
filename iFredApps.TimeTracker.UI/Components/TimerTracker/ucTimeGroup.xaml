@@ -45,6 +45,16 @@
                                             </Button.Content>
                                         </Button>
                                     </ListViewItem>
+                                    <ListViewItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0">
+                                        <Button Name="btnDownloadReport" Click="OnDownloadReport" Cursor="Hand">
+                                            <Button.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Download" />
+                                                    <TextBlock Text="Download Report" Margin="10,0,0,0" />
+                                                </StackPanel>
+                                            </Button.Content>
+                                        </Button>
+                                    </ListViewItem>
                                 </ListView>
                             </StackPanel>
                         </materialDesign:PopupBox>
