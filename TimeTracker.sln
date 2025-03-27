@@ -17,15 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.SL", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.WebApi", "iFredApps.TimeTracker.WebApi\iFredApps.TimeTracker.WebApi.csproj", "{D5631F79-7AFB-4705-8890-DCEAED8C8125}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.DL", "iFredApps.TimeTracker.DL\iFredApps.TimeTracker.DL.csproj", "{FCD97659-F431-4B62-BCB9-70C826A2CED0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.Data", "iFredApps.TimeTracker.Data\iFredApps.TimeTracker.Data.csproj", "{40943C01-9465-42D9-A14D-95E9A1FCDAE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.Core", "iFredApps.TimeTracker.Core\iFredApps.TimeTracker.Core.csproj", "{05E445B6-0F64-427D-9FF2-879BB3EC9924}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iFredApps.Lib.WPF", "..\iFredApps.Lib.WPF\iFredApps.Lib.WPF.csproj", "{493EFBE5-8FC4-4485-AAD3-C937E9E492A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iFredApps.TimeTracker.Tests", "iFredApps.TimeTracker.Tests\iFredApps.TimeTracker.Tests.csproj", "{46B9C285-7639-4B10-94DA-CC53967DA675}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iFredApps.TimeTracker.Tests", "iFredApps.TimeTracker.Tests\iFredApps.TimeTracker.Tests.csproj", "{46B9C285-7639-4B10-94DA-CC53967DA675}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +47,6 @@ Global
 		{D5631F79-7AFB-4705-8890-DCEAED8C8125}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5631F79-7AFB-4705-8890-DCEAED8C8125}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5631F79-7AFB-4705-8890-DCEAED8C8125}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FCD97659-F431-4B62-BCB9-70C826A2CED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCD97659-F431-4B62-BCB9-70C826A2CED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCD97659-F431-4B62-BCB9-70C826A2CED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCD97659-F431-4B62-BCB9-70C826A2CED0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40943C01-9465-42D9-A14D-95E9A1FCDAE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40943C01-9465-42D9-A14D-95E9A1FCDAE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40943C01-9465-42D9-A14D-95E9A1FCDAE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
