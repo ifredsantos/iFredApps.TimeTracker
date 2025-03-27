@@ -20,15 +20,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="bin\**" />
+    <Compile Remove="Components\Workspace\**" />
     <Compile Remove="publish\**" />
     <Compile Remove="ViewModels\**" />
     <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="Components\Workspace\**" />
     <EmbeddedResource Remove="publish\**" />
     <EmbeddedResource Remove="ViewModels\**" />
     <None Remove="bin\**" />
+    <None Remove="Components\Workspace\**" />
     <None Remove="publish\**" />
     <None Remove="ViewModels\**" />
     <Page Remove="bin\**" />
+    <Page Remove="Components\Workspace\**" />
     <Page Remove="publish\**" />
     <Page Remove="ViewModels\**" />
   </ItemGroup>
@@ -72,8 +76,5 @@
     <ProjectReference Include="..\..\iFredApps.Lib.WPF\iFredApps.Lib.WPF.csproj" />
     <ProjectReference Include="..\..\iFredApps.Lib\iFredApps.Lib.csproj" />
     <ProjectReference Include="..\iFredApps.TimeTracker.SL\iFredApps.TimeTracker.SL.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\Workspace\" />
   </ItemGroup>
 </Project>

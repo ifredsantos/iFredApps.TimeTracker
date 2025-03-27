@@ -122,7 +122,8 @@ namespace iFredApps.TimeTracker.UI
          }
          catch (Exception ex)
          {
-            ex.ShowException();
+            //ex.ShowException();
+            Console.WriteLine(ex);
          }
       }
 

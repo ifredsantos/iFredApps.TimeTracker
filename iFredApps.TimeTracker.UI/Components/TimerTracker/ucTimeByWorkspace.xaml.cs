@@ -438,7 +438,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
          {
             _tmByWorkspace = DataContext as TimeManager;
 
-            if (_tmByWorkspace.current_session.session_id == 0) //only record if it is a new session (not a recovered session)
+            if (_tmByWorkspace.current_session.session_id == null || _tmByWorkspace.current_session.session_id == 0) //only record if it is a new session (not a recovered session)
             {
                _tmByWorkspace.current_session.workspace_id = _tmByWorkspace.workspace.workspace_id;
 
