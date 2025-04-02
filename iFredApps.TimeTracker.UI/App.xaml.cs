@@ -1,4 +1,7 @@
 ﻿using iFredApps.TimeTracker.UI.Models;
+using System.Globalization;
+using System.Threading;
+using System;
 using System.Windows;
 
 namespace iFredApps.TimeTracker.UI

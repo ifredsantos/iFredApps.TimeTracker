@@ -1,6 +1,7 @@
 ﻿using iFredApps.Lib;
 using iFredApps.Lib.Wpf.Execption;
 using iFredApps.TimeTracker.UI.Models;
+using iFredApps.TimeTracker.UI.Utils;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace iFredApps.TimeTracker.UI.Components
          if (DataContext is TimeManagerTaskSession currentSession)
          {
             if (currentSession.start_date == DateTime.MinValue)
-               currentSession.start_date = DateTime.Now;
+               currentSession.start_date = Utilities.GetDateTimeNow();
 
             currentSession.NotifyValue(nameof(currentSession.is_working), true);
 
@@ -61,7 +62,7 @@ namespace iFredApps.TimeTracker.UI.Components
                {
                   if (!token.IsCancellationRequested && session.is_working)
                   {
-                     session.NotifyValue(nameof(session.total_time), DateTime.Now - session.start_date);
+                     session.NotifyValue(nameof(session.total_time), Utilities.GetDateTimeNow() - session.start_date);
                   }
                }), DispatcherPriority.Background);
             }
@@ -89,7 +90,7 @@ namespace iFredApps.TimeTracker.UI.Components
                   return;
                }
 
-               currentSession.end_date = DateTime.Now;
+               currentSession.end_date = Utilities.GetDateTimeNow();
                currentSession.NotifyValue(nameof(currentSession.is_working), false);
 
                StopTimer();

@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "iFredApps.TimeTracker.UI\\iFredApps.TimeTracker.UI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "iFredApps.TimeTracker.WebApi\\iFredApps.TimeTracker.WebApi.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

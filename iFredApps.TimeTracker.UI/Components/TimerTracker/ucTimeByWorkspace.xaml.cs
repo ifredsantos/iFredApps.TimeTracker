@@ -1,6 +1,7 @@
 ﻿using iFredApps.Lib;
 using iFredApps.Lib.Wpf.Execption;
 using iFredApps.TimeTracker.UI.Models;
+using iFredApps.TimeTracker.UI.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 
             _tmByWorkspace.NotifyValue(nameof(_tmByWorkspace.isLoading), true);
 
-            DateTime startDate = DateTime.Now.AddDays(-7);
+            DateTime startDate = Utilities.GetDateTimeNow().AddDays(-7);
             DateTime? endDate = null;
             var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, _tmByWorkspace.workspace.workspace_id.Value, startDate, endDate);
 
@@ -80,7 +81,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                         description = data.uncompleted_session.description,
                         start_date = data.uncompleted_session.start_date,
                         observation = data.uncompleted_session.observation,
-                        total_time = DateTime.Now - data.uncompleted_session.start_date
+                        total_time = Utilities.GetDateTimeNow() - data.uncompleted_session.start_date
                      };
                      _tmByWorkspace.NotifyValue(nameof(_tmByWorkspace.current_session));
 
@@ -118,7 +119,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
             Dictionary<DateTime, List<TimeManagerTask>> dicTasksByDate = new Dictionary<DateTime, List<TimeManagerTask>>();
 
             //Default Group
-            dicTasksByDate.Add(DateTime.Now.Date, new List<TimeManagerTask>());
+            dicTasksByDate.Add(Utilities.GetDateTimeNow().Date, new List<TimeManagerTask>());
 
             foreach (var session in _tmByWorkspace.sessions)
             {

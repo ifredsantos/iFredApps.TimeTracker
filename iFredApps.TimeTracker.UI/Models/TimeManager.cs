@@ -1,5 +1,6 @@
 ﻿using iFredApps.Lib;
 using iFredApps.TimeTracker.SL;
+using iFredApps.TimeTracker.UI.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -56,7 +57,7 @@ namespace iFredApps.TimeTracker.UI.Models
          {
             if (date_group_reference != DateTime.MinValue)
             {
-               if (date_group_reference.Date == DateTime.Now.Date)
+               if (date_group_reference.Date == Utilities.GetDateTimeNow().Date)
                {
                   return "Today";
                }
