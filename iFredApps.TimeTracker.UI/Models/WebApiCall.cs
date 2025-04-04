@@ -3,11 +3,25 @@ using iFredApps.TimeTracker.SL;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Models
 {
    public static class WebApiCall
    {
+      public static class Users
+      {
+         public static async Task<ApiResponse<sUser>> Login(WebApiClient webClient, string user, string password)
+         {
+            return await webClient.PostAsync<ApiResponse<sUser>>("Users/Login", new LoginModel { UserSearchTerm = user, Password = password });
+         }
+
+         public static async Task<ApiResponse<sUser>> SignUp(WebApiClient webClient, sUserSignUp signUpData)
+         {
+            return await webClient.PostAsync<ApiResponse<sUser>>("Users/SignUp", signUpData);
+         }
+      }
+
       public static class Sessions
       {
          public static async Task<ApiResponse<List<TimeManagerTaskSession>>> GetSessions(WebApiClient webClient, int user_id, int workspace_id, DateTime? start_date = null, DateTime? end_date = null)

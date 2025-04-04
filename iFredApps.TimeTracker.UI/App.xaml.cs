@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading;
 using System;
 using System.Windows;
+using iFredApps.TimeTracker.UI.Utils;
 
 namespace iFredApps.TimeTracker.UI
 {
@@ -19,6 +20,8 @@ namespace iFredApps.TimeTracker.UI
       protected override void OnStartup(StartupEventArgs e)
       {
          base.OnStartup(e);
+
+         AppWebClient.Instance.Init(SettingsLoader<AppConfig>.Instance.Data?.webapi_connection_config?.baseaddress);
 
          if (AppWebClient.Instance.GetLoggedUserData() != null)
          {

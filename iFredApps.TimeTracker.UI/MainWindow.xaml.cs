@@ -79,10 +79,10 @@ namespace iFredApps.TimeTracker.UI
          List<AppMenuItem> menuItemsList = new List<AppMenuItem>
          {
             new AppMenuItem("Time Tracker", PackIconFontAwesomeKind.ClockRegular, GetTimeTrackerView()),
-            new AppMenuItem("Projects", PackIconFontAwesomeKind.TableColumnsSolid, GetProjectsView()),
+            //new AppMenuItem("Projects", PackIconFontAwesomeKind.TableColumnsSolid, GetProjectsView()),
             new AppMenuItem("Workspaces", PackIconFontAwesomeKind.SpaceAwesomeBrands, GetWorkspaceView()),
-            new AppMenuItem("Settings", PackIconFontAwesomeKind.GearSolid, GetSettingsView()),
-            new AppMenuItem("Utils", PackIconFontAwesomeKind.CodeBranchSolid, GetUtilitiesView())
+            //new AppMenuItem("Settings", PackIconFontAwesomeKind.GearSolid, GetSettingsView()),
+            //new AppMenuItem("Utils", PackIconFontAwesomeKind.CodeBranchSolid, GetUtilitiesView())
          };
 
          menu.MenuList.AddRange(menuItemsList);

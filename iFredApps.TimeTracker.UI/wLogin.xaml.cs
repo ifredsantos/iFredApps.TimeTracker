@@ -18,7 +18,7 @@ namespace iFredApps.TimeTracker.UI
    public partial class wLogin : MetroWindow
    {
       private AppConfig _appConfig;
-      private LoginViewModel _loginViewModel;
+      private LoginViewModel _viewModel;
 
       public wLogin()
       {
@@ -80,14 +80,25 @@ namespace iFredApps.TimeTracker.UI
          }
       }
 
+      private void SignUp_Click(object sender, MouseEventArgs e)
+      {
+         this.Hide();
+
+         wSignUp winSignUp = new wSignUp();
+         winSignUp.ShowDialog();
+          
+         winSignUp.Close();
+         this.Show();
+      }
+
       #endregion
 
       #region Public Methods
 
       public void Clean()
       {
-         _loginViewModel = new LoginViewModel();
-         DataContext = _loginViewModel;
+         _viewModel = new LoginViewModel();
+         DataContext = _viewModel;
          txtPassword.Password = null;
 
          txtUser.Focus();
@@ -95,7 +106,7 @@ namespace iFredApps.TimeTracker.UI
 
       #endregion
 
-      #region Private
+      #region Private Methods
 
       private void LoadInitialData()
       {
@@ -109,10 +120,10 @@ namespace iFredApps.TimeTracker.UI
                string[] loginInfo = loginSavedData.Split(':');
                if (loginInfo.Length == 2)
                {
-                  _loginViewModel.user = loginInfo[0];
-                  _loginViewModel.password = loginInfo[1];
+                  _viewModel.user = loginInfo[0];
+                  _viewModel.password = loginInfo[1];
                   txtPassword.Password = loginInfo[1];
-                  _loginViewModel.savePassword = true;
+                  _viewModel.savePassword = true;
                }
             }
             else
@@ -131,28 +142,27 @@ namespace iFredApps.TimeTracker.UI
       {
          try
          {
-            if (_loginViewModel.isLoading)
+            if (_viewModel.isLoading)
                return;
 
-            _loginViewModel.NotifyValue(nameof(_loginViewModel.isLoading), true);
+            _viewModel.NotifyValue(nameof(_viewModel.isLoading), true);
 
-            _loginViewModel.password = txtPassword.Password;
+            _viewModel.password = txtPassword.Password;
 
-            if (string.IsNullOrEmpty(_loginViewModel.user) || string.IsNullOrEmpty(_loginViewModel.password))
+            if (string.IsNullOrEmpty(_viewModel.user) || string.IsNullOrEmpty(_viewModel.password))
             {
                Message.Warning("Enter credentials!");
                return;
             }
 
-            AppWebClient.Instance.Address = SettingsLoader<AppConfig>.Instance.Data?.webapi_connection_config?.baseaddress;
-            await AppWebClient.Instance.Login(_loginViewModel.user, _loginViewModel.password);
+            await AppWebClient.Instance.Login(_viewModel.user, _viewModel.password);
             if (AppWebClient.Instance.GetLoggedUserData() != null)
             {
                SecurelyLocalData secData = new SecurelyLocalData(_appConfig.SaveAppInfoDirectory);
 
-               if (_loginViewModel.savePassword)
+               if (_viewModel.savePassword)
                {
-                  secData.SaveDataSecurely(string.Format("{0}:{1}", _loginViewModel.user, _loginViewModel.password));
+                  secData.SaveDataSecurely(string.Format("{0}:{1}", _viewModel.user, _viewModel.password));
                }
                else
                {
@@ -169,7 +179,7 @@ namespace iFredApps.TimeTracker.UI
          }
          finally
          {
-            _loginViewModel.NotifyValue(nameof(_loginViewModel.isLoading), false);
+            _viewModel.NotifyValue(nameof(_viewModel.isLoading), false);
          }
       }
 
@@ -180,5 +190,5 @@ namespace iFredApps.TimeTracker.UI
       }
 
       #endregion
-   }
+    }
 }

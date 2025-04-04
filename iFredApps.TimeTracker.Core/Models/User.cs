@@ -2,9 +2,8 @@
 
 namespace iFredApps.TimeTracker.Core.Models
 {
-   public class User
+   public class UserBase
    {
-      public int user_id { get; set; }
       [Required]
       [StringLength(60)]
       public string? username { get; set; }
@@ -18,6 +17,17 @@ namespace iFredApps.TimeTracker.Core.Models
       [StringLength(100)]
       public string? password { get; set; }
       public DateTime created_at { get; set; }
+
+   }
+
+   public class User : UserBase
+   {
+      public int user_id { get; set; }
+   }
+
+   public class UserSignUp : UserBase
+   {
+      public string? confirm_password { get; set; }
    }
 
    public class UserLoginResponse : User

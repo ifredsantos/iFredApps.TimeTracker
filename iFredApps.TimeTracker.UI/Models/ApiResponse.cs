@@ -17,7 +17,7 @@ namespace iFredApps.TimeTracker.UI.Models
       public static T TrataResposta<T>(this ApiResponse<T> response)
       {
          if (response == null)
-            throw new ArgumentNullException(nameof(response), "The answer cannot be null.");
+            throw new ArgumentNullException(nameof(response), "The answer can't be null.");
 
          if (response.Success)
          {

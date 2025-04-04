@@ -121,7 +121,7 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
             //Default Group
             dicTasksByDate.Add(Utilities.GetDateTimeNow().Date, new List<TimeManagerTask>());
 
-            foreach (var session in _tmByWorkspace.sessions)
+            foreach (var session in _tmByWorkspace.sessions.OrderByDescending(x => x.end_date))
             {
                if (session.end_date.HasValue)
                {

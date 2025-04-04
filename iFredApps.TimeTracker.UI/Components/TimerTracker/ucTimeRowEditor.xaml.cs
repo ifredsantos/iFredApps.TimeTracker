@@ -39,6 +39,12 @@ namespace iFredApps.TimeTracker.UI.Components
             if (string.IsNullOrEmpty(currentSession.description))
                currentSession.description = txtDescription.Text;
 
+            if (string.IsNullOrWhiteSpace(currentSession.description))
+            {
+               MessageBox.Show("Can't start a task without a description.", "Calm down!", MessageBoxButton.OK, MessageBoxImage.Warning);
+               return;
+            }
+
             OnSessionStarts?.Invoke(this, new TimeRowSessionEventArgs { SessionData = currentSession });
 
             StartTimerAsync(currentSession);
@@ -86,7 +92,7 @@ namespace iFredApps.TimeTracker.UI.Components
             {
                if (string.IsNullOrWhiteSpace(currentSession.description))
                {
-                  MessageBox.Show("Cannot save a task without a description.", "Calm down!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                  MessageBox.Show("Can't save a task without a description.", "Calm down!", MessageBoxButton.OK, MessageBoxImage.Warning);
                   return;
                }
 

@@ -92,14 +92,22 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          return Ok(result);
       }
 
-      // POST: api/Users
-      [HttpPost]
-      public async Task<IActionResult> CreateUser([FromBody] User user)
+      // POST: api/Users/SignUp
+      [HttpPost("SignUp")]
+      public async Task<IActionResult> SignUp([FromBody] UserSignUp signUpData)
       {
          if (!ModelState.IsValid)
          {
             return BadRequest("Invalid user data.");
          }
+
+         User user = new User
+         {
+            name = signUpData.name,
+            username = signUpData.username,
+            email = signUpData.email,
+            password = signUpData.email
+         };
 
          var result = await _userService.CreateUser(user);
 

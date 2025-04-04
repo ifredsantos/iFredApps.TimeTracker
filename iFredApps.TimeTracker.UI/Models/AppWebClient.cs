@@ -22,13 +22,17 @@ namespace iFredApps.TimeTracker.UI.Models
       public AppConfig appConfig { get; set; }
 
 
+      public void Init(string baseAddress)
+      {
+         Address = baseAddress;
+         _client = new WebApiClient(Address);
+      }
+
       public async Task Login(string user, string password)
       {
          try
          {
-            _client = new WebApiClient(Address);
-
-            var loginResponse = await _client.PostAsync<ApiResponse<sUser>>("Users/Login", new LoginModel { UserSearchTerm = user, Password = password });
+            var loginResponse = await WebApiCall.Users.Login(_client, user, password);
             _userData = loginResponse?.TrataResposta();
          }
          catch (Exception ex)
@@ -73,12 +77,6 @@ namespace iFredApps.TimeTracker.UI.Models
       private bool IsClientValid()
       {
          return true;
-      }
-
-      private class LoginModel
-      {
-         public string UserSearchTerm { get; set; }
-         public string Password { get; set; }
       }
    }
 }
