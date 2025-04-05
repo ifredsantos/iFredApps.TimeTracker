@@ -8,6 +8,9 @@ using MahApps.Metro.Controls;
 using TimeTracker.SL;
 using System.Windows.Documents;
 using System.Collections.Generic;
+using System.Windows.Input;
+using iFredApps.Lib.Base;
+using System.Security.Cryptography.Pkcs;
 
 namespace iFredApps.TimeTracker.UI
 {
@@ -23,6 +26,8 @@ namespace iFredApps.TimeTracker.UI
       {
          InitializeComponent();
 
+         PreviewKeyUp += WSignUp_PreviewKeyUp;
+
          SignUpBtn.Click += SignUpBtn_Click;
 
          _appConfig = SettingsLoader<AppConfig>.Instance.Data;
@@ -31,6 +36,21 @@ namespace iFredApps.TimeTracker.UI
       }
 
       #region Events
+
+      private void WSignUp_PreviewKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+      {
+         try
+         {
+            if (e.Key == Key.Enter)
+            {
+               SignUpSubmit();
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
 
       private void SignUpBtn_Click(object sender, System.Windows.RoutedEventArgs e)
       {
@@ -142,6 +162,24 @@ namespace iFredApps.TimeTracker.UI
          if (_viewModel.confirm_password != _viewModel.password)
          {
             result.Add("Passwords must match.");
+         }
+
+         if(!Validations.IsValidEmail(_viewModel.email))
+         {
+            result.Add("Email must be in a valid format.");
+         }
+
+         if(!Validations.IsPasswordValid(_viewModel.password))
+         {
+            string msg = "Password must be strong:" + Environment.NewLine;
+
+            msg += " • At least 8 characters" + Environment.NewLine;
+            msg += " • At least 1 uppercase character" + Environment.NewLine;
+            msg += " • At least 1 lowercase character" + Environment.NewLine;
+            msg += " • At least 1 number" + Environment.NewLine;
+            msg += " • At least 1 special character";
+
+            result.Add(msg);
          }
 
          return result;

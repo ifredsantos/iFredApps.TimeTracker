@@ -46,7 +46,6 @@ namespace iFredApps.TimeTracker.UI.Models
          _userData = null;
          _user = null;
          _password = null;
-         _client = null;
       }
 
       public sUser GetLoggedUserData()

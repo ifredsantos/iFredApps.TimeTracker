@@ -38,6 +38,8 @@ namespace iFredApps.TimeTracker.Core.Services
                return Result<User>.Fail($"A user with the email '{user.email}' already exists.");
          }
 
+         user.created_at = DateTime.UtcNow;
+
          user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
          var userSaved = await _userRepository.CreateUser(user);
          if (userSaved != null)
