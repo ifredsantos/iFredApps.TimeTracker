@@ -40,7 +40,8 @@ namespace iFredApps.TimeTracker.Core.Services
 
          user.created_at = DateTime.UtcNow;
 
-         user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
+         user.password = BCrypt.Net.BCrypt.HashPassword(user.password.Trim());
+
          var userSaved = await _userRepository.CreateUser(user);
          if (userSaved != null)
          {
@@ -59,7 +60,7 @@ namespace iFredApps.TimeTracker.Core.Services
       {
          if (!string.IsNullOrEmpty(user.password))
          {
-            user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
+            user.password = BCrypt.Net.BCrypt.HashPassword(user.password.Trim());
          }
          var userSaved = await _userRepository.UpdateUser(user);
          return Result<User>.Ok(userSaved);
@@ -73,6 +74,7 @@ namespace iFredApps.TimeTracker.Core.Services
 
       public async Task<Result<User>> ValidateUser(string userSearchKey, string plainPassword)
       {
+         plainPassword = plainPassword.Trim();
          User user = await _userRepository.SearchUserByTerm(userSearchKey);
 
          if (user != null && BCrypt.Net.BCrypt.Verify(plainPassword, user.password))

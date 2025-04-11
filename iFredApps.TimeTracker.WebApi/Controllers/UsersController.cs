@@ -106,7 +106,7 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
             name = signUpData.name,
             username = signUpData.username,
             email = signUpData.email,
-            password = signUpData.email
+            password = signUpData.password
          };
 
          var result = await _userService.CreateUser(user);
