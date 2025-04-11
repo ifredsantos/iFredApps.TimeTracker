@@ -1,3 +1,4 @@
+using iFredApps.Lib.Services.EmailService;
 using iFredApps.TimeTracker.Core.Interfaces.Repository;
 using iFredApps.TimeTracker.Core.Interfaces.Services;
 using iFredApps.TimeTracker.Core.Services;
@@ -95,6 +96,10 @@ builder.Services.AddScoped<ISessionService, SessionService>();
 
 builder.Services.AddScoped<IWorkspaceRepository, WorkspaceRepository>();
 builder.Services.AddScoped<IWorkspaceService, WorkspaceService>();
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
+
 
 // Leitura da chave JWT a partir das variáveis de ambiente
 var jwtKey = builder.Configuration["Jwt:Key"];

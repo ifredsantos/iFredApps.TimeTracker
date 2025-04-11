@@ -169,18 +169,18 @@ namespace iFredApps.TimeTracker.UI
             result.Add("Email must be in a valid format.");
          }
 
-         if(!Validations.IsPasswordValid(_viewModel.password))
-         {
-            string msg = "Password must be strong:" + Environment.NewLine;
+         //if(!Validations.IsPasswordValid(_viewModel.password))
+         //{
+         //   string msg = "Password must be strong:" + Environment.NewLine;
 
-            msg += " • At least 8 characters" + Environment.NewLine;
-            msg += " • At least 1 uppercase character" + Environment.NewLine;
-            msg += " • At least 1 lowercase character" + Environment.NewLine;
-            msg += " • At least 1 number" + Environment.NewLine;
-            msg += " • At least 1 special character";
+         //   msg += " • At least 8 characters" + Environment.NewLine;
+         //   msg += " • At least 1 uppercase character" + Environment.NewLine;
+         //   msg += " • At least 1 lowercase character" + Environment.NewLine;
+         //   msg += " • At least 1 number" + Environment.NewLine;
+         //   msg += " • At least 1 special character";
 
-            result.Add(msg);
-         }
+         //   result.Add(msg);
+         //}
 
          return result;
       }

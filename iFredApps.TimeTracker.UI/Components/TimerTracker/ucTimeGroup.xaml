@@ -33,7 +33,7 @@
 
                         <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" StaysOpen="false"
                                      VerticalAlignment="Center" Margin="0,0,0,0" Padding="0">
-                            <StackPanel Width="150">
+                            <StackPanel Width="250">
                                 <ListView>
                                     <ListViewItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0">
                                         <Button Name="btnSendReport" Click="OnSendReport" Cursor="Hand">
