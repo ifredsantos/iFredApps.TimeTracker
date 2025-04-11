@@ -1,5 +1,4 @@
-﻿using iFredApps.Lib.Services.EmailService;
-using iFredApps.TimeTracker.Core.Interfaces.Repository;
+﻿using iFredApps.TimeTracker.Core.Interfaces.Repository;
 using iFredApps.TimeTracker.Core.Interfaces.Services;
 using iFredApps.TimeTracker.Core.Models;
 

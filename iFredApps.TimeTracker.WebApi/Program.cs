@@ -1,4 +1,4 @@
-using iFredApps.Lib.Services.EmailService;
+using iFredApps.TimeTracker.Core;
 using iFredApps.TimeTracker.Core.Interfaces.Repository;
 using iFredApps.TimeTracker.Core.Interfaces.Services;
 using iFredApps.TimeTracker.Core.Services;
@@ -32,6 +32,7 @@ else
    DotNetEnv.Env.Load(".env");
    Console.WriteLine("Read Generic Environment Variables");
 }
+builder.Configuration.AddEnvironmentVariables();
 
 var envMySQLServer = Environment.GetEnvironmentVariable("MYSQL_SERVER");
 var envMySQLDatabase = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
@@ -40,24 +41,6 @@ var envMySQLPassword = Environment.GetEnvironmentVariable("MYSQL_PASSWORD");
 if (!string.IsNullOrEmpty(envMySQLServer) && !string.IsNullOrEmpty(envMySQLDatabase) && !string.IsNullOrEmpty(envMySQLUser) && !string.IsNullOrEmpty(envMySQLPassword))
 {
    builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Server={envMySQLServer};Database={envMySQLDatabase};User Id={envMySQLUser};Password={envMySQLPassword};";
-}
-
-var envJwtKey = Environment.GetEnvironmentVariable("JWT__KEY");
-if (!string.IsNullOrEmpty(envJwtKey))
-{
-   builder.Configuration["Jwt:Key"] = envJwtKey;
-}
-
-var envJwtIssuer = Environment.GetEnvironmentVariable("JWT__ISSUER");
-if (!string.IsNullOrEmpty(envJwtIssuer))
-{
-   builder.Configuration["Jwt:Issuer"] = envJwtIssuer;
-}
-
-var envJwtAudience = Environment.GetEnvironmentVariable("JWT__AUDIENCE");
-if (!string.IsNullOrEmpty(envJwtAudience))
-{
-   builder.Configuration["Jwt:Audience"] = envJwtAudience;
 }
 
 Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
