@@ -206,6 +206,7 @@ try
 
    app.UseAuthentication();
    app.UseAuthorization();
+   app.UseCors();
 
    // Configuração do pipeline de requisições HTTP
    //if (app.Environment.IsDevelopment())
