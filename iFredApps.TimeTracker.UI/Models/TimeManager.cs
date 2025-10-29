@@ -1,9 +1,13 @@
 ﻿using iFredApps.Lib;
 using iFredApps.TimeTracker.SL;
+using iFredApps.TimeTracker.UI.Components;
 using iFredApps.TimeTracker.UI.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Models
@@ -35,6 +39,7 @@ namespace iFredApps.TimeTracker.UI.Models
    {
       public sWorkspace workspace { get; set; }
       public TimeManagerTaskSession current_session { get; set; }
+      public TimeManagerTaskSession uncompleted_session { get; set; }
       public List<TimeManagerTaskSession> sessions { get; set; }
       public IFAObservableCollection<TimeManagerGroup> task_groups { get; set; }
       public bool isLoading { get; set; }
@@ -44,6 +49,109 @@ namespace iFredApps.TimeTracker.UI.Models
          current_session = new TimeManagerTaskSession();
          sessions = new List<TimeManagerTaskSession>();
          task_groups = new IFAObservableCollection<TimeManagerGroup>();
+      }
+
+      public async Task LoadSessions()
+      {
+         DateTime startDate = Utilities.GetDateTimeNow().AddDays(-7);
+         DateTime? endDate = null;
+         var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, workspace.workspace_id.Value, startDate, endDate);
+
+         sessions = sessionsResult.TrataResposta();
+
+         if (!sessions.IsNullOrEmpty())
+         {
+            foreach (var session in sessions)
+            {
+               if (session.end_date.HasValue)
+                  session.total_time = session.end_date.Value - session.start_date;
+               else
+                  uncompleted_session = session;
+            }
+         }
+
+         GroupingSessions();
+      }
+
+      public TimeManagerTaskSession GetUncompletedSession()
+      {
+         return sessions?.Find(x => x.end_date == null);
+      }
+
+      private void GroupingSessions()
+      {
+         task_groups.Clear();
+
+         if (sessions != null)
+         {
+            Dictionary<DateTime, List<TimeManagerTask>> dicTasksByDate = new Dictionary<DateTime, List<TimeManagerTask>>();
+
+            //Default Group
+            dicTasksByDate.Add(Utilities.GetDateTimeNow().Date, new List<TimeManagerTask>());
+
+            foreach (var session in sessions.OrderByDescending(x => x.end_date))
+            {
+               if (session.end_date.HasValue)
+               {
+                  DateTime dateReference = session.end_date.Value.Date;
+
+                  if (!dicTasksByDate.ContainsKey(dateReference))
+                  {
+                     dicTasksByDate.Add(dateReference, new List<TimeManagerTask>()
+                     {
+                         new TimeManagerTask() {
+                             description = session.description,
+                             sessions = new IFAObservableCollection<TimeManagerTaskSession> { session },
+                         }
+                     });
+                  }
+                  else
+                  {
+                     if (dicTasksByDate.TryGetValue(dateReference, out List<TimeManagerTask> tasks))
+                     {
+                        bool addToTask = false;
+                        if (tasks != null && tasks.Count > 0)
+                        {
+                           foreach (var task in tasks)
+                           {
+                              if (task.description == session.description)
+                              {
+                                 task.sessions.Add(session);
+                                 addToTask = true;
+                              }
+                           }
+                        }
+
+                        if (!addToTask)
+                        {
+                           tasks.Add(new TimeManagerTask()
+                           {
+                              description = session.description,
+                              sessions = new IFAObservableCollection<TimeManagerTaskSession> { session },
+                           });
+                        }
+                     }
+                  }
+               }
+            }
+
+            List<TimeManagerGroup> lstGroups = new List<TimeManagerGroup>();
+            foreach (var dicRow in dicTasksByDate.OrderByDescending(x => x.Key))
+            {
+               TimeManagerGroup group = new TimeManagerGroup
+               {
+                  date_group_reference = dicRow.Key,
+                  tasks = new IFAObservableCollection<TimeManagerTask>(),
+               };
+               foreach (var task in dicRow.Value)
+               {
+                  group.tasks.Add(task);
+               }
+               lstGroups.Add(group);
+            }
+
+            task_groups.AddRange(lstGroups);
+         }
       }
 
       public event PropertyChangedEventHandler PropertyChanged;

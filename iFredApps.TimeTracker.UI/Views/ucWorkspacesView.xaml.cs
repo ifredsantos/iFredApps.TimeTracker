@@ -65,7 +65,7 @@ namespace iFredApps.TimeTracker.UI.Views
 
       private async void SaveWorkspaceData(hWorkspace workspace)
       {
-         bool isNew = workspace.workspace_id == 0;
+         bool isNew = workspace.workspace_id == null;
 
          ApiResponse<sWorkspace> apiResponse = null;
          if (isNew)

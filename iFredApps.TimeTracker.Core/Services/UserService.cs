@@ -52,6 +52,7 @@ namespace iFredApps.TimeTracker.Core.Services
                user_id = userSaved.user_id,
                name = "My Workspace",
                is_default = true,
+               created_at = DateTime.UtcNow,
             });
 
             //Send email

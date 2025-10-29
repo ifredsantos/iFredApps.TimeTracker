@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 {
@@ -27,12 +28,10 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
       {
          InitializeComponent();
 
-         Loaded += UcTimeManagerView_Loaded;
+         DataContextChanged += UcTimeByWorkspace_DataContextChanged;
       }
 
-      #region Private Methods
-
-      private async Task InitData()
+      private async void UcTimeByWorkspace_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
       {
          try
          {
@@ -43,60 +42,37 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 
             _tmByWorkspace.NotifyValue(nameof(_tmByWorkspace.isLoading), true);
 
-            DateTime startDate = Utilities.GetDateTimeNow().AddDays(-7);
-            DateTime? endDate = null;
-            var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, _tmByWorkspace.workspace.workspace_id.Value, startDate, endDate);
-
-            var sessions = sessionsResult.TrataResposta();
-
-            var data = new TimeManagerDatabaseData
+            if (_tmByWorkspace.uncompleted_session != null)
             {
-               sessions = sessions,
-               uncompleted_session = sessions?.Find(x => x.end_date == null)
-            };
-
-            if (data != null)
-            {
-               if (data.sessions != null && data.sessions.Count > 0)
+               await Dispatcher.InvokeAsync(async () =>
                {
-                  foreach (var session in data.sessions)
-                  {
-                     if (session.end_date.HasValue)
-                        session.total_time = session.end_date.Value - session.start_date;
-
-                     _tmByWorkspace.sessions.Add(session);
-                  }
-               }
-
-               if (data.uncompleted_session != null)
-               {
-                  if (MessageBox.Show(string.Format("There is one session to complete \"{0}\". Do you want to resume?", data.uncompleted_session.description), "Calm down!",
-                          MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes
-                      ) == MessageBoxResult.Yes)
+                  if (MessageBox.Show(
+                     string.Format("There is one session to complete \"{0}\". Do you want to resume?", _tmByWorkspace.uncompleted_session.description),
+                     "Calm down!",
+                     MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes
+                  ) == MessageBoxResult.Yes)
                   {
                      _tmByWorkspace.current_session = new TimeManagerTaskSession
                      {
-                        session_id = data.uncompleted_session.session_id,
-                        user_id = data.uncompleted_session.user_id,
-                        description = data.uncompleted_session.description,
-                        start_date = data.uncompleted_session.start_date,
-                        observation = data.uncompleted_session.observation,
-                        total_time = Utilities.GetDateTimeNow() - data.uncompleted_session.start_date
+                        session_id = _tmByWorkspace.uncompleted_session.session_id,
+                        user_id = _tmByWorkspace.uncompleted_session.user_id,
+                        description = _tmByWorkspace.uncompleted_session.description,
+                        start_date = _tmByWorkspace.uncompleted_session.start_date,
+                        observation = _tmByWorkspace.uncompleted_session.observation,
+                        total_time = Utilities.GetDateTimeNow() - _tmByWorkspace.uncompleted_session.start_date
                      };
                      _tmByWorkspace.NotifyValue(nameof(_tmByWorkspace.current_session));
-
+                     _tmByWorkspace.NotifyValue(nameof(_tmByWorkspace.uncompleted_session), null);
                      timeRowEditor.StartStopSession();
                   }
                   else
                   {
                      _tmByWorkspace.current_session = new TimeManagerTaskSession();
 
-                     await DeleteSession(data.uncompleted_session.session_id.Value);
+                     await DeleteSession(_tmByWorkspace.uncompleted_session.session_id.Value);
                   }
-               }
+               }, DispatcherPriority.Background);
             }
-
-            await GroupingSessionIntoTasks();
 
             _isFirstLoadComplete = true;
          }
@@ -109,6 +85,8 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
             _tmByWorkspace?.NotifyValue(nameof(_tmByWorkspace.isLoading), false);
          }
       }
+
+      #region Private Methods
 
       private async Task GroupingSessionIntoTasks()
       {
@@ -230,21 +208,6 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
       #endregion
 
       #region Events
-
-      private async void UcTimeManagerView_Loaded(object sender, RoutedEventArgs e)
-      {
-         try
-         {
-            if (!_isFirstLoadComplete)
-            {
-               await InitData();
-            }
-         }
-         catch (Exception ex)
-         {
-            ex.ShowException();
-         }
-      }
 
       private async void OnCurrentSessionChanged(object sender, TimeRowSessionEventArgs e)
       {

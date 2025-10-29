@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Views
 {
@@ -53,8 +54,10 @@ namespace iFredApps.TimeTracker.UI.Views
                      name = workspace.name,
                      is_default = workspace.is_default,
                      created_at = workspace.created_at,
-                     time_manager = new TimeManager(workspace)
+                     time_manager = new TimeManager(workspace),
                   };
+
+                  await tmWorkspace.time_manager.LoadSessions();
 
                   _tmBase.workspaces.Add(tmWorkspace);
                }
