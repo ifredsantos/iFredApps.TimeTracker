@@ -14,6 +14,7 @@ namespace iFredApps.TimeTracker.UI.Components
    {
       public event EventHandler<TimeTaskContinueEventArgs> OnTaskContinue;
       public event EventHandler<TimeTaskRemoveEventArgs> OnTaskRemove;
+      public event EventHandler<TimeTaskRemoveEventArgs> OnTaskGetStatistics;
       public event EventHandler<TimeTaskEditEventArgs> OnTaskChanged;
       public event EventHandler<TimeTaskSessionEditEventArgs> OnSessionChanged;
       public event EventHandler<TimeTaskSessionEditEventArgs> OnSessionRemoved;
@@ -59,6 +60,18 @@ namespace iFredApps.TimeTracker.UI.Components
          try
          {
             OnTaskRemove?.Invoke(this, e);
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void OnTaskGetStatisticsClick(object sender, TimeTaskRemoveEventArgs e)
+      {
+         try
+         {
+            OnTaskGetStatistics?.Invoke(this, e);
          }
          catch (Exception ex)
          {

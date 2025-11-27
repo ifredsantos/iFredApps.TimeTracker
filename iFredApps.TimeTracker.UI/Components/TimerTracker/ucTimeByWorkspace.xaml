@@ -41,7 +41,7 @@
          </ListView.ItemsPanel>
          <ListView.ItemTemplate>
             <DataTemplate>
-               <components:ucTimeGroup OnTaskContinue="OnTaskContinueClick" OnTaskRemove="OnTaskRemoveClick" OnTaskChanged="OnTaskChange" 
+               <components:ucTimeGroup OnTaskContinue="OnTaskContinueClick" OnTaskRemove="OnTaskRemoveClick" OnTaskGetStatistics="OnTaskGetStatisticsClick" OnTaskChanged="OnTaskChange" 
                                        OnSessionChanged="OnSessionChange" OnSessionRemoved="OnSessionRemove" OnSendReportRequest="OnSendReport" OnDownloadReportRequest="OnDownloadReport" />
             </DataTemplate>
          </ListView.ItemTemplate>

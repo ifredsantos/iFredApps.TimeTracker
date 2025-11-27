@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using static iFredApps.TimeTracker.UI.Models.WebApiCall;
 
 namespace iFredApps.TimeTracker.UI.Components.TimerTracker
 {
@@ -278,6 +279,27 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                }
 
                await GroupingSessionIntoTasks();
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private async void OnTaskGetStatisticsClick(object sender, TimeTaskRemoveEventArgs e)
+      {
+         try
+         {
+            if (e.TaskData != null)
+            {
+               var referenceSession = e.TaskData.sessions.FirstOrDefault();
+               var sessions = await WebApiCall.Sessions.GetSessionsByDescription(AppWebClient.Instance.GetClient(), new GetSessionsRequest
+               {
+                  user_id = referenceSession.user_id,
+                  workspace_id = referenceSession.workspace_id.Value,
+                  description = e.TaskData.description,
+               });
             }
          }
          catch (Exception ex)

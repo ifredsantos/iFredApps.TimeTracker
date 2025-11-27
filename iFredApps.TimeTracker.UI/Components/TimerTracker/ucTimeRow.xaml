@@ -8,140 +8,150 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="80" d:DesignWidth="800">
-   <UserControl.Resources>
-      <materialDesign:BooleanToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="visConv" />
-      <materialDesign:BooleanToVisibilityConverter TrueValue="Collapsed" FalseValue="Visible" x:Key="visConvInverted" />
-   </UserControl.Resources>
-   <Border BorderBrush="#cf5a07" BorderThickness="0,1,0,0" Padding="10">
-      <Grid>
-         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-         </Grid.ColumnDefinitions>
-
-         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-         </Grid.RowDefinitions>
-
-         <Grid Grid.Column="0" Grid.Row="0">
+    <UserControl.Resources>
+        <materialDesign:BooleanToVisibilityConverter TrueValue="Visible" FalseValue="Collapsed" x:Key="visConv" />
+        <materialDesign:BooleanToVisibilityConverter TrueValue="Collapsed" FalseValue="Visible" x:Key="visConvInverted" />
+    </UserControl.Resources>
+    <Border BorderBrush="#cf5a07" BorderThickness="0,1,0,0" Padding="10">
+        <Grid>
             <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="Auto" />
-               <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Click="OnDetailButtonClick" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand"
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Column="0" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Click="OnDetailButtonClick" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Cursor="Hand"
                             Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Transparent" Foreground="{StaticResource TextColorBrush}" 
                             Padding="10,0,10,0" Grid.Column="0">
-               <iconPacks:PackIconBootstrapIcons Name="detailButtonIcon" Kind="ChevronDown" Width="14" Height="14" VerticalAlignment="Center" />
-            </Button>
+                    <iconPacks:PackIconBootstrapIcons Name="detailButtonIcon" Kind="ChevronDown" Width="14" Height="14" VerticalAlignment="Center" />
+                </Button>
 
-            <TextBox Text="{Binding description, FallbackValue=description}" LostFocus="OnDescriptionLostFocus" 
+                <TextBox Text="{Binding description, FallbackValue=description}" LostFocus="OnDescriptionLostFocus" 
                              VerticalAlignment="Center" FontSize="16" BorderThickness="0" Margin="5,0,0,0" Grid.Column="1" />
-         </Grid>
+            </Grid>
 
-         <Grid Grid.Column="1" Grid.Row="0">
-            <StackPanel Orientation="Horizontal">
-               <TextBlock Text="{Binding session_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" 
+            <Grid Grid.Column="1" Grid.Row="0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding session_total_time, StringFormat=\{0:hh\\:mm\\:ss\}, FallbackValue=00:00:00}" 
                                VerticalAlignment="Center" Margin="15,0,15,0" FontSize="20" FontWeight="SemiBold" />
-               <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" StaysOpen="false"
+                    <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" StaysOpen="false"
                                      VerticalAlignment="Center" Margin="0,0,-10,0" Padding="0">
-                  <StackPanel Width="150">
-                     <ListView>
-                        <ListViewItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0">
-                           <Button Name="btnStartStop" Click="OnTaskContinueClick" Cursor="Hand">
-                              <Button.Content>
-                                 <StackPanel Orientation="Horizontal">
-                                    <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Play" />
-                                    <TextBlock Text="Continue" Margin="10,0,0,0" />
-                                 </StackPanel>
-                              </Button.Content>
-                           </Button>
-                        </ListViewItem>
-                        <ListViewItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0">
-                           <Button Name="btnRemove" Click="OnTaskRemoveClick" Cursor="Hand">
-                              <Button.Content>
-                                 <StackPanel Orientation="Horizontal">
-                                    <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Trash3" />
-                                    <TextBlock Text="Remove" Margin="10,0,0,0" />
-                                 </StackPanel>
-                              </Button.Content>
-                           </Button>
-                        </ListViewItem>
-                     </ListView>
-                  </StackPanel>
-               </materialDesign:PopupBox>
-            </StackPanel>
-         </Grid>
-
-         <Grid Name="sessionDetail" Grid.ColumnSpan="2" Grid.Row="1" Margin="40,10,0,0" Visibility="Collapsed">
-            <StackPanel>
-               <TextBlock Text="Session history" FontSize="17" />
-               <ItemsControl ItemsSource="{Binding sessions}" BorderBrush="#cf5a07" BorderThickness="0,2,0,0" Margin="0,2,0,0" Padding="0,5,0,5">
-                  <ItemsControl.ItemTemplate>
-                     <DataTemplate>
-                        <StackPanel Margin="0,0,0,5">
-                           <Grid Visibility="{Binding is_editing, Converter={StaticResource visConvInverted}}">
-                              <StackPanel>
-                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding start_date, StringFormat='dd/MM/yyyy HH:mm:ss', FallbackValue='[Start date]'}"/>
-                                    <TextBlock Text=" - "/>
-                                    <TextBlock Text="{Binding end_date, StringFormat='dd/MM/yyyy HH:mm:ss', FallbackValue='[End date]'}"/>
-                                    <TextBlock Margin="10,0,0,0" FontWeight="Bold" Text="{Binding total_time, StringFormat=(\{0:hh\\:mm\\:ss\}), FallbackValue='([Total time])'}"/>
-                                    <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="15,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnEditSessionRow">
-                                       <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PencilSolid" Foreground="CornflowerBlue" ToolTip="Edit session" />
+                        <StackPanel Width="150">
+                            <ListView>
+                                <ListViewItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0">
+                                    <Button Name="btnStartStop" Click="OnTaskContinueClick" Cursor="Hand">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Play" />
+                                                <TextBlock Text="Continue" Margin="10,0,0,0" />
+                                            </StackPanel>
+                                        </Button.Content>
                                     </Button>
-                                    <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="5,0,0,0" Width="25" Height="20" 
-                                                HorizontalContentAlignment="Center" Click="OnDeleteSessionRow">
-                                       <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="TrashSolid" Foreground="IndianRed" ToolTip="Delete session" />
+                                </ListViewItem>
+                                <ListViewItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0">
+                                    <Button Name="btnRemove" Click="OnTaskRemoveClick" Cursor="Hand">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:BootstrapIcons Width="18" Height="18" Kind="Trash3" />
+                                                <TextBlock Text="Remove" Margin="10,0,0,0" />
+                                            </StackPanel>
+                                        </Button.Content>
                                     </Button>
-                                 </StackPanel>
-                                 <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
-                                    <TextBlock Text="Observations: " VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding observation}" VerticalAlignment="Center" />
-                                 </StackPanel>
-                              </StackPanel>
-                           </Grid>
-                           <Grid Visibility="{Binding is_editing, Converter={StaticResource visConv}}">
-                              <Grid.ColumnDefinitions>
-                                 <ColumnDefinition Width="Auto" />
-                                 <ColumnDefinition Width="Auto" />
-                              </Grid.ColumnDefinitions>
-                              <Grid.RowDefinitions>
-                                 <RowDefinition />
-                                 <RowDefinition />
-                              </Grid.RowDefinitions>
-
-                              <Grid>
-                                 <StackPanel Orientation="Horizontal">
-                                    <mah:DateTimePicker SelectedDateTime="{Binding start_date, Mode=TwoWay}" Width="200" SelectedDateFormat="Short" SelectedTimeFormat="Short" Culture="pt-PT" KeyUp="OnKeyUpDateInput" />
-                                    <TextBlock Text=" - " VerticalAlignment="Center"/>
-                                    <mah:DateTimePicker SelectedDateTime="{Binding end_date, Mode=TwoWay}" Width="200" SelectedDateFormat="Short" SelectedTimeFormat="Short" Culture="pt-PT" KeyUp="OnKeyUpDateInput" />
-                                    <TextBlock Margin="10,3,0,0" FontWeight="Bold" Text="{Binding total_time, StringFormat=(\{0:hh\\:mm\\:ss\}), FallbackValue='([Total time])'}"/>
-                                 </StackPanel>
-                              </Grid>
-                              <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2">
-                                 <TextBlock Text="Observations: " VerticalAlignment="Center" />
-                                 <TextBox Text="{Binding observation}" VerticalAlignment="Center" BorderThickness="0,0,0,1" MinWidth="470" />
-                              </StackPanel>
-
-                              <StackPanel Orientation="Horizontal" Grid.Column="1">
-                                 <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="15,0,0,0" Width="25" Height="20" 
-                                       HorizontalContentAlignment="Center" Click="OnSaveSessionRowCancel">
-                                    <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="XSolid" Foreground="IndianRed" ToolTip="Save changes" />
-                                 </Button>
-                                 <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="5,0,0,0" Width="25" Height="20" 
-                                       HorizontalContentAlignment="Center" Click="OnSaveSessionRowChanges">
-                                    <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="CheckSolid" Foreground="Green" ToolTip="Save changes" />
-                                 </Button>
-                              </StackPanel>
-                           </Grid>
+                                </ListViewItem>
+                                <ListViewItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0">
+                                    <Button Name="btnGetStatistics" Click="OnTaskGetStatisticsClick" Cursor="Hand">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:BootstrapIcons Width="18" Height="18" Kind="ListColumns" />
+                                                <TextBlock Text="Get statistics" Margin="10,0,0,0" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                </ListViewItem>
+                            </ListView>
                         </StackPanel>
-                     </DataTemplate>
-                  </ItemsControl.ItemTemplate>
-               </ItemsControl>
-            </StackPanel>
-         </Grid>
-      </Grid>
-   </Border>
+                    </materialDesign:PopupBox>
+                </StackPanel>
+            </Grid>
+
+            <Grid Name="sessionDetail" Grid.ColumnSpan="2" Grid.Row="1" Margin="40,10,0,0" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock Text="Session history" FontSize="17" />
+                    <ItemsControl ItemsSource="{Binding sessions}" BorderBrush="#cf5a07" BorderThickness="0,2,0,0" Margin="0,2,0,0" Padding="0,5,0,5">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,5">
+                                    <Grid Visibility="{Binding is_editing, Converter={StaticResource visConvInverted}}">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding start_date, StringFormat='dd/MM/yyyy HH:mm:ss', FallbackValue='[Start date]'}"/>
+                                                <TextBlock Text=" - "/>
+                                                <TextBlock Text="{Binding end_date, StringFormat='dd/MM/yyyy HH:mm:ss', FallbackValue='[End date]'}"/>
+                                                <TextBlock Margin="10,0,0,0" FontWeight="Bold" Text="{Binding total_time, StringFormat=(\{0:hh\\:mm\\:ss\}), FallbackValue='([Total time])'}"/>
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="15,0,0,0" Width="25" Height="20" HorizontalContentAlignment="Center" Click="OnEditSessionRow">
+                                                    <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="PencilSolid" Foreground="CornflowerBlue" ToolTip="Edit session" />
+                                                </Button>
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="5,0,0,0" Width="25" Height="20" 
+                                                HorizontalContentAlignment="Center" Click="OnDeleteSessionRow">
+                                                    <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="TrashSolid" Foreground="IndianRed" ToolTip="Delete session" />
+                                                </Button>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                                                <TextBlock Text="Observations: " VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding observation}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Visibility="{Binding is_editing, Converter={StaticResource visConv}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid>
+                                            <StackPanel Orientation="Horizontal">
+                                                <mah:DateTimePicker SelectedDateTime="{Binding start_date, Mode=TwoWay}" Width="200" SelectedDateFormat="Short" SelectedTimeFormat="Short" Culture="pt-PT" KeyUp="OnKeyUpDateInput" />
+                                                <TextBlock Text=" - " VerticalAlignment="Center"/>
+                                                <mah:DateTimePicker SelectedDateTime="{Binding end_date, Mode=TwoWay}" Width="200" SelectedDateFormat="Short" SelectedTimeFormat="Short" Culture="pt-PT" KeyUp="OnKeyUpDateInput" />
+                                                <TextBlock Margin="10,3,0,0" FontWeight="Bold" Text="{Binding total_time, StringFormat=(\{0:hh\\:mm\\:ss\}), FallbackValue='([Total time])'}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2">
+                                            <TextBlock Text="Observations: " VerticalAlignment="Center" />
+                                            <TextBox Text="{Binding observation}" VerticalAlignment="Center" BorderThickness="0,0,0,1" MinWidth="470" />
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                            <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="15,0,0,0" Width="25" Height="20" 
+                                       HorizontalContentAlignment="Center" Click="OnSaveSessionRowCancel">
+                                                <iconPacks:PackIconFontAwesome Width="16" Height="16" Kind="XSolid" Foreground="IndianRed" ToolTip="Save changes" />
+                                            </Button>
+                                            <Button Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="5,0,0,0" Width="25" Height="20" 
+                                       HorizontalContentAlignment="Center" Click="OnSaveSessionRowChanges">
+                                                <iconPacks:PackIconFontAwesome Width="18" Height="18" Kind="CheckSolid" Foreground="Green" ToolTip="Save changes" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
 </UserControl>

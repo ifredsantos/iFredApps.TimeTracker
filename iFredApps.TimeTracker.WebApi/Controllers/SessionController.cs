@@ -33,6 +33,31 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          }
       }
 
+      [HttpPost("GetSessionsByDescription")]
+      //[Authorize]
+      public async Task<ActionResult<IEnumerable<Session>>> GetSessionsByDescription([FromBody] GetSessionsRequest request)
+      {
+         try
+         {
+            var sessions = await _sessionService.GetUserSessionsByDescription(request.user_id, request.workspace_id, request.description, request.start_date, request.end_date);
+            return Ok(sessions);
+         }
+         catch (Exception ex)
+         {
+
+            throw;
+         }
+      }
+
+      public class GetSessionsRequest
+      {
+         public int user_id { get; set; }
+         public int workspace_id { get; set; }
+         public string description { get; set; }
+         public DateTime? start_date { get; set; }
+         public DateTime? end_date { get; set; }
+      }
+
       [HttpPost("CreateSession")]
       public async Task<ActionResult<Session>> CreateSession([FromBody] Session session)
       {
