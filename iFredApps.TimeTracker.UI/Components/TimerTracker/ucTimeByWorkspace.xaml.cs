@@ -1,5 +1,6 @@
 ﻿using iFredApps.Lib;
 using iFredApps.Lib.Wpf.Execption;
+using iFredApps.Lib.Wpf.Messages;
 using iFredApps.TimeTracker.UI.Models;
 using iFredApps.TimeTracker.UI.Utils;
 using Microsoft.Win32;
@@ -300,6 +301,31 @@ namespace iFredApps.TimeTracker.UI.Components.TimerTracker
                   workspace_id = referenceSession.workspace_id.Value,
                   description = e.TaskData.description,
                });
+
+               // Calculate total time for all returned sessions
+               TimeSpan totalTime = TimeSpan.Zero;
+               var list = sessions?.TrataResposta();
+               if (list != null)
+               {
+                  foreach (var s in list)
+                  {
+                     if (s.start_date != null)
+                     {
+                        DateTime start = s.start_date;
+                        DateTime end = s.end_date ?? Utilities.GetDateTimeNow();
+                        if (end > start)
+                        {
+                           s.total_time = (end - start);
+                           totalTime += (end - start);
+                        }
+                     }
+                  }
+               }
+
+               // totalTime now contains the summed duration of all sessions
+               double totalTimeInHours = Math.Round(totalTime.TotalHours, 2);
+               Message.Success($"You have spend {totalTimeInHours} hours on project '{e.TaskData.description}'.", "Summary of statistics");
+               // totalTimeInHours now contains the duration in hours (rounded to 2 decimals)
             }
          }
          catch (Exception ex)
