@@ -119,6 +119,34 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          return CreatedAtAction(nameof(GetUser), new { id = result.Data.user_id }, result);
       }
 
+      // POST: api/Users/ForgotPassword
+      [HttpPost("ForgotPassword")]
+      public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+      {
+         if (string.IsNullOrEmpty(request?.email))
+            return BadRequest("Email is required");
+
+         var result = await _userService.InitiatePasswordReset(request.email);
+         if (!result.Success)
+            return BadRequest(new { Errors = result.Errors });
+
+         return Ok(new { Message = "If the email exists, a password reset link/token was sent." });
+      }
+
+      // POST: api/Users/ResetPassword
+      [HttpPost("ResetPassword")]
+      public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+      {
+         if (string.IsNullOrEmpty(request?.token) || string.IsNullOrEmpty(request?.newPassword))
+            return BadRequest("Token and new password are required");
+
+         var result = await _userService.CompletePasswordReset(request.token, request.newPassword);
+         if (!result.Success)
+            return BadRequest(new { Errors = result.Errors });
+
+         return Ok(new { Message = "Password has been reset successfully." });
+      }
+
       // Método privado para gerar o token JWT
       private string GenerateJwtToken(User user)
       {
@@ -148,6 +176,17 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
       {
          public string UserSearchTerm { get; set; }
          public string Password { get; set; }
+      }
+
+      public class ForgotPasswordRequest
+      {
+         public string email { get; set; }
+      }
+
+      public class ResetPasswordRequest
+      {
+         public string token { get; set; }
+         public string newPassword { get; set; }
       }
    }
 

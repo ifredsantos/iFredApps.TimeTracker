@@ -23,6 +23,10 @@ namespace iFredApps.TimeTracker.Core.Models
    public class User : UserBase
    {
       public int user_id { get; set; }
+
+      // Password reset fields
+      public string? password_reset_token { get; set; }
+      public DateTime? password_reset_expires_at { get; set; }
    }
 
    public class UserSignUp : UserBase

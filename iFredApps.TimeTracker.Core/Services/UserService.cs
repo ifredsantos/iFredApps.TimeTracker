@@ -98,5 +98,48 @@ namespace iFredApps.TimeTracker.Core.Services
             return Result<User>.Fail("Invalid credentials");
          }
       }
+
+      public async Task<Result<bool>> InitiatePasswordReset(string email)
+      {
+         if (string.IsNullOrEmpty(email))
+            return Result<bool>.Fail("Email is required");
+
+         var user = await _userRepository.SearchUserByTerm(email);
+         if (user == null)
+            return Result<bool>.Fail("No user found with that email");
+
+         // Generate a simple numeric code (6 digits) and expiry (15 minutes)
+         int code = System.Security.Cryptography.RandomNumberGenerator.GetInt32(100000, 1000000);
+         user.password_reset_token = code.ToString();
+         user.password_reset_expires_at = DateTime.UtcNow.AddMinutes(15);
+
+         await _userRepository.UpdateUser(user);
+
+         // Send email with the numeric code for the desktop app
+         var emailBody = $"Seu código de recuperação é: <strong>{user.password_reset_token}</strong>.<br/>Ele expira em 15 minutos. Copie este código e cole na aplicação para redefinir a senha.";
+
+         await _emailService.SendEmailAsync(user.email, "Código de Recuperação de Senha", emailBody);
+
+         return Result<bool>.Ok(true);
+      }
+
+      public async Task<Result<bool>> CompletePasswordReset(string token, string newPassword)
+      {
+         if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(newPassword))
+            return Result<bool>.Fail("Token and new password are required");
+
+         var user = await _userRepository.FindByPasswordResetToken(token);
+         if (user == null)
+            return Result<bool>.Fail("Invalid or expired token");
+
+         // Update password and clear token
+         user.password = BCrypt.Net.BCrypt.HashPassword(newPassword.Trim());
+         user.password_reset_token = null;
+         user.password_reset_expires_at = null;
+
+         await _userRepository.UpdateUser(user);
+
+         return Result<bool>.Ok(true);
+      }
    }
 }

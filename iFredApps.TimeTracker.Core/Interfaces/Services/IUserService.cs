@@ -10,5 +10,9 @@ namespace iFredApps.TimeTracker.Core.Interfaces.Services
       Task<Result<User>> UpdateUser(User user);
       Task<Result<bool>> DeleteUser(int user_id);
       Task<Result<User>> ValidateUser(string userSearchKey, string plainPassword);
+
+      // Password reset
+      Task<Result<bool>> InitiatePasswordReset(string email);
+      Task<Result<bool>> CompletePasswordReset(string token, string newPassword);
    }
 }

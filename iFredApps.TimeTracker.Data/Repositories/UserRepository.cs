@@ -29,6 +29,11 @@ namespace iFredApps.TimeTracker.Data.Repositories
          return await _context.Users.FirstOrDefaultAsync(x => x.username == term || x.email == term);
       }
 
+      public async Task<User> FindByPasswordResetToken(string token)
+      {
+         return await _context.Users.FirstOrDefaultAsync(x => x.password_reset_token == token && x.password_reset_expires_at != null && x.password_reset_expires_at > DateTime.UtcNow);
+      }
+
       public async Task<User> CreateUser(User user)
       {
          var userSaved = await _context.Users.AddAsync(user);
