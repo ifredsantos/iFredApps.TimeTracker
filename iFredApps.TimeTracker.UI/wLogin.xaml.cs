@@ -91,6 +91,18 @@ namespace iFredApps.TimeTracker.UI
          this.Show();
       }
 
+      private void RecuperarPassword_Click(object sender, MouseButtonEventArgs e)
+      {
+         try
+         {
+
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
       #endregion
 
       #region Public Methods

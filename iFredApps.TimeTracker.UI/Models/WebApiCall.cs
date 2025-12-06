@@ -20,6 +20,16 @@ namespace iFredApps.TimeTracker.UI.Models
          {
             return await webClient.PostAsync<ApiResponse<sUser>>("Users/SignUp", signUpData);
          }
+
+         public static async Task<ApiResponse<bool>> ForgotPassword(WebApiClient webClient, ForgotPasswordRequest request)
+         {
+            return await webClient.PostAsync<ApiResponse<bool>>("Users/ForgotPassword", request);
+         }
+
+         public static async Task<ApiResponse<bool>> ResetPassword(WebApiClient webClient, ResetPasswordRequest request)
+         {
+            return await webClient.PostAsync<ApiResponse<bool>>("Users/ResetPassword", request);
+         }
       }
 
       public static class Sessions

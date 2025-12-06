@@ -37,6 +37,9 @@
     <Compile Update="wLogin.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="wRecuperarPassword.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="wSignUp.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
