@@ -57,8 +57,8 @@ namespace iFredApps.TimeTracker.Core.Services
 
             //Send email
             {
-               string emailBody = "Teste enviado com sucesso!";
-               await _emailService.SendEmailAsync(user.email, "Confirmação de Conta", emailBody);
+               //string emailBody = "Teste enviado com sucesso!";
+               //await _emailService.SendEmailAsync(user.email, "Confirmação de Conta", emailBody);
                //Tornar o envio de email não-bloqueante
                //    Para performance, poderias tornar o envio de email assíncrono mas sem bloquear o flow principal
                //_ = _emailService.SendEmailAsync(user.email, "Confirmação de Conta", emailBody); // Fire-and-forget

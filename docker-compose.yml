@@ -3,6 +3,7 @@ version: "3.9"
 services:
   db:
     image: mysql:8.0
+    env_file: .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
@@ -22,6 +23,7 @@ services:
     build:
       context: .
       dockerfile: ./iFredApps.TimeTracker.WebApi/Dockerfile
+    env_file: .env
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: "Server=db;Database=${MYSQL_DATABASE};User=${MYSQL_USER};Password=${MYSQL_PASSWORD};"
