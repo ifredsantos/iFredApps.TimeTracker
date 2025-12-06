@@ -7,7 +7,7 @@ using iFredApps.TimeTracker.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -134,20 +134,20 @@ builder.Services.AddSwaggerGen(options =>
       Description = "Enter 'Bearer {your JWT token}' to authenticate.",
    });
 
-   options.AddSecurityRequirement(new OpenApiSecurityRequirement
-   {
-      {
-         new OpenApiSecurityScheme
-         {
-            Reference = new OpenApiReference
-            {
-               Type = ReferenceType.SecurityScheme,
-               Id = "Bearer"
-            }
-         },
-         Array.Empty<string>()
-      }
-   });
+   //options.AddSecurityRequirement(new OpenApiSecurityRequirement
+   //{
+   //   {
+   //      new OpenApiSecurityScheme
+   //      {
+   //         Reference = new OpenApiReference
+   //         {
+   //            Type = ReferenceType.SecurityScheme,
+   //            Id = "Bearer"
+   //         }
+   //      },
+   //      Array.Empty<string>()
+   //   }
+   //});
 });
 
 try

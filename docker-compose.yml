@@ -1,82 +1,47 @@
+version: "3.9"
+
 services:
   db:
     image: mysql:8.0
+    env_file: .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_SERVER: ${MYSQL_SERVER}
     volumes:
       - timetracker-db-data:/var/lib/mysql
-    networks:
-      - app-network
     healthcheck:
-      test:
-        - CMD
-        - mysqladmin
-        - ping
-        - -h
-        - localhost
-        - -u
-        - ${MYSQL_USER}
-        - -p${MYSQL_PASSWORD}
-      timeout: 10s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
       interval: 30s
+      timeout: 10s
       retries: 5
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: db
-      PMA_PORT: "3306"
-    healthcheck:
-      test:
-        - CMD
-        - curl
-        - -f
-        - http://localhost:80
-      timeout: 10s
-      interval: 30s
-      retries: 3
-    depends_on:
-      db:
-        condition: service_started
     networks:
       - app-network
-    ports:
-      - "8081:80"
 
   webapi:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./iFredApps.TimeTracker.WebApi/Dockerfile
+    env_file: .env
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      JWT__AUDIENCE: ${JWT__AUDIENCE}
-      JWT__ISSUER: ${JWT__ISSUER}
-      JWT__KEY: ${JWT__KEY}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_SERVER: ${MYSQL_SERVER}
-      MYSQL_USER: ${MYSQL_USER}
-    healthcheck:
-      test:
-        - CMD
-        - curl
-        - -f
-        - http://localhost:80/health
-      timeout: 10s
-      interval: 30s
-      retries: 5
+      ConnectionStrings__DefaultConnection: "Server=db;Database=${MYSQL_DATABASE};User=${MYSQL_USER};Password=${MYSQL_PASSWORD};"
+      Jwt__Key: ${JWT__KEY}
+      Jwt__Issuer: ${JWT__ISSUER}
+      Jwt__Audience: ${JWT__AUDIENCE}
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/swagger/v1/swagger.json"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "8083:80"
     networks:
       - app-network
-    ports:
-      - "8082:80"
 
 networks:
   app-network:
