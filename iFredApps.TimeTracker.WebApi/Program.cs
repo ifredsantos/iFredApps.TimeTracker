@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +84,12 @@ builder.Services.AddScoped<IWorkspaceService, WorkspaceService>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IEmailService, EmailService>();
 
+// Forwarded headers (when behind a reverse proxy)
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    // Optionally set KnownNetworks or KnownProxies when you know proxy IPs
+});
 
 // Leitura da chave JWT a partir das variáveis de ambiente
 var jwtKey = builder.Configuration["Jwt:Key"];
@@ -133,26 +140,14 @@ builder.Services.AddSwaggerGen(options =>
       Name = "Authorization",
       Description = "Enter 'Bearer {your JWT token}' to authenticate.",
    });
-
-   //options.AddSecurityRequirement(new OpenApiSecurityRequirement
-   //{
-   //   {
-   //      new OpenApiSecurityScheme
-   //      {
-   //         Reference = new OpenApiReference
-   //         {
-   //            Type = ReferenceType.SecurityScheme,
-   //            Id = "Bearer"
-   //         }
-   //      },
-   //      Array.Empty<string>()
-   //   }
-   //});
 });
 
 try
 {
    var app = builder.Build();
+
+   // Use forwarded headers before other middleware that depends on them
+   app.UseForwardedHeaders();
 
    if (app.Environment.IsProduction())
    {
@@ -202,21 +197,20 @@ try
       throw;
    }
 
+   // lightweight health endpoint
+   app.MapGet("/health", () => Results.Ok(new { status = "Healthy" }));
+
    app.UseHttpsRedirection();
 
    app.UseAuthentication();
    app.UseAuthorization();
    app.UseCors();
 
-   // Configuração do pipeline de requisições HTTP
-   //if (app.Environment.IsDevelopment())
-   //{
    app.UseSwagger();
    app.UseSwaggerUI(c =>
    {
       c.SwaggerEndpoint("/swagger/v1/swagger.json", "iFredApps TimeTracker API v1");
    });
-   //}
 
    app.MapControllers();
 
