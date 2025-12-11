@@ -9,6 +9,23 @@
    </PropertyGroup>
 
    <ItemGroup>
+     <None Remove="EmailTemplates\PasswordRecoveryCompleted.html" />
+     <None Remove="EmailTemplates\PasswordRecoveryRequest.html" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <EmbeddedResource Include="EmailTemplates\DailyReport.html">
+       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+     </EmbeddedResource>
+     <EmbeddedResource Include="EmailTemplates\PasswordRecoveryCompleted.html">
+       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+     </EmbeddedResource>
+     <EmbeddedResource Include="EmailTemplates\PasswordRecoveryRequest.html">
+       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+     </EmbeddedResource>
+   </ItemGroup>
+
+   <ItemGroup>
       <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
       <PackageReference Include="MailKit" Version="4.14.1" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.0" />
@@ -16,6 +33,10 @@
 
    <ItemGroup>
      <ProjectReference Include="..\..\iFredApps.Lib\iFredApps.Lib.csproj" />
+   </ItemGroup>
+
+   <ItemGroup>
+     <Resource Include="Resources\logo.png" />
    </ItemGroup>
 
 </Project>

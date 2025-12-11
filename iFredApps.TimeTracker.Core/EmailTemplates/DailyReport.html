@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>{DATE} Daily Report - Time Tracker</title>
+
+   <style>
+       body {
+           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+       }
+
+      a {
+         color: #cf5a07;
+      }
+
+      table {
+         border-collapse: collapse;
+         width: 100%;
+      }
+
+      .task-table td,
+      .task-table th {
+         border: 1px solid #cf5a07;
+         text-align: left;
+         padding: 8px;
+      }
+
+      .task-table tr.header {
+         background-color: #cf5a07;
+         color: #ffffff;
+      }
+
+      /* .task-table tr:nth-child(even) {
+            background-color: #dddddd;
+        } */
+
+      .report-header {
+         width: 100%;
+      }
+
+         .report-header .header {
+            background-color: #cf5a07;
+            color: #ffffff;
+         }
+
+         .report-header td,
+         .report-header th {
+            border: 1px solid #cf5a07;
+            padding: 10px;
+            text-align: left;
+         }
+
+      .copyright {
+         font-style: italic;
+         font-size: 10px;
+         color: gray;
+         margin-top: 15px;
+      }
+
+      .text-center {
+         text-align: center !important;
+      }
+
+      .text-right {
+         text-align: right !important;
+      }
+   </style>
+</head>
+
+<body>
+   <main style="max-width: 800px; display: block; margin-left: auto; margin-right: auto;">
+      <table class="report-header">
+         <tr class="header">
+            <th>Daily Report | {DATE}</th>
+            <th class="text-right">{DAY_TOTAL_TIME}</th>
+         </tr>
+         <tr>
+            <td colspan="2">
+               <b>User: </b>{USER_NAME}
+            </td>
+         </tr>
+      </table>
+
+      <table class="task-table">
+         <tr class="header">
+            <th>Description</th>
+            <th class="text-right">Total Time</th>
+         </tr>
+         {BODY_CONTENT}
+      </table>
+      <p class="copyright text-center">© 2025 Time Tracker by <a href="https://github.com/ifredsantos" target="_blank">iFredApps</a></p>
+   </main>
+</body>
+
+</html>

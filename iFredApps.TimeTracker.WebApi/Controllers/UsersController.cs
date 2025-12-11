@@ -4,6 +4,7 @@ using iFredApps.TimeTracker.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Sprache;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -83,13 +84,13 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
                email = result.Data.email,
                password = result.Data.password,
                created_at = result.Data.created_at,
+               token = GenerateJwtToken(result.Data)
             };
          }
 
-         // Generate JWT token
-         response.Data.token = GenerateJwtToken(result.Data);
+         response.Success = true;
 
-         return Ok(result);
+         return Ok(response);
       }
 
       // POST: api/Users/SignUp
@@ -121,7 +122,7 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
 
       // POST: api/Users/ForgotPassword
       [HttpPost("ForgotPassword")]
-      public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+      public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
       {
          if (string.IsNullOrEmpty(request?.email))
             return BadRequest("Email is required");
@@ -130,7 +131,9 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          if (!result.Success)
             return BadRequest(new { Errors = result.Errors });
 
-         return Ok(new { Message = "If the email exists, a password reset link/token was sent." });
+         result.Success = true;
+
+         return Ok(result);
       }
 
       // POST: api/Users/ResetPassword
@@ -144,7 +147,9 @@ namespace iFredApps.TimeTracker.WebApi.Controllers
          if (!result.Success)
             return BadRequest(new { Errors = result.Errors });
 
-         return Ok(new { Message = "Password has been reset successfully." });
+         result.Success = true;
+
+         return Ok(result);
       }
 
       // Método privado para gerar o token JWT

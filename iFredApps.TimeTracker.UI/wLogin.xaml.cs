@@ -82,13 +82,38 @@ namespace iFredApps.TimeTracker.UI
 
       private void SignUp_Click(object sender, MouseEventArgs e)
       {
-         this.Hide();
+         try
+         {
+            this.Hide();
 
-         wSignUp winSignUp = new wSignUp();
-         winSignUp.ShowDialog();
-          
-         winSignUp.Close();
-         this.Show();
+            wSignUp winSignUp = new wSignUp();
+            winSignUp.ShowDialog();
+
+            winSignUp.Close();
+            this.Show();
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private void RecuperarPassword_Click(object sender, MouseButtonEventArgs e)
+      {
+         try
+         {
+            this.Hide();
+
+            wRecuperarPassword winRecuperarPassword = new wRecuperarPassword();
+            winRecuperarPassword.ShowDialog();
+
+            winRecuperarPassword.Close();
+            this.Show();
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
       }
 
       #endregion

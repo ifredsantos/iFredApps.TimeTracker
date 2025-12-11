@@ -1,6 +1,7 @@
 ﻿using iFredApps.TimeTracker.Core.Interfaces.Repository;
 using iFredApps.TimeTracker.Core.Interfaces.Services;
 using iFredApps.TimeTracker.Core.Models;
+using System.IO;
 
 namespace iFredApps.TimeTracker.Core.Services
 {
@@ -10,11 +11,16 @@ namespace iFredApps.TimeTracker.Core.Services
       private readonly IWorkspaceRepository _workspaceRepository;
       private readonly IEmailService _emailService;
 
+      private readonly string _templatesPath;
+
       public UserService(IUserRepository userRepository, IWorkspaceRepository workspaceRepository, IEmailService emailService)
       {
          _userRepository = userRepository;
          _workspaceRepository = workspaceRepository;
          _emailService = emailService;
+
+         // locate templates inside the Core project EmailTemplates folder
+         _templatesPath = Path.Combine(AppContext.BaseDirectory, "EmailTemplates");
       }
 
       public async Task<Result<IEnumerable<User>>> GetAllUsers()
@@ -55,13 +61,28 @@ namespace iFredApps.TimeTracker.Core.Services
                created_at = DateTime.UtcNow,
             });
 
-            //Send email
+            //Send email (fire-and-forget)
             {
-               //string emailBody = "Teste enviado com sucesso!";
-               //await _emailService.SendEmailAsync(user.email, "Confirmação de Conta", emailBody);
-               //Tornar o envio de email não-bloqueante
-               //    Para performance, poderias tornar o envio de email assíncrono mas sem bloquear o flow principal
-               //_ = _emailService.SendEmailAsync(user.email, "Confirmação de Conta", emailBody); // Fire-and-forget
+               string templateFile = Path.Combine(_templatesPath, "PasswordRecoveryRequest.html");
+               if (File.Exists(templateFile))
+               {
+                  string emailBody = File.ReadAllText(templateFile)
+                     .Replace("{{USER}}", userSaved.username)
+                     .Replace("{{CODE}}", "")
+                     .Replace("{{EXPIRY_MINUTES}}", "");
+
+                  _ = Task.Run(async () =>
+                  {
+                     try
+                     {
+                        await _emailService.SendEmailAsync(userSaved.email, "Confirmação de Conta", emailBody);
+                     }
+                     catch (Exception ex)
+                     {
+                        Console.WriteLine($"Failed to send signup email to {userSaved.email}: {ex.Message}");
+                     }
+                  });
+               }
             }
          }
 
@@ -115,10 +136,32 @@ namespace iFredApps.TimeTracker.Core.Services
 
          await _userRepository.UpdateUser(user);
 
-         // Send email with the numeric code for the desktop app
-         var emailBody = $"Seu código de recuperação é: <strong>{user.password_reset_token}</strong>.<br/>Ele expira em 15 minutos. Copie este código e cole na aplicação para redefinir a senha.";
+         // Send email with the numeric code for the desktop app using template
+         var templateFile = Path.Combine(_templatesPath, "PasswordRecoveryRequest.html");
+         string emailBody;
+         if (File.Exists(templateFile))
+         {
+            emailBody = File.ReadAllText(templateFile)
+               .Replace("{{USER}}", user.username)
+               .Replace("{{CODE}}", user.password_reset_token)
+               .Replace("{{EXPIRY_MINUTES}}", "15");
+         }
+         else
+         {
+            emailBody = $"Your recovery code is: {user.password_reset_token}. It expires in 15 minutes.";
+         }
 
-         await _emailService.SendEmailAsync(user.email, "Código de Recuperação de Senha", emailBody);
+         _ = Task.Run(async () =>
+         {
+            try
+            {
+               await _emailService.SendEmailAsync(user.email, "Password Recovery Code", emailBody);
+            }
+            catch (Exception ex)
+            {
+               Console.WriteLine($"Failed to send password recovery email to {user.email}: {ex.Message}");
+            }
+         });
 
          return Result<bool>.Ok(true);
       }
@@ -138,6 +181,31 @@ namespace iFredApps.TimeTracker.Core.Services
          user.password_reset_expires_at = null;
 
          await _userRepository.UpdateUser(user);
+
+         // Send an email informing you of the password change using template
+         var templateFile = Path.Combine(_templatesPath, "PasswordRecoveryCompleted.html");
+         string emailBody;
+         if (File.Exists(templateFile))
+         {
+            emailBody = File.ReadAllText(templateFile)
+               .Replace("{{USER}}", user.username);
+         }
+         else
+         {
+            emailBody = "Your password has been successfully changed in the TimeTracker application.";
+         }
+
+         _ = Task.Run(async () =>
+         {
+            try
+            {
+               await _emailService.SendEmailAsync(user.email, "Your password has been successfully changed.", emailBody);
+            }
+            catch (Exception ex)
+            {
+               Console.WriteLine($"Failed to send password change email to {user.email}: {ex.Message}");
+            }
+         });
 
          return Result<bool>.Ok(true);
       }
