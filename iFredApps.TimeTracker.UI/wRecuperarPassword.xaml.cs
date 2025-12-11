@@ -194,14 +194,12 @@ namespace iFredApps.TimeTracker.UI
          if(_viewModel.modoEcra == RecuperarPasswordViewMode.EfetuarPedido)
          {
             Title = "Password Recovery Request";
-            AvancarBtn.Content = "Request Recovery";
             grdPedidoRecuperacao.Visibility = Visibility.Visible;
             grdConfirmacaoRecuperacao.Visibility = Visibility.Collapsed;
          }
          else if(_viewModel.modoEcra == RecuperarPasswordViewMode.ConfirmarPedido)
          {
             Title = "Password Recovery Confirm";
-            AvancarBtn.Content = "Confirm Recovery";
             grdPedidoRecuperacao.Visibility = Visibility.Collapsed;
             grdConfirmacaoRecuperacao.Visibility = Visibility.Visible;
          }
