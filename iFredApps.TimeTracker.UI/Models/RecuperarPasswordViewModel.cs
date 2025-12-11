@@ -15,7 +15,15 @@ namespace iFredApps.TimeTracker.UI.Models
       public string email { get; set; }
       public string codigo { get; set; }
       public string novaPassword { get; set; }
+      public string confirmacaoNovaPassword { get; set; }
+      public RecuperarPasswordViewMode modoEcra { get; set; }
 
       public event PropertyChangedEventHandler PropertyChanged;
+
+      public enum RecuperarPasswordViewMode
+      {
+         EfetuarPedido,
+         ConfirmarPedido
+      }
    }
 }
