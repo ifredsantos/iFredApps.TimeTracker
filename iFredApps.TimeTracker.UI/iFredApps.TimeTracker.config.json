@@ -1,5 +1,5 @@
 {
-  "update_feed_url": "https://raw.githubusercontent.com/ifredsantos/iFredApps.TimeTracker/main/docs/updates.xml",
+  "update_feed_url": "https://ifredsantos.github.io/iFredApps.TimeTracker/updates.xml",
   "database_type": 1,
   "webapi_connection_config": {
     //"baseaddress": "https://api.timetracker.ligrow.agency/api/"
