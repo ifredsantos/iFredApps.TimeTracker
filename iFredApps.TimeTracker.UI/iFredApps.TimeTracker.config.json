@@ -2,8 +2,8 @@
   "update_feed_url": "https://ifredsantos.github.io/iFredApps.TimeTracker/updates.xml",
   "database_type": 1,
   "webapi_connection_config": {
-    //"baseaddress": "https://api.timetracker.ligrow.agency/api/"
+    "baseaddress": "https://api.timetracker.ligrow.agency/api/"
     //"baseaddress": "http://localhost:8083/api/"
-    "baseaddress": "https://localhost:44381/api/"
+    //"baseaddress": "https://localhost:44381/api/"
   }
 }

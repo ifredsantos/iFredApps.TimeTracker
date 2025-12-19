@@ -60,7 +60,8 @@ jobs:
  git fetch origin main:refs/remotes/origin/main
  git checkout -B main origin/main
  $version = $env:RELEASE_TAG -replace '^v',''
- $xml = @"<?xml version=""1.0"" encoding=""utf-8""?>
+ $xml = @"
+<?xml version=""1.0"" encoding=""utf-8""?>
 <item>
  <version>$version</version>
  <url>https://github.com/$env:REPO/releases/download/$env:RELEASE_TAG/TimeTracker-Setup.zip</url>
