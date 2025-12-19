@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <item>
  <!-- Versão deve corresponder a AssemblyVersion/FileVersion no projeto -->
- <version>1.2503.6.1</version>
+ <version>1.2512.19.1</version>
  <!-- URL para o asset publicado no Release (nome do asset gerado: TimeTracker-Setup.zip) -->
- <url>https://github.com/ifredsantos/iFredApps.TimeTracker/releases/download/v1.2503.6.1/TimeTracker-Setup.zip</url>
+ <url>https://github.com/ifredsantos/iFredApps.TimeTracker/releases/download/v1.2512.19.1/TimeTracker-Setup.zip</url>
  <mandatory>false</mandatory>
  <changelog>Correções e melhorias.</changelog>
 </item>
