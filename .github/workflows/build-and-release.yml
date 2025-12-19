@@ -1,0 +1,114 @@
+name: Build and Release WPF Application
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.0.0)'
+        required: true
+        default: '1.0.0'
+
+env:
+  PROJECT_PATH: 'iFredApps.TimeTracker.UI/iFredApps.TimeTracker.UI.csproj'
+  OUTPUT_DIR: 'publish'
+  DOTNET_VERSION: '9.0.x'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Get version from tag or input
+      id: get_version
+      shell: pwsh
+      run: |
+        if ("${{ github.ref }}" -like "refs/tags/*") {
+          $version = "${{ github.ref }}".Replace("refs/tags/v", "")
+        } else {
+          $version = "${{ github.event.inputs.version }}"
+        }
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+        echo "Version: $version"
+        
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+      
+    - name: Build application
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }} `
+          -c Release `
+          -r win-x64 `
+          --self-contained true `
+          -p:PublishSingleFile=true `
+          -p:IncludeNativeLibrariesForSelfExtract=true `
+          -p:Version=${{ steps.get_version.outputs.VERSION }} `
+          -p:AssemblyVersion=${{ steps.get_version.outputs.VERSION }} `
+          -p:FileVersion=${{ steps.get_version.outputs.VERSION }} `
+          -o ${{ env.OUTPUT_DIR }}
+          
+    - name: Create ZIP package
+      shell: pwsh
+      run: |
+        $zipName = "iFredApps.TimeTracker-v${{ steps.get_version.outputs.VERSION }}.zip"
+        Compress-Archive -Path "${{ env.OUTPUT_DIR }}/*" -DestinationPath $zipName
+        echo "ZIP_NAME=$zipName" >> $env:GITHUB_ENV
+        
+    - name: Generate update XML
+      shell: pwsh
+      run: |
+        $version = "${{ steps.get_version.outputs.VERSION }}"
+        $downloadUrl = "https://github.com/${{ github.repository }}/releases/download/v$version/${{ env.ZIP_NAME }}"
+        $changelogUrl = "https://github.com/${{ github.repository }}/releases/tag/v$version"
+        
+        $xml = @"
+        <?xml version="1.0" encoding="UTF-8"?>
+        <item>
+          <version>$version</version>
+          <url>$downloadUrl</url>
+          <changelog>$changelogUrl</changelog>
+          <mandatory>false</mandatory>
+        </item>
+        "@
+        
+        $xml | Out-File -FilePath "updates.xml" -Encoding UTF8
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-package
+        path: |
+          ${{ env.ZIP_NAME }}
+          updates.xml
+          
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          ${{ env.ZIP_NAME }}
+          updates.xml
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .
+        publish_branch: gh-pages
+        keep_files: true
+        destination_dir: releases/v${{ steps.get_version.outputs.VERSION }}

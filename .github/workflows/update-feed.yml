@@ -1,0 +1,54 @@
+name: Update Feed XML
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  update-feed:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout main
+      uses: actions/checkout@v4
+      with:
+        ref: main
+        
+    - name: Get latest release
+      id: latest_release
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const release = await github.rest.repos.getLatestRelease({
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+          
+          const version = release.data.tag_name.replace('v', '');
+          const zipAsset = release.data.assets.find(a => a.name.endsWith('.zip'));
+          
+          core.setOutput('version', version);
+          core.setOutput('download_url', zipAsset?.browser_download_url || '');
+          core.setOutput('changelog_url', release.data.html_url);
+          
+    - name: Generate master updates.xml
+      shell: bash
+      run: |
+        cat > updates.xml << EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <item>
+          <version>${{ steps.latest_release.outputs.version }}</version>
+          <url>${{ steps.latest_release.outputs.download_url }}</url>
+          <changelog>${{ steps.latest_release.outputs.changelog_url }}</changelog>
+          <mandatory>false</mandatory>
+        </item>
+        EOF
+        
+    - name: Commit and push
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add updates.xml
+        git diff --quiet && git diff --staged --quiet || git commit -m "Update feed to version ${{ steps.latest_release.outputs.version }}"
+        git push
