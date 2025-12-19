@@ -16,7 +16,7 @@ jobs:
  - name: Checkout repo
  uses: actions/checkout@v4
  with:
- fetch-depth:0
+ fetch-depth: 0
  persist-credentials: true
 
  - name: Setup .NET
@@ -49,6 +49,7 @@ jobs:
  asset_content_type: application/zip
 
  - name: Update docs/updates.xml in main
+ shell: pwsh
  env:
  RELEASE_TAG: ${{ github.ref_name }}
  REPO: ${{ github.repository }}
