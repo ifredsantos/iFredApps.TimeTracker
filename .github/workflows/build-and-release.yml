@@ -12,7 +12,7 @@ on:
         default: '1.0.0'
 
 env:
-  PROJECT_PATH: 'iFredApps.TimeTracker.UI/iFredApps.TimeTracker.UI.csproj'
+  PROJECT_PATH: 'iFredApps.TimeTracker/iFredApps.TimeTracker.UI/iFredApps.TimeTracker.UI.csproj'
   OUTPUT_DIR: 'publish'
   DOTNET_VERSION: '9.0.x'
 
@@ -21,8 +21,24 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - name: Checkout code
+    - name: Checkout main repository
       uses: actions/checkout@v4
+      with:
+        path: iFredApps.TimeTracker
+        
+    - name: Checkout iFredApps.Lib
+      uses: actions/checkout@v4
+      with:
+        repository: ifredsantos/iFredApps.Lib
+        path: iFredApps.Lib
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Checkout iFredApps.Lib.WPF
+      uses: actions/checkout@v4
+      with:
+        repository: ifredsantos/iFredApps.Lib.WPF
+        path: iFredApps.Lib.WPF
+        token: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
