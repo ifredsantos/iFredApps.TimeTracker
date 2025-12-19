@@ -28,17 +28,17 @@ jobs:
  run: dotnet publish iFredApps.TimeTracker.UI/iFredApps.TimeTracker.UI.csproj -c Release -r win-x64 --self-contained false -o publish
 
  - name: Zip artifacts
- run: powershell -Command "Compress-Archive -Path publish\\* -DestinationPath TimeTracker-Setup.zip"
+ run: powershell -Command "Compress-Archive -Path publish\* -DestinationPath TimeTracker-Setup.zip"
 
  - name: Create Release
  id: create_release
  uses: actions/create-release@v1
+ env:
+ GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  with:
  tag_name: ${{ github.ref_name }}
  release_name: Release ${{ github.ref_name }}
  body: "Automated release for ${{ github.ref_name }}"
- env:
- GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
  - name: Upload asset
  uses: actions/upload-release-asset@v1
@@ -56,12 +56,11 @@ jobs:
  run: |
  git config user.name "github-actions[bot]"
  git config user.email "github-actions[bot]@users.noreply.github.com"
- # fetch and checkout main branch
  git fetch origin main:refs/remotes/origin/main
  git checkout -B main origin/main
  $version = $env:RELEASE_TAG -replace '^v',''
  $xml = @"
-<?xml version=""1.0"" encoding=""utf-8""?>
+<?xml version="1.0" encoding="utf-8"?>
 <item>
  <version>$version</version>
  <url>https://github.com/$env:REPO/releases/download/$env:RELEASE_TAG/TimeTracker-Setup.zip</url>
