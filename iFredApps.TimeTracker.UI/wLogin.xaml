@@ -70,7 +70,7 @@
             <TextBlock Text="by " Foreground="Gray" FontStyle="Italic" FontSize="10" />
             <TextBlock>
             <Hyperlink NavigateUri="https://github.com/ifredsantos" RequestNavigate="OnLaunchGitHubSite" Foreground="Gray" FontStyle="Italic" FontSize="10">
-               iFredApps
+               iFredApps | LiGrow
             </Hyperlink>
             </TextBlock>
         </StackPanel>
