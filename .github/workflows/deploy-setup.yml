@@ -1,0 +1,68 @@
+name: Build and Release TimeTracker Setup
+
+on:
+ push:
+ tags:
+ - 'v*'
+ workflow_dispatch:
+
+jobs:
+ build-and-release:
+ runs-on: windows-latest
+ steps:
+ - uses: actions/checkout@v4
+ name: Checkout repository
+
+ - name: Setup NuGet
+ uses: nuget/setup-nuget@v1
+ with:
+ nuget-version: latest
+
+ - name: Restore NuGet packages
+ run: nuget restore "iFredApps.TimeTracker.UI/iFredApps.TimeTracker.UI.csproj"
+
+ - name: Build UI project (Release)
+ run: msbuild "iFredApps.TimeTracker.UI/iFredApps.TimeTracker.UI.csproj" /p:Configuration=Release /t:Build
+
+ - name: Package output to ZIP
+ shell: pwsh
+ run: |
+ $out = 'iFredApps.TimeTracker.UI\bin\Release'
+ if (Test-Path $out) {
+ Remove-Item -Recurse -Force artifact -ErrorAction SilentlyContinue
+ New-Item -ItemType Directory -Path artifact | Out-Null
+ Compress-Archive -Path "$out\*" -DestinationPath "artifact\TimeTracker-Setup.zip"
+ } else {
+ Write-Error "Build output folder not found: $out"
+ exit1
+ }
+
+ - name: Create Release and upload asset (tags)
+ if: startsWith(github.ref, 'refs/tags/')
+ uses: softprops/action-gh-release@v1
+ env:
+ GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ with:
+ files: artifact/TimeTracker-Setup.zip
+
+ - name: Create Release (manual)
+ if: github.event_name == 'workflow_dispatch'
+ id: create_release
+ uses: actions/create-release@v1
+ env:
+ GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ with:
+ tag_name: manual-${{ github.run_id }}
+ release_name: Release manual-${{ github.run_id }}
+ body: Automated release created by workflow_dispatch
+
+ - name: Upload asset for manual release
+ if: github.event_name == 'workflow_dispatch'
+ uses: actions/upload-release-asset@v1
+ env:
+ GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ with:
+ upload_url: ${{ steps.create_release.outputs.upload_url }}
+ asset_path: artifact/TimeTracker-Setup.zip
+ asset_name: TimeTracker-Setup.zip
+ asset_content_type: application/zip
