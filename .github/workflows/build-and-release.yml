@@ -11,6 +11,11 @@ on:
         required: true
         default: '1.0.0'
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 env:
   PROJECT_PATH: 'iFredApps.TimeTracker/iFredApps.TimeTracker.UI/iFredApps.TimeTracker.UI.csproj'
   OUTPUT_DIR: 'publish'
@@ -99,6 +104,19 @@ jobs:
         
         $xml | Out-File -FilePath "updates.xml" -Encoding UTF8
         
+    - name: Prepare GitHub Pages content
+      shell: pwsh
+      run: |
+        # Criar diretório para GitHub Pages
+        New-Item -ItemType Directory -Force -Path "gh-pages-content"
+        
+        # Copiar apenas os arquivos necessários (não as pastas .git)
+        Copy-Item "${{ env.ZIP_NAME }}" "gh-pages-content/"
+        Copy-Item "updates.xml" "gh-pages-content/"
+        
+        Write-Host "Conteúdo preparado para GitHub Pages:"
+        Get-ChildItem "gh-pages-content" -Recurse
+        
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -124,7 +142,7 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .
+        publish_dir: gh-pages-content
         publish_branch: gh-pages
         keep_files: true
         destination_dir: releases/v${{ steps.get_version.outputs.VERSION }}
