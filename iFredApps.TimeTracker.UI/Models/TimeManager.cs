@@ -53,7 +53,7 @@ namespace iFredApps.TimeTracker.UI.Models
 
       public async Task LoadSessions()
       {
-         DateTime startDate = Utilities.GetDateTimeNow().AddDays(-7);
+         DateTime startDate = Utilities.GetDateTimeNow().AddDays(-30);
          DateTime? endDate = null;
          var sessionsResult = await WebApiCall.Sessions.GetSessions(AppWebClient.Instance.GetClient(), AppWebClient.Instance.GetLoggedUserData().user_id, workspace.workspace_id.Value, startDate, endDate);
 
@@ -249,5 +249,32 @@ namespace iFredApps.TimeTracker.UI.Models
       {
          sessions = new List<TimeManagerTaskSession>();
       }
+   }
+
+   public class SessionSearchResultItem
+   {
+      public string description { get; set; }
+      public string workspace_name { get; set; }
+      public int session_count { get; set; }
+      public TimeSpan total_time { get; set; }
+      public string total_time_display => $"{(int)total_time.TotalHours:00}:{total_time.Minutes:00}:{total_time.Seconds:00}";
+   }
+
+   public class SessionSearchViewModel : INotifyPropertyChanged
+   {
+      public string search_text { get; set; }
+      public bool is_searching { get; set; }
+      public bool show_results { get; set; }
+      public bool show_no_results { get; set; }
+      public IFAObservableCollection<SessionSearchResultItem> results { get; set; }
+      public TimeSpan grand_total { get; set; }
+      public string grand_total_display => $"{(int)grand_total.TotalHours:00}:{grand_total.Minutes:00}:{grand_total.Seconds:00}";
+
+      public SessionSearchViewModel()
+      {
+         results = new IFAObservableCollection<SessionSearchResultItem>();
+      }
+
+      public event PropertyChangedEventHandler PropertyChanged;
    }
 }

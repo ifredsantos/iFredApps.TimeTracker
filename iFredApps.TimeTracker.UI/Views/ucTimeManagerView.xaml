@@ -5,13 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:iFredApps.TimeTracker.UI.Views" 
              xmlns:components="clr-namespace:iFredApps.TimeTracker.UI.Components" 
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:timertracker="clr-namespace:iFredApps.TimeTracker.UI.Components.TimerTracker"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
    <Grid Margin="15">
+
       <Grid>
-         <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+         </Grid.RowDefinitions>
+
+         <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,8">
+            <Button DockPanel.Dock="Right" Name="btnOpenSearch" Click="btnOpenSearch_Click"
+                    Cursor="Hand" ToolTip="Search sessions by description">
+               <StackPanel Orientation="Horizontal">
+                  <iconPacks:PackIconFontAwesome Kind="MagnifyingGlassSolid" Width="13" Height="13" VerticalAlignment="Center" Foreground="White" />
+                  <TextBlock Text=" Search" VerticalAlignment="Center" Foreground="White" Margin="5,0,0,2" />
+               </StackPanel>
+            </Button>
+         </DockPanel>
+
+         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
             <TabControl Name="tabWorkspaces" ItemsSource="{Binding workspaces}" 
                         SelectedValuePath="workspace_id" DisplayMemberPath="name">
                <TabControl.ContentTemplate>
@@ -25,5 +42,129 @@
 
       <iconPacks:PackIconFontAwesome Grid.Row="1" Name="iconIsLoading" Kind="SpinnerSolid" Spin="True" Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" 
                                         Visibility="{Binding isLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+      <!-- Search drawer overlay -->
+      <Grid Name="searchOverlay" Panel.ZIndex="99" Visibility="Collapsed" ClipToBounds="True">
+         <Border Background="#77000000" MouseLeftButtonDown="SearchOverlay_MouseDown" />
+
+         <Border Name="searchPanel" Width="400" HorizontalAlignment="Right"
+                 Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
+            <Border.RenderTransform>
+               <TranslateTransform x:Name="searchPanelTransform" X="400" />
+            </Border.RenderTransform>
+
+            <Grid>
+               <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="*" />
+                  <RowDefinition Height="Auto" />
+               </Grid.RowDefinitions>
+
+               <!-- Header -->
+               <Border Grid.Row="0" Padding="15,12">
+                  <Border.Background>
+                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0.1" Color="#cf5a07" />
+                        <GradientStop Offset="1" Color="#CC3C4F" />
+                     </LinearGradientBrush>
+                  </Border.Background>
+                  <Grid>
+                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <iconPacks:PackIconFontAwesome Kind="MagnifyingGlassSolid" Width="16" Height="16" Foreground="White" VerticalAlignment="Center" />
+                        <TextBlock Text="Session Search" FontSize="18" FontWeight="SemiBold" Foreground="White" Margin="10,0,0,0" VerticalAlignment="Center" />
+                     </StackPanel>
+                     <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="btnCloseSearch_Click"
+                             Cursor="Hand" Background="Transparent" BorderThickness="0" Foreground="White">
+                        <iconPacks:PackIconFontAwesome Kind="XSolid" Width="14" Height="14" />
+                     </Button>
+                  </Grid>
+               </Border>
+
+               <!-- Search bar -->
+               <Grid Grid.Row="1" Margin="12,12,12,0">
+                  <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*" />
+                     <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <TextBox Name="txtSearchQuery" Grid.Column="0"
+                           mah:TextBoxHelper.Watermark="Search by description..."
+                           KeyDown="txtSearchQuery_KeyDown" />
+                  <Button Grid.Column="1" Margin="8,0,0,0" Click="btnSearch_Click" Cursor="Hand"
+                          ToolTip="Search">
+                     <iconPacks:PackIconFontAwesome Kind="MagnifyingGlassSolid" Width="14" Height="14" />
+                  </Button>
+               </Grid>
+
+               <!-- Results area -->
+               <Grid Grid.Row="2" Margin="0,8,0,0">
+                  <iconPacks:PackIconFontAwesome Kind="SpinnerSolid" Spin="True" Width="36" Height="36"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Visibility="{Binding is_searching, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
+                              Visibility="{Binding show_no_results, Converter={StaticResource BooleanToVisibilityConverter}}">
+                     <iconPacks:PackIconFontAwesome Kind="MagnifyingGlassSolid" Width="40" Height="40" Opacity="0.2" HorizontalAlignment="Center" />
+                     <TextBlock Text="No sessions found." Margin="0,10,0,0" Opacity="0.5" HorizontalAlignment="Center" FontSize="14" />
+                  </StackPanel>
+
+                  <ListView HorizontalContentAlignment="Stretch" ItemsSource="{Binding results}"
+                            Visibility="{Binding show_results, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            BorderThickness="0">
+                     <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                           <Setter Property="Padding" Value="0" />
+                           <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                           <Setter Property="BorderThickness" Value="0" />
+                           <Setter Property="Background" Value="Transparent" />
+                           <Setter Property="Template">
+                              <Setter.Value>
+                                 <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                    <ContentPresenter />
+                                 </ControlTemplate>
+                              </Setter.Value>
+                           </Setter>
+                        </Style>
+                     </ListView.ItemContainerStyle>
+                     <ListView.ItemTemplate>
+                        <DataTemplate>
+                           <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MahApps.Brushes.Gray7}" Padding="14,10">
+                              <Grid>
+                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                 </Grid.ColumnDefinitions>
+                                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding description}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" FontSize="13" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                       <TextBlock Text="{Binding workspace_name}" FontSize="11" Opacity="0.6" />
+                                       <TextBlock Text=" · " FontSize="11" Opacity="0.6" />
+                                       <TextBlock Text="{Binding session_count}" FontSize="11" Opacity="0.6" />
+                                       <TextBlock Text=" session(s)" FontSize="11" Opacity="0.6" />
+                                    </StackPanel>
+                                 </StackPanel>
+                                 <TextBlock Grid.Column="1" Text="{Binding total_time_display}"
+                                            FontWeight="Bold" Foreground="#cf5a07" FontSize="13"
+                                            VerticalAlignment="Center" Margin="10,0,0,0" />
+                              </Grid>
+                           </Border>
+                        </DataTemplate>
+                     </ListView.ItemTemplate>
+                  </ListView>
+               </Grid>
+
+               <!-- Grand total footer -->
+               <Border Grid.Row="3" Background="{DynamicResource MahApps.Brushes.Gray9}" Padding="15,12"
+                       Visibility="{Binding show_results, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <Grid>
+                     <TextBlock Text="Total" FontWeight="SemiBold" FontSize="14" />
+                     <TextBlock Text="{Binding grand_total_display}" HorizontalAlignment="Right"
+                                FontSize="14" FontWeight="Bold" Foreground="#cf5a07" />
+                  </Grid>
+               </Border>
+            </Grid>
+         </Border>
+      </Grid>
+
    </Grid>
 </UserControl>

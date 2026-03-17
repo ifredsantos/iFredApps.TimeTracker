@@ -2,10 +2,14 @@
 using iFredApps.Lib.Wpf.Execption;
 using iFredApps.TimeTracker.UI.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using TimeTracker.SL;
 
 namespace iFredApps.TimeTracker.UI.Views
@@ -19,6 +23,7 @@ namespace iFredApps.TimeTracker.UI.Views
 
       private TimeManagerBase _tmBase = null;
       private bool _isFirstLoadComplete = false;
+      private SessionSearchViewModel _searchViewModel = new SessionSearchViewModel();
 
       public ucTimeManagerView()
       {
@@ -27,6 +32,7 @@ namespace iFredApps.TimeTracker.UI.Views
          _tmBase = new TimeManagerBase();
 
          DataContext = _tmBase;
+         searchPanel.DataContext = _searchViewModel;
 
          Loaded += UcTimeManagerView_Loaded;
 
@@ -85,6 +91,103 @@ namespace iFredApps.TimeTracker.UI.Views
          }
       }
 
+      private void OpenSearchPanel()
+      {
+         searchOverlay.Visibility = Visibility.Visible;
+
+         var animation = new DoubleAnimation
+         {
+            From = 400,
+            To = 0,
+            Duration = TimeSpan.FromMilliseconds(260),
+            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+         };
+         searchPanelTransform.BeginAnimation(TranslateTransform.XProperty, animation);
+         txtSearchQuery.Focus();
+      }
+
+      private void CloseSearchPanel()
+      {
+         var animation = new DoubleAnimation
+         {
+            From = 0,
+            To = 400,
+            Duration = TimeSpan.FromMilliseconds(200),
+            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+         };
+         animation.Completed += (s, e) => searchOverlay.Visibility = Visibility.Collapsed;
+         searchPanelTransform.BeginAnimation(TranslateTransform.XProperty, animation);
+      }
+
+      private async Task ExecuteSearch()
+      {
+         string query = txtSearchQuery.Text?.Trim();
+         if (string.IsNullOrEmpty(query))
+            return;
+
+         _searchViewModel.NotifyValue(nameof(_searchViewModel.is_searching), true);
+         _searchViewModel.NotifyValue(nameof(_searchViewModel.show_results), false);
+         _searchViewModel.NotifyValue(nameof(_searchViewModel.show_no_results), false);
+         _searchViewModel.results.Clear();
+
+         try
+         {
+            var allResults = new List<SessionSearchResultItem>();
+            int userId = AppWebClient.Instance.GetLoggedUserData().user_id;
+
+            foreach (var workspace in _tmBase.workspaces)
+            {
+               var request = new GetSessionsRequest
+               {
+                  user_id = userId,
+                  workspace_id = workspace.workspace_id.Value,
+                  description = query
+               };
+
+               var response = await WebApiCall.Sessions.GetSessionsByDescription(
+                  AppWebClient.Instance.GetClient(), request);
+
+               if (response?.Success == true && !response.Data.IsNullOrEmpty())
+               {
+                  var grouped = response.Data
+                     .Where(s => s.end_date.HasValue)
+                     .GroupBy(s => s.description)
+                     .Select(g => new SessionSearchResultItem
+                     {
+                        description = g.Key,
+                        workspace_name = workspace.name,
+                        session_count = g.Count(),
+                        total_time = g.Aggregate(TimeSpan.Zero, (acc, s) =>
+                           acc + (s.end_date.Value - s.start_date))
+                     });
+
+                  allResults.AddRange(grouped);
+               }
+            }
+
+            if (allResults.Count > 0)
+            {
+               _searchViewModel.results.AddRange(allResults.OrderByDescending(r => r.total_time));
+               _searchViewModel.NotifyValue(nameof(_searchViewModel.grand_total),
+                  allResults.Aggregate(TimeSpan.Zero, (acc, r) => acc + r.total_time));
+               _searchViewModel.NotifyValue(nameof(_searchViewModel.grand_total_display));
+               _searchViewModel.NotifyValue(nameof(_searchViewModel.show_results), true);
+            }
+            else
+            {
+               _searchViewModel.NotifyValue(nameof(_searchViewModel.show_no_results), true);
+            }
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+         finally
+         {
+            _searchViewModel.NotifyValue(nameof(_searchViewModel.is_searching), false);
+         }
+      }
+
       #endregion
 
       #region Events
@@ -122,6 +225,48 @@ namespace iFredApps.TimeTracker.UI.Views
          catch (Exception ex)
          {
             Console.WriteLine(ex);
+         }
+      }
+
+      private void btnOpenSearch_Click(object sender, RoutedEventArgs e)
+      {
+         OpenSearchPanel();
+      }
+
+      private void btnCloseSearch_Click(object sender, RoutedEventArgs e)
+      {
+         CloseSearchPanel();
+      }
+
+      private void SearchOverlay_MouseDown(object sender, MouseButtonEventArgs e)
+      {
+         CloseSearchPanel();
+      }
+
+      private async void btnSearch_Click(object sender, RoutedEventArgs e)
+      {
+         try
+         {
+            await ExecuteSearch();
+         }
+         catch (Exception ex)
+         {
+            ex.ShowException();
+         }
+      }
+
+      private async void txtSearchQuery_KeyDown(object sender, KeyEventArgs e)
+      {
+         if (e.Key == Key.Enter)
+         {
+            try
+            {
+               await ExecuteSearch();
+            }
+            catch (Exception ex)
+            {
+               ex.ShowException();
+            }
          }
       }
 
